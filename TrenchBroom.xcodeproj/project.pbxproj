@@ -23,6 +23,8 @@
 		480AD8D612ED9E4A009B5970 /* Side.m in Sources */ = {isa = PBXBuildFile; fileRef = 480AD8D512ED9E4A009B5970 /* Side.m */; };
 		480BB4721302ED1C005E3492 /* Matrix2f.m in Sources */ = {isa = PBXBuildFile; fileRef = 480BB4711302ED1C005E3492 /* Matrix2f.m */; };
 		480BB50A13031A9D005E3492 /* Matrix3f.m in Sources */ = {isa = PBXBuildFile; fileRef = 480BB50913031A9D005E3492 /* Matrix3f.m */; };
+		480EE7C313320C120076B231 /* FeedbackLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 480EE7C213320C120076B231 /* FeedbackLayer.m */; };
+		480EE7DE13320D280076B231 /* FeedbackManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 480EE7DD13320D280076B231 /* FeedbackManager.m */; };
 		480F2F65132562CA00651FED /* Grid.m in Sources */ = {isa = PBXBuildFile; fileRef = 480F2F64132562CA00651FED /* Grid.m */; };
 		4814A02312F73F1E0082E05F /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4814A02212F73F1E0082E05F /* ProgressWindow.xib */; };
 		4814A02712F740580082E05F /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814A02612F740580082E05F /* ProgressWindowController.m */; };
@@ -181,6 +183,10 @@
 		480BB4711302ED1C005E3492 /* Matrix2f.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Matrix2f.m; sourceTree = "<group>"; };
 		480BB50813031A9D005E3492 /* Matrix3f.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix3f.h; sourceTree = "<group>"; };
 		480BB50913031A9D005E3492 /* Matrix3f.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Matrix3f.m; sourceTree = "<group>"; };
+		480EE7C113320C120076B231 /* FeedbackLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackLayer.h; sourceTree = "<group>"; };
+		480EE7C213320C120076B231 /* FeedbackLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackLayer.m; sourceTree = "<group>"; };
+		480EE7DC13320D280076B231 /* FeedbackManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackManager.h; sourceTree = "<group>"; };
+		480EE7DD13320D280076B231 /* FeedbackManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackManager.m; sourceTree = "<group>"; };
 		480F2F63132562CA00651FED /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
 		480F2F64132562CA00651FED /* Grid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Grid.m; sourceTree = "<group>"; };
 		4814A02212F73F1E0082E05F /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
@@ -571,6 +577,8 @@
 				484C28FB115023A2004DD957 /* VBOBuffer.m */,
 				484C28FD1150258B004DD957 /* VBOMemBlock.h */,
 				484C28FE1150258B004DD957 /* VBOMemBlock.m */,
+				480EE7C113320C120076B231 /* FeedbackLayer.h */,
+				480EE7C213320C120076B231 /* FeedbackLayer.m */,
 			);
 			name = Renderer;
 			sourceTree = "<group>";
@@ -719,6 +727,8 @@
 				4816144C132BE7C300CD66AF /* BrushTool.m */,
 				48958207132E52EF00BB7D8F /* CameraAnimation.h */,
 				48958208132E52EF00BB7D8F /* CameraAnimation.m */,
+				480EE7DC13320D280076B231 /* FeedbackManager.h */,
+				480EE7DD13320D280076B231 /* FeedbackManager.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -1031,6 +1041,8 @@
 				480F2F65132562CA00651FED /* Grid.m in Sources */,
 				4816144D132BE7C300CD66AF /* BrushTool.m in Sources */,
 				48958209132E52EF00BB7D8F /* CameraAnimation.m in Sources */,
+				480EE7C313320C120076B231 /* FeedbackLayer.m in Sources */,
+				480EE7DE13320D280076B231 /* FeedbackManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

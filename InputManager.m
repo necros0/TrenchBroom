@@ -22,6 +22,7 @@
 #import "MapDocument.h"
 #import "BrushTool.h"
 #import "Options.h"
+#import "FeedbackManager.h"
 
 @implementation InputManager
 - (id)initWithWindowController:(MapWindowController *)theWindowController {
@@ -95,9 +96,6 @@
 }
 
 - (void)handleMouseMoved:(NSEvent *)event sender:(id)sender {
-}
-
-- (void)handleLeftMouseDown:(NSEvent *)event sender:(id)sender {
     MapView3D* mapView3D = (MapView3D *)sender;
     [[mapView3D openGLContext] makeCurrentContext];
     Camera* camera = [windowController camera];
@@ -105,10 +103,13 @@
     NSPoint m = [mapView3D convertPointFromBase:[event locationInWindow]];
     Ray3D* ray = [camera pickRayX:m.x y:m.y];
     
+    FeedbackManager* feedbackManager = [windowController feedbackManager];
+    [feedbackManager updateWithRay:ray];
+    
     [lastHit release];
     Picker* picker = [[windowController document] picker];
     NSSet* includedObjects = nil;
-
+    
     Options* options = [windowController options];
     if ([options isolationMode] != IM_NONE) {
         SelectionManager* selectionManager = [windowController selectionManager];
@@ -120,10 +121,19 @@
         lastHit = [[hits objectAtIndex:0] retain];
     else
         lastHit = nil;
-    
+}
+
+- (void)handleLeftMouseDown:(NSEvent *)event sender:(id)sender {
     if (lastHit != nil && ![self isCameraModifierPressed:event]) {
         SelectionManager* selectionManager = [windowController selectionManager];
         if ([selectionManager isBrushSelected:[[lastHit object] brush]]) {
+            MapView3D* mapView3D = (MapView3D *)sender;
+            [[mapView3D openGLContext] makeCurrentContext];
+            Camera* camera = [windowController camera];
+            
+            NSPoint m = [mapView3D convertPointFromBase:[event locationInWindow]];
+            Ray3D* ray = [camera pickRayX:m.x y:m.y];
+
             MapDocument* map = [windowController document];
             NSUndoManager* undoManager = [map undoManager];
             [undoManager beginUndoGrouping];

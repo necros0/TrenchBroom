@@ -18,6 +18,8 @@
 #import "VBOMemBlock.h"
 #import "RenderContext.h"
 #import "SelectionManager.h"
+#import "FeedbackManager.h"
+#import "FeedbackLayer.h"
 #import "Brush.h"
 #import "Face.h"
 #import "Camera.h"
@@ -182,6 +184,51 @@ NSString* const RendererChanged = @"RendererChanged";
     [[NSNotificationCenter defaultCenter] postNotificationName:RendererChanged object:self];
 }
 
+- (void)feedbackAdded:(NSNotification *)notification {
+    NSDictionary* userInfo = [notification userInfo];
+    id <Brush> brush = [userInfo objectForKey:FeedbackBrushKey];
+    
+    if (brush != nil) {
+        SelectionManager* selectionManager = [windowController selectionManager];
+        
+        NSEnumerator* faceEn = [[brush faces] objectEnumerator];
+        id <Face> face;
+        while ((face = [faceEn nextObject])) {
+            FaceFigure* figure = [self figureForFace:face create:NO];
+            if ([selectionManager isFaceSelected:face] || [selectionManager isBrushSelected:brush])
+                [selectionLayer removeFigure:figure];
+            else
+                [geometryLayer removeFigure:figure];
+            [feedbackLayer addFigure:figure];
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:RendererChanged object:self];
+}
+
+- (void)feedbackRemoved:(NSNotification *)notification {
+    NSDictionary* userInfo = [notification userInfo];
+    id <Brush> brush = [userInfo objectForKey:FeedbackBrushKey];
+    
+    if (brush != nil) {
+        SelectionManager* selectionManager = [windowController selectionManager];
+
+        NSEnumerator* faceEn = [[brush faces] objectEnumerator];
+        id <Face> face;
+        while ((face = [faceEn nextObject])) {
+            FaceFigure* figure = [self figureForFace:face create:NO];
+            [feedbackLayer removeFigure:figure];
+            
+            if ([selectionManager isFaceSelected:face] || [selectionManager isBrushSelected:brush])
+                [selectionLayer addFigure:figure];
+            else
+                [geometryLayer addFigure:figure];
+        }
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:RendererChanged object:self];
+}
+
 - (void)selectionAdded:(NSNotification *)notification {
     NSDictionary* userInfo = [notification userInfo];
     NSSet* brushes = [userInfo objectForKey:SelectionBrushes];
@@ -275,7 +322,8 @@ NSString* const RendererChanged = @"RendererChanged";
 
         geometryLayer = [[GeometryLayer alloc] initWithWindowController:windowController];
         selectionLayer = [[SelectionLayer alloc] initWithWindowController:windowController];
-
+        feedbackLayer = [[FeedbackLayer alloc] initWithWindowController:windowController];
+        
         MapDocument* map = [windowController document];
 
         NSEnumerator* entityEn = [[map entities] objectEnumerator];
@@ -300,6 +348,10 @@ NSString* const RendererChanged = @"RendererChanged";
         [center addObserver:self selector:@selector(selectionAdded:) name:SelectionAdded object:selectionManager];
         [center addObserver:self selector:@selector(selectionRemoved:) name:SelectionRemoved object:selectionManager];
         
+        FeedbackManager* feedbackManager = [windowController feedbackManager];
+        [center addObserver:self selector:@selector(feedbackAdded:) name:FeedbackAdded object:feedbackManager];
+        [center addObserver:self selector:@selector(feedbackRemoved:) name:FeedbackRemoved object:feedbackManager];
+        
         Camera* camera = [windowController camera];
         [center addObserver:self selector:@selector(cameraChanged:) name:CameraChanged object:camera];
         
@@ -319,6 +371,7 @@ NSString* const RendererChanged = @"RendererChanged";
     RenderContext* renderContext = [[RenderContext alloc] initWithTextureManager:textureManager options:options];
     [geometryLayer render:renderContext];
     [selectionLayer render:renderContext];
+    [feedbackLayer render:renderContext];
     
     [renderContext release];
 }
@@ -328,6 +381,7 @@ NSString* const RendererChanged = @"RendererChanged";
     [windowController release];
     [geometryLayer release];
     [selectionLayer release];
+    [feedbackLayer release];
     [faceFigures release];
     [super dealloc];
 }

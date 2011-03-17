@@ -9,13 +9,10 @@
 #import <Cocoa/Cocoa.h>
 
 @class MapView3D;
-@class TextureView;
 @class Camera;
-@class TextureManager;
 @class InputManager;
 @class SelectionManager;
-@class GLFontManager;
-@class SingleTextureView;
+@class FeedbackManager;
 @class Options;
 @class Prefab;
 @protocol Prefab;
@@ -24,6 +21,7 @@
 	IBOutlet MapView3D* view3D;
     Camera* camera;
     SelectionManager* selectionManager;
+    FeedbackManager* feedbackManager;
     InputManager* inputManager;
     Options* options;
 }
@@ -67,6 +65,7 @@
 
 - (Camera *)camera;
 - (SelectionManager *)selectionManager;
+- (FeedbackManager *)feedbackManager;
 - (InputManager *)inputManager;
 - (Options *)options;
 @end

@@ -23,6 +23,7 @@
 #import "Octree.h"
 #import "Picker.h"
 #import "SelectionManager.h"
+#import "FeedbackManager.h"
 #import "GLFontManager.h"
 #import "InspectorController.h"
 #import "Options.h"
@@ -79,6 +80,7 @@ static NSString* CameraDefaultsFar = @"Far Clipping Plane";
     [self userDefaultsChanged:nil];
     
     selectionManager = [[SelectionManager alloc] init];
+    feedbackManager = [[FeedbackManager alloc] initWithWindowController:self];
     inputManager = [[InputManager alloc] initWithWindowController:self];
     
     [view3D setup];
@@ -90,6 +92,7 @@ static NSString* CameraDefaultsFar = @"Far Clipping Plane";
     [center addObserver:self selector:@selector(windowDidBecomeKey:) name:NSWindowDidBecomeKeyNotification object:[self window]];
     [center addObserver:self selector:@selector(userDefaultsChanged:) name:NSUserDefaultsDidChangeNotification object:[NSUserDefaults standardUserDefaults]];
     
+    [[self window] setAcceptsMouseMovedEvents:YES];
     [[self window] makeKeyAndOrderFront:nil];
 }
 
@@ -99,6 +102,10 @@ static NSString* CameraDefaultsFar = @"Far Clipping Plane";
 
 - (SelectionManager *)selectionManager {
     return selectionManager;
+}
+
+- (FeedbackManager *)feedbackManager {
+    return feedbackManager;
 }
 
 - (InputManager *)inputManager {
@@ -618,6 +625,7 @@ static NSString* CameraDefaultsFar = @"Far Clipping Plane";
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [options release];
+    [feedbackManager release];
     [selectionManager release];
     [inputManager release];
     [camera release];
