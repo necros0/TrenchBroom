@@ -19,8 +19,9 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <Cocoa/Cocoa.h>
 #import "Map.h"
-#import "Math.h"
-#import "VertexData.h"
+
+#include "VertexData.h"
+#include "Math.h"
 
 extern NSString* const FacesWillChange;
 extern NSString* const FacesDidChange;

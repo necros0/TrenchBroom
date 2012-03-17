@@ -419,7 +419,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
         NSLog(@"Cannot overwrite classname property");
         return;
     } else if ([key isEqualToString:OriginKey]) {
-        if (!parseV3f(value, NSMakeRange(0, [value length]), &origin)) {
+        if (!parseV3f([value cStringUsingEncoding:NSASCIIStringEncoding], 0, [value length], &origin)) {
             NSLog(@"Invalid origin value: '%@'", value);
             return;
         }

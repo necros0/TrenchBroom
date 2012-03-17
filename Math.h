@@ -17,7 +17,29 @@ You should have received a copy of the GNU General Public License
 along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#import <Cocoa/Cocoa.h>
+#ifndef TrenchBroom_Math_h
+#define TrenchBroom_Math_h
+
+#ifdef boolean
+#undef boolean
+#endif
+
+#ifdef TRUE
+#undef TRUE
+#endif
+
+#ifdef FALSE
+#undef FALSE
+#endif
+
+#if defined __cplusplus
+extern "C" {
+#endif
+
+typedef enum {
+    FALSE,
+    TRUE
+} boolean;
 
 typedef enum {
     A_X,
@@ -130,18 +152,18 @@ extern TMatrix4f const MirZM4f;
 
 extern float const PointStatusEpsilon;
 
-BOOL fzero(float v);
-BOOL fpos(float v);
-BOOL fneg(float v);
-BOOL feq(float v1, float v2);
-BOOL fgt(float v1, float v2);
-BOOL flt(float v1, float v2);
-BOOL fgte(float v1, float v2);
-BOOL flte(float v1, float v2);
-BOOL finxx(float v, float b1, float b2);
-BOOL finxi(float v, float b1, float b2);
-BOOL finix(float v, float b1, float b2);
-BOOL finii(float v, float b1, float b2);
+boolean fzero(float v);
+boolean fpos(float v);
+boolean fneg(float v);
+boolean feq(float v1, float v2);
+boolean fgt(float v1, float v2);
+boolean flt(float v1, float v2);
+boolean fgte(float v1, float v2);
+boolean flte(float v1, float v2);
+boolean finxx(float v, float b1, float b2);
+boolean finxi(float v, float b1, float b2);
+boolean finix(float v, float b1, float b2);
+boolean finii(float v, float b1, float b2);
 int mini(int v1, int v2);
 int maxi(int v1, int v2);
 
@@ -154,9 +176,9 @@ float lengthV2f(const TVector2f* v);
 void normalizeV2f(const TVector2f* v, TVector2f* r);
 
 float dot3f(float lx, float ly, float lz, float rx, float ry, float rz);
-BOOL segmentIntersectsSegment(float s11, float s12, float s21, float s22);
-BOOL segmentContainsSegment(float s11, float s12, float s21, float s22);
-BOOL segmentContainsPoint(float s11, float s12, float p);
+boolean segmentIntersectsSegment(float s11, float s12, float s21, float s22);
+boolean segmentContainsSegment(float s11, float s12, float s21, float s22);
+boolean segmentContainsPoint(float s11, float s12, float p);
 
 void addV3f(const TVector3f* l, const TVector3f* r, TVector3f* o);
 void sumV3f(const TVector3f* v, int c, TVector3f* o);
@@ -169,12 +191,12 @@ void invertV3f(const TVector3f* v, TVector3f* o);
 float lengthV3f(const TVector3f* v);
 float lengthSquaredV3f(const TVector3f* v);
 void normalizeV3f(const TVector3f* v, TVector3f* o);
-BOOL equalV3f(const TVector3f* l, const TVector3f* r);
-BOOL absEqualV3f(const TVector3f* l, const TVector3f* r);
-BOOL intV3f(const TVector3f* v);
-BOOL nullV3f(const TVector3f* v);
-BOOL sameDirV3f(const TVector3f* v1, const TVector3f* v2);
-BOOL oppositeDirV3f(const TVector3f* v1, const TVector3f* v2);
+boolean equalV3f(const TVector3f* l, const TVector3f* r);
+boolean absEqualV3f(const TVector3f* l, const TVector3f* r);
+boolean intV3f(const TVector3f* v);
+boolean nullV3f(const TVector3f* v);
+boolean sameDirV3f(const TVector3f* v1, const TVector3f* v2);
+boolean oppositeDirV3f(const TVector3f* v1, const TVector3f* v2);
 EAxis strongestComponentV3f(const TVector3f* v);
 EAxis weakestComponentV3f(const TVector3f* v);
 const TVector3f* firstAxisV3f(const TVector3f* v);
@@ -192,8 +214,8 @@ void snapV3f(const TVector3f* v, TVector3f* o);
 void setV3f(TVector3f* l, const TVector3i* r);
 void rotate90CWV3f(const TVector3f* v, EAxis a, TVector3f *o);
 void rotate90CCWV3f(const TVector3f* v, EAxis a, TVector3f *o);
-BOOL parseV3f(NSString* s, NSRange r, TVector3f* o);
-BOOL normV3f(const TVector3f* v1, const TVector3f* v2, const TVector3f* v3, TVector3f* o);
+boolean parseV3f(const char* string, int start, int length, TVector3f* result);
+boolean normV3f(const TVector3f* v1, const TVector3f* v2, const TVector3f* v3, TVector3f* o);
 void avg3V3f(const TVector3f* v1, const TVector3f* v2, const TVector3f* v3, TVector3f* o);
 int compareV3f(const TVector3f* v1, const TVector3f* v2);
 
@@ -201,16 +223,16 @@ void addV3i(const TVector3i* l, const TVector3i* r, TVector3i* o);
 void subV3i(const TVector3i* l, const TVector3i* r, TVector3i* o);
 void setV3i(TVector3i* l, const TVector3f* r);
 void scaleV3i(const TVector3i* v, int i, TVector3i* o);
-BOOL equalV3i(const TVector3i* l, const TVector3i* r);
-BOOL nullV3i(const TVector3i* v);
+boolean equalV3i(const TVector3i* l, const TVector3i* r);
+boolean nullV3i(const TVector3i* v);
 void rotate90CWV3i(const TVector3i* v, EAxis a, TVector3i *o);
 void rotate90CCWV3i(const TVector3i* v, EAxis a, TVector3i *o);
-BOOL parseV3i(NSString* s, NSRange r, TVector3i* o);
+boolean parseV3i(const char* string, int start, int length, TVector3i* result);
 
 void setLinePoints(TLine* l, TVector3f* p1, TVector3f* p2);
 void linePointAtDistance(TLine* l, float d, TVector3f* p);
 
-BOOL setPlanePointsV3f(TPlane* p, const TVector3f* p1, const TVector3f* p2, const TVector3f* p3);
+boolean setPlanePointsV3f(TPlane* p, const TVector3f* p1, const TVector3f* p2, const TVector3f* p3);
 EPointStatus pointStatusFromPlane(const TPlane* p, const TVector3f* v);
 EPointStatus pointStatusFromRay(const TVector3f* o, const TVector3f* d, const TVector3f* v);
 
@@ -219,9 +241,9 @@ float intersectPlaneWithLine(const TPlane* p, const TLine* l);
 float planeX(const TPlane* p, float y, float z);
 float planeY(const TPlane* p, float x, float z);
 float planeZ(const TPlane* p, float x, float y);
-BOOL equalPlane(const TPlane* p1, const TPlane* p2);
+boolean equalPlane(const TPlane* p1, const TPlane* p2);
 
-NSString* axisName(EAxis a);
+char* axisName(EAxis a);
 
 void centerOfBounds(const TBoundingBox* b, TVector3f* o);
 void translateBounds(const TBoundingBox* b, const TVector3f* d, TBoundingBox* o);
@@ -234,13 +256,13 @@ void expandBounds(const TBoundingBox* b, float f, TBoundingBox* o);
 void sizeOfBounds(const TBoundingBox* b, TVector3f* o);
 float radiusOfBounds(const TBoundingBox* b);
 float intersectBoundsWithRay(const TBoundingBox* b, const TRay* ray, TVector3f* n);
-BOOL boundsContainPoint(const TBoundingBox* b, const TVector3f* p);
-BOOL boundsIntersectWithBounds(const TBoundingBox* b1, const TBoundingBox* b2);
-BOOL boundsContainBounds(const TBoundingBox* b1, const TBoundingBox *b2);
+boolean boundsContainPoint(const TBoundingBox* b, const TVector3f* p);
+boolean boundsIntersectWithBounds(const TBoundingBox* b1, const TBoundingBox* b2);
+boolean boundsContainBounds(const TBoundingBox* b1, const TBoundingBox *b2);
 
 void setQ(TQuaternion* l, const TQuaternion* r);
 void setAngleAndAxisQ(TQuaternion* q, float a, const TVector3f* x);
-BOOL nullQ(const TQuaternion* q);
+boolean nullQ(const TQuaternion* q);
 void mulQ(const TQuaternion* l, const TQuaternion* r, TQuaternion* o);
 void conjugateQ(const TQuaternion* q, TQuaternion* o);
 void rotateQ(const TQuaternion* q, const TVector3f* v, TVector3f* o);
@@ -263,7 +285,7 @@ void setIdentityM2f(TMatrix2f* m);
 void setMinorM2f(const TMatrix3f* m2f, int col, int row, TMatrix2f* o);
 void setColumnM2f(const TMatrix2f* m, const TVector2f* v, int col, TMatrix2f* o);
 void setValueM2f(const TMatrix2f* m, float v, int col, int row, TMatrix2f* o);
-BOOL invertM2f(const TMatrix2f* m, TMatrix2f* o);
+boolean invertM2f(const TMatrix2f* m, TMatrix2f* o);
 void adjugateM2f(const TMatrix2f* m, TMatrix2f* o);
 float determinantM2f(const TMatrix2f* m);
 void negateM2f(const TMatrix2f* m, TMatrix2f* o);
@@ -277,7 +299,7 @@ void setIdentityM3f(TMatrix3f* m);
 void setMinorM3f(const TMatrix4f* m4f, int col, int row, TMatrix3f* o);
 void setColumnM3f(const TMatrix3f* m, const TVector3f* v, int col, TMatrix3f* o);
 void setValueM3f(const TMatrix3f* m, float v, int col, int row, TMatrix3f* o);
-BOOL invertM3f(const TMatrix3f* m, TMatrix3f* o);
+boolean invertM3f(const TMatrix3f* m, TMatrix3f* o);
 void adjugateM3f(const TMatrix3f* m, TMatrix3f* o);
 float determinantM3f(const TMatrix3f* m);
 void negateM3f(const TMatrix3f* m, TMatrix3f* o);
@@ -293,7 +315,7 @@ void setSubMatrixM4f(const TMatrix4f* m4f, const TMatrix2f* m2f, int i, TMatrix4
 void setColumnM4fV4f(const TMatrix4f* m, const TVector4f* v, int col, TMatrix4f* o);
 void setColumnM4fV3f(const TMatrix4f* m, const TVector3f* v, int col, TMatrix4f* o);
 void setValueM4f(const TMatrix4f* m, float v, int col, int row, TMatrix4f* o);
-BOOL invertM4f(const TMatrix4f* m, TMatrix4f* o);
+boolean invertM4f(const TMatrix4f* m, TMatrix4f* o);
 void adjugateM4f(const TMatrix4f* m, TMatrix4f* o);
 float determinantM4f(const TMatrix4f* m);
 void negateM4f(const TMatrix4f* m, TMatrix4f* o);
@@ -311,7 +333,7 @@ void transformM4fV3f(const TMatrix4f* m, const TVector3f* v, TVector3f* o);
 void transformM4fV4f(const TMatrix4f* m, const TVector4f* v, TVector4f* o);
 
 void projectOntoCoordinatePlane(EPlane plane, const TVector3f* v, TVector3f* o);
-BOOL projectVectorOntoPlane(const TVector3f* planeNorm, const TVector3f* dir, const TVector3f* v, TVector3f* o);
+boolean projectVectorOntoPlane(const TVector3f* planeNorm, const TVector3f* dir, const TVector3f* v, TVector3f* o);
 
 void makeCircle(float radius, int segments, TVector3f* points);
 void makeRing(float innerRadius, float outerRadius, int segments, TVector3f* points);
@@ -320,4 +342,8 @@ void makeTorusPart(float innerRadius, float outerRadius, int innerSegments, int 
 void makeCone(float radius, float height, int segments, TVector3f* points, TVector3f* normals);
 void makeCylinder(float radius, float height, int segments, TVector3f* points, TVector3f* normals);
 
+#if defined __cplusplus
+};
+#endif
 
+#endif

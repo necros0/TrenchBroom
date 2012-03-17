@@ -19,73 +19,55 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "Texture.h"
 #import "IdGenerator.h"
-#import "WadTextureEntry.h"
 #import "AliasSkin.h"
 #import "BspTexture.h"
 #import "Math.h"
+#import "Wad.h"
 
-@interface Texture (private)
+using namespace TrenchBroom;
 
-- (NSData *)convertTexture:(NSData *)theTextureData width:(int)theWidth height:(int)theHeight palette:(NSData *)thePalette;
+@implementation Texture
 
-@end
-
-@implementation Texture (private)
-
-- (NSData *)convertTexture:(NSData *)theTextureData width:(int)theWidth height:(int)theHeight palette:(NSData *)thePalette {
-    uint8_t pixelBuffer[32];
-    uint8_t colorBuffer[3];
+- (void)convertTexture:(const unsigned char *)theTextureData palette:(NSData *)thePalette {
+    int size;
     
-    int size = theWidth * theHeight;
-    NSMutableData* texture = [[NSMutableData alloc] initWithCapacity:size * 3];
+    size = width * height;
+    textureBuffer = new char[size * 3];
     
-    for (int y = 0; y < theHeight; y++) {
-        for (int x = 0; x < theWidth; x++) {
-            int pixelIndex = y * theWidth + x;
-            int pixelBufferIndex = pixelIndex % 32;
-            if (pixelBufferIndex == 0) {
-                int length = mini(32, size - pixelIndex);
-                [theTextureData getBytes:pixelBuffer range:NSMakeRange(pixelIndex, length)];
-            }
-            
-            int paletteIndex = pixelBuffer[pixelBufferIndex];
-            [thePalette getBytes:colorBuffer range:NSMakeRange(paletteIndex * 3, 3)];
-            [texture appendBytes:colorBuffer length:3];
-            color.x += colorBuffer[0] / 255.0f;
-            color.y += colorBuffer[1] / 255.0f;
-            color.z += colorBuffer[2] / 255.0f;
-        }
+    for (int i = 0; i < size; i++) {
+        unsigned char paletteIndex = theTextureData[i];
+        [thePalette getBytes:&textureBuffer[i * 3] range:NSMakeRange(paletteIndex * 3, 3)];
+        
+        color.x += textureBuffer[i * 3 + 0] / 255.0f;
+        color.y += textureBuffer[i * 3 + 1] / 255.0f;
+        color.z += textureBuffer[i * 3 + 2] / 255.0f;
     }
-    
+
     color.x /= size;
     color.y /= size;
     color.z /= size;
     color.w = 1;
-    
-    return [texture autorelease];
 }
 
-@end
-
-
-@implementation Texture
-
-- (id)initWithWadEntry:(WadTextureEntry *)theEntry palette:(NSData *)thePalette {
-    NSAssert(theEntry != nil, @"texture entry must not be nil");
-    return [self initWithName:[theEntry name] image:[theEntry mip0] width:[theEntry width] height:[theEntry height] palette:thePalette];
+- (id)initWithWadEntry:(void *)theEntry palette:(NSData *)thePalette {
+    NSAssert(theEntry != NULL, @"texture entry must not be nil");
+    
+    Mip* mip = (Mip *)theEntry;
+    return [self initWithName:[NSString stringWithCString:mip->name.c_str() encoding:NSASCIIStringEncoding] image:mip->mip0 width:mip->width height:mip->height palette:thePalette];
 }
 
 - (id)initWithName:(NSString *)theName skin:(AliasSkin *)theSkin index:(int)theIndex palette:(NSData *)thePalette {
     NSAssert(theSkin != nil, @"skin must not be nil");
-    return [self initWithName:theName image:[theSkin pictureAtIndex:theIndex] width:[theSkin width] height:[theSkin height] palette:thePalette];
+    NSData* picture = [theSkin pictureAtIndex:theIndex];
+    return [self initWithName:theName image:(unsigned char *)[picture bytes] width:[theSkin width] height:[theSkin height] palette:thePalette];
 }
 
 - (id)initWithBspTexture:(BspTexture *)theBspTexture palette:(NSData *)thePalette {
     NSAssert(theBspTexture != nil, @"BSP texture must not be nil");
-    return [self initWithName:[theBspTexture name] image:[theBspTexture image] width:[theBspTexture width] height:[theBspTexture height] palette:thePalette];
+    return [self initWithName:[theBspTexture name] image:(unsigned char *)[[theBspTexture image] bytes] width:[theBspTexture width] height:[theBspTexture height] palette:thePalette];
 }
 
-- (id)initWithName:(NSString *)theName image:(NSData *)theImage width:(int)theWidth height:(int)theHeight palette:(NSData *)thePalette {
+- (id)initWithName:(NSString *)theName image:(const unsigned char *)theImage width:(int)theWidth height:(int)theHeight palette:(NSData *)thePalette {
     NSAssert(theName != nil, @"name must not be nil");
     NSAssert(theImage != nil, @"image must not be nil");
     NSAssert(theWidth > 0, @"width must be positive");
@@ -94,11 +76,11 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     
     if ((self = [self init])) {
         uniqueId = [[[IdGenerator sharedGenerator] getId] retain];
-        
+
         name = [[NSString alloc] initWithString:theName];
         width = theWidth;
         height = theHeight;
-        data = [[self convertTexture:theImage width:width height:height palette:thePalette] retain];
+        [self convertTexture:theImage palette:thePalette];
         
         textureId = 0;
     }
@@ -161,7 +143,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 - (void)activate {
     if (textureId == 0) {
-        if (data != nil) {
+        if (textureBuffer != NULL) {
             glGenTextures(1, &textureId);
             
             glBindTexture(GL_TEXTURE_2D, textureId);
@@ -170,9 +152,9 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, [data bytes]);
-            [data release];
-            data = nil;
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureBuffer);
+            delete textureBuffer;
+            textureBuffer = NULL;
         } else {
             NSLog(@"Warning: cannot recreate texture '%@'", self);
         }
@@ -208,7 +190,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
         glDeleteTextures(1, &textureId);
     [uniqueId release];
     [name release];
-    [data release];
+    delete textureBuffer;
     [super dealloc];
 }
 @end

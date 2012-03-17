@@ -19,7 +19,6 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <Cocoa/Cocoa.h>
 
-@class Wad;
 @class Texture;
 
 @interface TextureCollection : NSObject {
@@ -28,7 +27,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     NSString* name;
 }
 
-- (id)initName:(NSString *)theName palette:(NSData *)thePalette wad:(Wad *)theWad;
+- (id)initName:(NSString *)theName palette:(NSData *)thePalette wad:(void *)theWadDirectory;
 
 - (NSString *)name;
 - (NSArray *)textures;

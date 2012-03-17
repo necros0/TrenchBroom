@@ -30,7 +30,6 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #import "Texture.h"
 #import "Picker.h"
 #import "GLResources.h"
-#import "WadLoader.h"
 #import "MapWindowController.h"
 #import "ProgressWindowController.h"
 #import "MapParser.h"
@@ -39,7 +38,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #import "SelectionManager.h"
 #import "GroupManager.h"
 #import "Autosaver.h"
-#import "Math.h"
+#import "Wad.h"
 
 NSString* const FacesWillChange         = @"FacesWillChange";
 NSString* const FacesDidChange          = @"FacesDidChange";
@@ -66,23 +65,52 @@ NSString* const PointFileUnloaded       = @"PointFileUnloaded";
 NSString* const DocumentCleared         = @"DocumentCleared";
 NSString* const DocumentLoaded          = @"DocumentLoaded";
 
-@interface MapDocument (private)
+using namespace TrenchBroom;
 
-- (void)makeUndoSnapshotOfSelection;
-- (void)makeUndoSnapshotOfFaces:(NSArray *)theFaces;
-- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofFaces:(NSArray *)theFaces;
-- (void)makeUndoSnapshotOfBrushes:(NSArray *)theBrushes;
-- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofBrushes:(NSArray *)theBrushes;
-- (void)makeUndoSnapshotOfEntities:(NSArray *)theEntities;
-- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofEntities:(NSArray *)theEntities;
+@interface MapDocument (Private)
 
 - (void)postNotification:(NSString *)theNotification forFaces:(NSArray *)theFaces;
 - (void)postNotification:(NSString *)theNotification forBrushes:(NSArray *)theBrushes;
 - (void)postNotification:(NSString *)theNotification forEntities:(NSArray *)theEntities;
 
+- (void)makeUndoSnapshotOfSelection;
+- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofFaces:(NSArray *)theFaces;
+- (void)makeUndoSnapshotOfFaces:(NSArray *)theFaces;
+- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofBrushes:(NSArray *)theBrushes;
+- (void)makeUndoSnapshotOfBrushes:(NSArray *)theBrushes;
+- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofEntities:(NSArray *)theEntities;
+- (void)makeUndoSnapshotOfEntities:(NSArray *)theEntitie;
+
 @end
 
-@implementation MapDocument (private)
+@implementation MapDocument (Private)
+
+- (void)postNotification:(NSString *)theNotification forFaces:(NSArray *)theFaces {
+    if ([self postNotifications]) {
+        NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:theFaces, FacesKey, nil];
+        NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+        [center postNotificationName:theNotification object:self userInfo:userInfo];
+        [userInfo release];
+    }
+}
+
+- (void)postNotification:(NSString *)theNotification forBrushes:(NSArray *)theBrushes {
+    if ([self postNotifications]) {
+        NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:theBrushes, BrushesKey, nil];
+        NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+        [center postNotificationName:theNotification object:self userInfo:userInfo];
+        [userInfo release];
+    }
+}
+
+- (void)postNotification:(NSString *)theNotification forEntities:(NSArray *)theEntities {
+    if ([self postNotifications]) {
+        NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:theEntities, EntitiesKey, nil];
+        NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+        [center postNotificationName:theNotification object:self userInfo:userInfo];
+        [userInfo release];
+    }
+}
 
 - (void)makeUndoSnapshotOfSelection {
     NSUndoManager* undoManager = [self undoManager];
@@ -117,23 +145,6 @@ NSString* const DocumentLoaded          = @"DocumentLoaded";
     [undoManager endUndoGrouping];
 }
 
-- (void)makeUndoSnapshotOfFaces:(NSArray *)theFaces {
-    NSAssert(theFaces != nil, @"face array must not be nil");
-    
-    if ([theFaces count] == 0)
-        return;
-    
-    NSArray* snapshot = [[NSArray alloc] initWithArray:theFaces copyItems:YES];
-    
-    NSUndoManager* undoManager = [self undoManager];
-    [undoManager beginUndoGrouping];
-    [[undoManager prepareWithInvocationTarget:self] restoreUndoSnapshot:snapshot ofFaces:theFaces];
-    [self makeUndoSnapshotOfSelection];
-    [undoManager endUndoGrouping];
-
-    [snapshot release];
-}
-
 - (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofFaces:(NSArray *)theFaces {
     NSAssert(theSnapshot != nil, @"snapshot must not be nil");
     NSAssert(theFaces != nil, @"face array must not be nil");
@@ -156,6 +167,45 @@ NSString* const DocumentLoaded          = @"DocumentLoaded";
     [autosaver updateLastAction];
 }
 
+- (void)makeUndoSnapshotOfFaces:(NSArray *)theFaces {
+    NSAssert(theFaces != nil, @"face array must not be nil");
+    
+    if ([theFaces count] == 0)
+        return;
+    
+    NSArray* snapshot = [[NSArray alloc] initWithArray:theFaces copyItems:YES];
+    
+    NSUndoManager* undoManager = [self undoManager];
+    [undoManager beginUndoGrouping];
+    [[undoManager prepareWithInvocationTarget:self] restoreUndoSnapshot:snapshot ofFaces:theFaces];
+    [self makeUndoSnapshotOfSelection];
+    [undoManager endUndoGrouping];
+    
+    [snapshot release];
+}
+
+- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofBrushes:(NSArray *)theBrushes {
+    NSAssert(theSnapshot != nil, @"snapshot must not be nil");
+    NSAssert(theBrushes != nil, @"face array must not be nil");
+    NSAssert([theSnapshot count] == [theBrushes count], @"snapshot must contain the same number of items as brush array");
+    
+    [self makeUndoSnapshotOfBrushes:theBrushes];
+    
+    NSEnumerator* brushEn = [theBrushes objectEnumerator];
+    NSEnumerator* snapshotEn = [theSnapshot objectEnumerator];
+    MutableBrush* brush;
+    MutableBrush* snapshot;
+    
+    [self postNotification:BrushesWillChange forBrushes:theBrushes];
+    while ((brush = [brushEn nextObject]) && (snapshot = [snapshotEn nextObject])) {
+        NSAssert([brush brushId] == [snapshot brushId], @"brush and snapshot must have the same id");
+        [brush restore:snapshot];
+    }
+    [self postNotification:BrushesDidChange forBrushes:theBrushes];
+    
+    [autosaver updateLastAction];
+}
+
 - (void)makeUndoSnapshotOfBrushes:(NSArray *)theBrushes {
     NSAssert(theBrushes != nil, @"brush array must not be nil");
     
@@ -173,25 +223,23 @@ NSString* const DocumentLoaded          = @"DocumentLoaded";
     [snapshot release];
 }
 
-- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofBrushes:(NSArray *)theBrushes {
+- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofEntities:(NSArray *)theEntities {
     NSAssert(theSnapshot != nil, @"snapshot must not be nil");
-    NSAssert(theBrushes != nil, @"face array must not be nil");
-    NSAssert([theSnapshot count] == [theBrushes count], @"snapshot must contain the same number of items as brush array");
-
-    [self makeUndoSnapshotOfBrushes:theBrushes];
+    NSAssert(theEntities != nil, @"entity array must not be nil");
+    NSAssert([theSnapshot count] == [theEntities count], @"snapshot must contain the same number of items as entity array");
     
-    NSEnumerator* brushEn = [theBrushes objectEnumerator];
+    [self makeUndoSnapshotOfEntities:theEntities];
+    
+    NSEnumerator* entityEn = [theEntities objectEnumerator];
     NSEnumerator* snapshotEn = [theSnapshot objectEnumerator];
-    MutableBrush* brush;
-    MutableBrush* snapshot;
-
-    [self postNotification:BrushesWillChange forBrushes:theBrushes];
-    while ((brush = [brushEn nextObject]) && (snapshot = [snapshotEn nextObject])) {
-        NSAssert([brush brushId] == [snapshot brushId], @"brush and snapshot must have the same id");
-        [brush restore:snapshot];
-    }
-    [self postNotification:BrushesDidChange forBrushes:theBrushes];
-
+    MutableEntity* entity;
+    NSDictionary* properties;
+    
+    [self postNotification:PropertiesWillChange forEntities:theEntities];
+    while ((entity = [entityEn nextObject]) && (properties = [snapshotEn nextObject]))
+        [entity replaceProperties:properties];
+    [self postNotification:PropertiesDidChange forEntities:theEntities];
+    
     [autosaver updateLastAction];
 }
 
@@ -211,7 +259,7 @@ NSString* const DocumentLoaded          = @"DocumentLoaded";
         [snapshot addObject:properties];
         [properties release];
     }
-
+    
     NSUndoManager* undoManager = [self undoManager];
     [undoManager beginUndoGrouping];
     [[undoManager prepareWithInvocationTarget:self] restoreUndoSnapshot:snapshot ofEntities:theEntities];
@@ -220,55 +268,6 @@ NSString* const DocumentLoaded          = @"DocumentLoaded";
     
     [snapshot release];
 }
-
-
-- (void)restoreUndoSnapshot:(NSArray *)theSnapshot ofEntities:(NSArray *)theEntities {
-    NSAssert(theSnapshot != nil, @"snapshot must not be nil");
-    NSAssert(theEntities != nil, @"entity array must not be nil");
-    NSAssert([theSnapshot count] == [theEntities count], @"snapshot must contain the same number of items as entity array");
-    
-    [self makeUndoSnapshotOfEntities:theEntities];
-    
-    NSEnumerator* entityEn = [theEntities objectEnumerator];
-    NSEnumerator* snapshotEn = [theSnapshot objectEnumerator];
-    MutableEntity* entity;
-    NSDictionary* properties;
-    
-    [self postNotification:PropertiesWillChange forEntities:theEntities];
-    while ((entity = [entityEn nextObject]) && (properties = [snapshotEn nextObject]))
-        [entity replaceProperties:properties];
-    [self postNotification:PropertiesDidChange forEntities:theEntities];
-
-    [autosaver updateLastAction];
-}
-
-- (void)postNotification:(NSString *)theNotification forFaces:(NSArray *)theFaces {
-    if ([self postNotifications]) {
-        NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:theFaces, FacesKey, nil];
-        NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-        [center postNotificationName:theNotification object:self userInfo:userInfo];
-        [userInfo release];
-    }
-}
-
-- (void)postNotification:(NSString *)theNotification forBrushes:(NSArray *)theBrushes {
-    if ([self postNotifications]) {
-        NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:theBrushes, BrushesKey, nil];
-        NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-        [center postNotificationName:theNotification object:self userInfo:userInfo];
-        [userInfo release];
-    }
-}
-
-- (void)postNotification:(NSString *)theNotification forEntities:(NSArray *)theEntities {
-    if ([self postNotifications]) {
-        NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:theEntities, EntitiesKey, nil];
-        NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-        [center postNotificationName:theNotification object:self userInfo:userInfo];
-        [userInfo release];
-    }
-}
-
 @end
 
 @implementation MapDocument
@@ -397,12 +396,12 @@ NSString* const DocumentLoaded          = @"DocumentLoaded";
         return;
     
     leakPointCount = [lines count];
-    leakPoints = malloc(leakPointCount * sizeof(TVector3f));
+    leakPoints = (TVector3f *)malloc(leakPointCount * sizeof(TVector3f));
     int lineIndex = 0;
     
     for (NSString* line in lines) {
         line = [line stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        if (!parseV3f(line, NSMakeRange(0, [line length]), &leakPoints[lineIndex])) {
+        if (!parseV3f([line cStringUsingEncoding:NSASCIIStringEncoding], 0, [line length], &leakPoints[lineIndex])) {
             free(leakPoints);
             leakPointCount = 0;
             NSLog(@"Error parsing point file at line %i", lineIndex + 1);
@@ -438,15 +437,12 @@ NSString* const DocumentLoaded          = @"DocumentLoaded";
     
     NSFileManager* fileManager = [NSFileManager defaultManager];
     if ([fileManager fileExistsAtPath:theWadPath]) {
-        int slashIndex = [theWadPath rangeOfString:@"/" options:NSBackwardsSearch].location;
-        NSString* wadName = [theWadPath substringFromIndex:slashIndex + 1];
-        
-        WadLoader* wadLoader = [[WadLoader alloc] init];
-        Wad* wad = [wadLoader loadFromData:[NSData dataWithContentsOfMappedFile:theWadPath] wadName:wadName];
-        [wadLoader release];
-        
+        NSLog(@"loading texture wad '%@'", theWadPath);
+
         NSData* palette = [glResources palette];
+        Wad* wad = new Wad([theWadPath cStringUsingEncoding:NSASCIIStringEncoding]);
         TextureCollection* collection = [[TextureCollection alloc] initName:theWadPath palette:palette wad:wad];
+        delete wad;
         
         TextureManager* textureManager = [glResources textureManager];
         [textureManager addTextureCollection:collection atIndex:theIndex];

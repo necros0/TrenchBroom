@@ -17,8 +17,10 @@ You should have received a copy of the GNU General Public License
 along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#import "Math.h"
-#import "math.h"
+#include "Math.h"
+#include <stdlib.h>
+#include <math.h>
+#include <assert.h>
 
 float const AlmostZero = 0.001f;
 float const PointStatusEpsilon = 0.01f;
@@ -70,55 +72,55 @@ TMatrix4f const MirZM4f = { 1,  0,  0,  0,
                             0,  0, -1,  0, 
                             0,  0,  0,  1 };
 
-NSString* const XAxisName = @"X";
-NSString* const YAxisName = @"Y";
-NSString* const ZAxisName = @"Z";
+char* const XAxisName = "X";
+char* const YAxisName = "Y";
+char* const ZAxisName = "Z";
 
-BOOL fzero(float v) {
+boolean fzero(float v) {
     return fabsf(v) <= AlmostZero;
 }
 
-BOOL fpos(float v) {
+boolean fpos(float v) {
     return v > AlmostZero;
 }
 
-BOOL fneg(float v) {
+boolean fneg(float v) {
     return v < -AlmostZero;
 }
 
-BOOL feq(float v1, float v2) {
+boolean feq(float v1, float v2) {
     return fabsf(v1 - v2) < AlmostZero;
 }
 
-BOOL fgt(float v1, float v2) {
+boolean fgt(float v1, float v2) {
     return v1 > v2 + AlmostZero;
 }
 
-BOOL flt(float v1, float v2) {
+boolean flt(float v1, float v2) {
     return v1 < v2 - AlmostZero;
 }
 
-BOOL fgte(float v1, float v2) {
+boolean fgte(float v1, float v2) {
     return !flt(v1, v2);
 }
 
-BOOL flte(float v1, float v2) {
+boolean flte(float v1, float v2) {
     return !fgt(v1, v2);
 }
              
-BOOL finxx(float v, float b1, float b2) {
+boolean finxx(float v, float b1, float b2) {
     return b1 < b2 ? fgt(v, b1) && flt(v, b2) : fgt(v, b2) && flt(v, b1);
 }
 
-BOOL finxi(float v, float b1, float b2) {
+boolean finxi(float v, float b1, float b2) {
     return b1 < b2 ? fgt(v, b1) && flte(v, b2) : fgt(v, b2) && flte(v, b1);
 }
 
-BOOL finix(float v, float b1, float b2) {
+boolean finix(float v, float b1, float b2) {
     return b1 < b2 ? fgte(v, b1) && flt(v, b2) : fgte(v, b2) && flt(v, b1);
 }
 
-BOOL finii(float v, float b1, float b2) {
+boolean finii(float v, float b1, float b2) {
     return b1 < b2 ? fgte(v, b1) && flte(v, b2) : fgte(v, b2) && flte(v, b1);
 }
 
@@ -134,17 +136,17 @@ int maxi(int v1, int v2) {
     return v2;
 }
 
-BOOL segmentContainsPoint(float s11, float s12, float p) {
+boolean segmentContainsPoint(float s11, float s12, float p) {
     return p >= s11 && p <= s12;
 }
 
-BOOL segmentIntersectsSegment(float s11, float s12, float s21, float s22) {
+boolean segmentIntersectsSegment(float s11, float s12, float s21, float s22) {
     return segmentContainsPoint(s11, s12, s21) ||
            segmentContainsPoint(s11, s12, s22) ||
            segmentContainsPoint(s21, s22, s11);
 }
 
-BOOL segmentContainsSegment(float s11, float s12, float s21, float s22) {
+boolean segmentContainsSegment(float s11, float s12, float s21, float s22) {
     return s21 >= s11 && s22 <= s12;
 }
 
@@ -247,23 +249,23 @@ void normalizeV3f(const TVector3f* v, TVector3f* o) {
     o->z = v->z / l;
 }
 
-BOOL equalV3f(const TVector3f* l, const TVector3f* r) {
+boolean equalV3f(const TVector3f* l, const TVector3f* r) {
     return feq(l->x, r->x) && feq(l->y, r->y) && feq(l->z, r->z);
 }
 
-BOOL absEqualV3f(const TVector3f* l, const TVector3f* r) {
+boolean absEqualV3f(const TVector3f* l, const TVector3f* r) {
     return feq(fabsf(l->x), fabsf(r->x)) && feq(fabsf(l->y), fabsf(r->y)) && feq(fabsf(l->z), fabsf(r->z));
 }
 
-BOOL nullV3f(const TVector3f* v) {
+boolean nullV3f(const TVector3f* v) {
     return equalV3f(v, &NullVector);
 }
 
-BOOL sameDirV3f(const TVector3f* v1, const TVector3f* v2) {
+boolean sameDirV3f(const TVector3f* v1, const TVector3f* v2) {
     TVector3f cross;
     crossV3f(v1, v2, &cross);
     if (!nullV3f(&cross))
-        return NO;
+        return FALSE;
 
     if (v1->x != 0)
         return v1->x > 0 == v2->x > 0;
@@ -275,13 +277,13 @@ BOOL sameDirV3f(const TVector3f* v1, const TVector3f* v2) {
     return nullV3f(v2);
 }
 
-BOOL oppositeDirV3f(const TVector3f* v1, const TVector3f* v2) {
+boolean oppositeDirV3f(const TVector3f* v1, const TVector3f* v2) {
     return !(((v1->x > 0 && v2->x > 0) || (v1->x < 0 && v2->x < 0)) && 
              ((v1->y > 0 && v2->y > 0) || (v1->y < 0 && v2->y < 0)) && 
              ((v1->z > 0 && v2->z > 0) || (v1->z < 0 && v2->z < 0)));
 }
 
-BOOL intV3f(const TVector3f* v) {
+boolean intV3f(const TVector3f* v) {
     return v->x == (int)v->x && v->y == (int)v->y && v->z == (int)v->z;
 }
 
@@ -484,7 +486,6 @@ float componentV3f(const TVector3f* v, EAxis a) {
         case A_Z:
             return v->z;
         default:
-            [NSException raise:NSInvalidArgumentException format:@"invalid vector component %i", a];
             return NAN;
     }
 }
@@ -501,7 +502,7 @@ void setComponentV3f(TVector3f* v, EAxis a, float f) {
             v->z = f;
             break;
         default:
-            [NSException raise:NSInvalidArgumentException format:@"invalid vector component %i", a];
+            break;
     }
 }
 
@@ -591,18 +592,18 @@ void rotate90CCWV3f(const TVector3f* v, EAxis a, TVector3f *o) {
     }
 }
 
-BOOL parseV3f(NSString* s, NSRange r, TVector3f* o) {
+boolean parseV3f(const char* string, int start, int length, TVector3f* result) {
     int comp = -1;
-    BOOL dot = NO;
+    boolean dot = FALSE;
     int b, l;
     float x, y, z;
-    for (int i = r.location; i < r.location + r.length; i++) {
-        char c = [s characterAtIndex:i];
+    for (int i = start; i < start + length; i++) {
+        char c = string[i];
         switch (c) {
             case '+':
             case '-':
                 if (comp > 0) {
-                    return NO;
+                    return FALSE;
                 } else {
                     comp *= -1;
                     b = i;
@@ -611,9 +612,9 @@ BOOL parseV3f(NSString* s, NSRange r, TVector3f* o) {
                 break;
             case '.':
                 if (dot)
-                    return NO;
+                    return FALSE;
                 else
-                    dot = YES;
+                    dot = TRUE;
             case '0':
             case '1':
             case '2':
@@ -634,36 +635,34 @@ BOOL parseV3f(NSString* s, NSRange r, TVector3f* o) {
                 break;
             default:
                 if (comp > 0) {
-                    NSString* p = [s substringWithRange:NSMakeRange(b, l)];
                     if (comp == 1)
-                        x = [p floatValue];
+                        x = atof(string + b);
                     else if (comp == 2)
-                        y = [p floatValue];
+                        y = atof(string + b);
                     else if (comp == 3)
-                        z = [p floatValue];
+                        z = atof(string + b);
                     comp++;
                     comp *= -1;
-                    dot = NO;
+                    dot = FALSE;
                 }
                 break;
         }
     }
     
     if (comp == 3) {
-        NSString* p = [s substringWithRange:NSMakeRange(b, l)];
-        z = [p floatValue];
+        z = atof(string + b);
     } else if (comp != -3) {
-        return NO;
+        return FALSE;
     }
     
-    o->x = x;
-    o->y = y;
-    o->z = z;
+    result->x = x;
+    result->y = y;
+    result->z = z;
     
-    return YES;
+    return TRUE;
 }
 
-BOOL normV3f(const TVector3f* v1, const TVector3f* v2, const TVector3f* v3, TVector3f* o) {
+boolean normV3f(const TVector3f* v1, const TVector3f* v2, const TVector3f* v3, TVector3f* o) {
     TVector3f w1, w2;
     
     subV3f(v3, v1, &w1);
@@ -671,10 +670,10 @@ BOOL normV3f(const TVector3f* v1, const TVector3f* v2, const TVector3f* v3, TVec
     crossV3f(&w1, &w2, o);
     
     if (nullV3f(o))
-        return NO;
+        return FALSE;
 
     normalizeV3f(o, o);
-    return YES;
+    return TRUE;
 }
 
 void avg3V3f(const TVector3f* v1, const TVector3f* v2, const TVector3f* v3, TVector3f* o) {
@@ -725,11 +724,11 @@ void scaleV3i(const TVector3i* v, int i, TVector3i* o) {
     o->z = v->z * i;
 }
 
-BOOL equalV3i(const TVector3i* l, const TVector3i* r) {
+boolean equalV3i(const TVector3i* l, const TVector3i* r) {
     return l->x == r->x && l->y == r->y && l->z == r->z;
 }
 
-BOOL nullV3i(const TVector3i* v) {
+boolean nullV3i(const TVector3i* v) {
     return v->x == 0 && v->y == 0 && v->z == 0;
 }
 
@@ -786,16 +785,16 @@ void rotate90CCWV3i(const TVector3i* v, EAxis a, TVector3i *o) {
 }
 
 
-BOOL parseV3i(NSString* s, NSRange r, TVector3i* o) {
+boolean parseV3i(const char* string, int start, int length, TVector3i* result) {
     int comp = -1;
     int b, l, x, y, z;
-    for (int i = r.location; i < r.location + r.length; i++) {
-        char c = [s characterAtIndex:i];
+    for (int i = start; i < start+ length; i++) {
+        char c = string[i];
         switch (c) {
             case '+':
             case '-':
                 if (comp > 0) {
-                    return NO;
+                    return FALSE;
                 } else {
                     comp *= -1;
                     b = i;
@@ -822,13 +821,12 @@ BOOL parseV3i(NSString* s, NSRange r, TVector3i* o) {
                 break;
             default:
                 if (comp > 0) {
-                    NSString* p = [s substringWithRange:NSMakeRange(b, l)];
                     if (comp == 1)
-                        x = [p intValue];
+                        x = atoi(string + b);
                     else if (comp == 2)
-                        y = [p intValue];
+                        y = atoi(string + b);
                     else if (comp == 3)
-                        z = [p intValue];
+                        z = atoi(string + b);
                     comp++;
                     comp *= -1;
                 }
@@ -837,17 +835,16 @@ BOOL parseV3i(NSString* s, NSRange r, TVector3i* o) {
     }
     
     if (comp == 3) {
-        NSString* p = [s substringWithRange:NSMakeRange(b, l)];
-        z = [p floatValue];
+        z = atoi(string + b);
     } else if (comp != -3) {
-        return NO;
+        return FALSE;
     }
     
-    o->x = x;
-    o->y = y;
-    o->z = z;
+    result->x = x;
+    result->y = y;
+    result->z = z;
     
-    return YES;
+    return TRUE;
 }
 
 # pragma mark TLine functions
@@ -878,7 +875,7 @@ void linePointAtDistance(TLine* l, float d, TVector3f* p) {
  *       v2
  */
 
-BOOL setPlanePointsV3f(TPlane* p, const TVector3f* p1, const TVector3f* p2, const TVector3f* p3) {
+boolean setPlanePointsV3f(TPlane* p, const TVector3f* p1, const TVector3f* p2, const TVector3f* p3) {
     TVector3f v1, v2;
     p->point = *p1;
 
@@ -887,10 +884,10 @@ BOOL setPlanePointsV3f(TPlane* p, const TVector3f* p1, const TVector3f* p2, cons
     
     crossV3f(&v1, &v2, &p->norm);
     if (nullV3f(&p->norm))
-        return NO;
+        return FALSE;
     
     normalizeV3f(&p->norm, &p->norm);
-    return YES;
+    return TRUE;
 }
 
 EPointStatus pointStatusFromPlane(const TPlane* p, const TVector3f* v) {
@@ -950,11 +947,11 @@ float planeZ(const TPlane* p, float x, float y) {
     return (l - p->norm.x * x - p->norm.y * y) / p->norm.z;
 }
 
-BOOL equalPlane(const TPlane* p1, const TPlane* p2) {
+boolean equalPlane(const TPlane* p1, const TPlane* p2) {
     return equalV3f(&p1->norm, &p2->norm) && pointStatusFromPlane(p1, &p2->point) == PS_INSIDE;
 }
 
-NSString* axisName(EAxis a) {
+char* axisName(EAxis a) {
     switch (a) {
         case A_X:
             return XAxisName;
@@ -1223,7 +1220,7 @@ float intersectBoundsWithRay(const TBoundingBox* b, const TRay* ray, TVector3f* 
     TPlane plane;
     float dist;
     TVector3f point;
-    BOOL hit = NO;
+    boolean hit = FALSE;
     
     if (ray->direction.x < 0) {
         plane.point = b->max;
@@ -1301,19 +1298,19 @@ float intersectBoundsWithRay(const TBoundingBox* b, const TRay* ray, TVector3f* 
     return dist;
 }
 
-BOOL boundsContainPoint(const TBoundingBox* b, const TVector3f* p) {
+boolean boundsContainPoint(const TBoundingBox* b, const TVector3f* p) {
     return segmentContainsPoint(b->min.x, b->max.x, p->x) &&
            segmentContainsPoint(b->min.y, b->max.y, p->y) &&
            segmentContainsPoint(b->min.z, b->max.z, p->z);
 }
 
-BOOL boundsIntersectWithBounds(const TBoundingBox* b1, const TBoundingBox* b2) {
+boolean boundsIntersectWithBounds(const TBoundingBox* b1, const TBoundingBox* b2) {
     return segmentIntersectsSegment(b1->min.x, b1->max.x, b2->min.x, b2->max.x) &&
            segmentIntersectsSegment(b1->min.y, b1->max.y, b2->min.y, b2->max.y) &&
            segmentIntersectsSegment(b1->min.z, b1->max.z, b2->min.z, b2->max.z);
 }
 
-BOOL boundsContainBounds(const TBoundingBox* b1, const TBoundingBox *b2) {
+boolean boundsContainBounds(const TBoundingBox* b1, const TBoundingBox *b2) {
     return segmentContainsSegment(b1->min.x, b1->max.x, b2->min.x, b2->max.x) &&
            segmentContainsSegment(b1->min.y, b1->max.y, b2->min.y, b2->max.y) &&
            segmentContainsSegment(b1->min.z, b1->max.z, b2->min.z, b2->max.z);
@@ -1331,7 +1328,7 @@ void setAngleAndAxisQ(TQuaternion* q, float a, const TVector3f* x) {
     scaleV3f(x, sinf(a / 2), &q->vector);
 }
 
-BOOL nullQ(const TQuaternion* q) {
+boolean nullQ(const TQuaternion* q) {
     return q->scalar == 1;
 }
 
@@ -1407,7 +1404,6 @@ void setMatrix2fAsSubMatrix(const TMatrix4f* m4f, int i, TMatrix2f* m2f) {
             m2f->values[3] = m4f->values[15];
             break;
         default:
-            [NSException raise:NSInvalidArgumentException format:@"sub matrix index out of bounds: %i", index];
             break;
     }
 }
@@ -1438,14 +1434,14 @@ void setValueM2f(const TMatrix2f* m, float v, int col, int row, TMatrix2f* o) {
     o->values[col * 2 + row] = v;
 }
 
-BOOL invertM2f(const TMatrix2f* m, TMatrix2f* o) {
+boolean invertM2f(const TMatrix2f* m, TMatrix2f* o) {
     float det = determinantM2f(m);
     if (fzero(det))
-        return NO;
+        return FALSE;
     
     adjugateM2f(m, o);
     scaleM2f(o, 1 / det, o);
-    return YES;
+    return TRUE;
 }
 
 void adjugateM2f(const TMatrix2f* m, TMatrix2f* o) {
@@ -1526,14 +1522,14 @@ void setValueM3f(const TMatrix3f* m, float v, int col, int row, TMatrix3f* o) {
     o->values[col * 3 + row] = v;
 }
 
-BOOL invertM3f(const TMatrix3f* m, TMatrix3f* o) {
+boolean invertM3f(const TMatrix3f* m, TMatrix3f* o) {
     float det = determinantM3f(m);
     if (fzero(det))
-        return NO;
+        return FALSE;
     
     adjugateM3f(m, o);
     scaleM3f(o, 1 / det, o);
-    return YES;
+    return TRUE;
 }
 
 void adjugateM3f(const TMatrix3f* m, TMatrix3f* o) {
@@ -1640,7 +1636,6 @@ void setSubMatrixM4f(const TMatrix4f* m4f, const TMatrix2f* m2f, int i, TMatrix4
             o->values[15] = m2f->values[3];
             break;
         default:
-            [NSException raise:NSInvalidArgumentException format:@"sub matrix index out of bounds: %i", index];
             break;
     }
 }
@@ -1672,10 +1667,10 @@ void setValueM4f(const TMatrix4f* m, float v, int col, int row, TMatrix4f* o) {
     o->values[col * 4 + row] = v;
 }
 
-BOOL invertM4f(const TMatrix4f* m, TMatrix4f* o) {
+boolean invertM4f(const TMatrix4f* m, TMatrix4f* o) {
     float det = determinantM4f(m);
     if (fzero(det))
-        return NO;
+        return FALSE;
     
     TMatrix2f A, Ai;
     setMatrix2fAsSubMatrix(m, 0, &A);
@@ -1714,7 +1709,7 @@ BOOL invertM4f(const TMatrix4f* m, TMatrix4f* o) {
         scaleM4f(o, 1 / det, o);
     }
     
-    return YES;
+    return TRUE;
 }
 
 void adjugateM4f(const TMatrix4f* m, TMatrix4f* o) {
@@ -1952,10 +1947,10 @@ void projectOntoCoordinatePlane(EPlane plane, const TVector3f* v, TVector3f* o) 
     }
 }
 
-BOOL projectVectorOntoPlane(const TVector3f* planeNorm, const TVector3f* dir, const TVector3f* v, TVector3f* o) {
+boolean projectVectorOntoPlane(const TVector3f* planeNorm, const TVector3f* dir, const TVector3f* v, TVector3f* o) {
     float d = dotV3f(dir, planeNorm);
     if (fzero(d))
-        return NO;
+        return FALSE;
     
     d = -dotV3f(v, planeNorm) / d;
     
@@ -1963,7 +1958,7 @@ BOOL projectVectorOntoPlane(const TVector3f* planeNorm, const TVector3f* dir, co
     scaleV3f(dir, d, &w);
     addV3f(&w, v, o);
 
-    return YES;
+    return TRUE;
 }
 
 float measureDist(const TVector3f* v, EAxis measureDir) {

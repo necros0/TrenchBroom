@@ -27,8 +27,6 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #import "Face.h"
 #import "Camera.h"
 #import "MapDocument.h"
-#import "WadLoader.h"
-#import "Wad.h"
 #import "TextureManager.h"
 #import "InputController.h"
 #import "Vbo.h"
