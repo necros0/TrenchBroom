@@ -20,6 +20,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef TrenchBroom_Pak_h
 #define TrenchBroom_Pak_h
 
+#include <istream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -48,22 +49,18 @@ namespace TrenchBroom {
         map<string, PakEntry> entries;
         Pak(string path);
         Pak(const Pak&);
-        char* streamForEntry(string name);
+        istream* streamForEntry(string name);
     };
     
     class PakManager {
     public:
-        static PakManager& sharedManager() {
-            static PakManager instance;
-            return instance;
-        }
-        
-        char* streamForEntry(string name, vector<string> paths);
+        PakManager();
+        ~PakManager();
+        static PakManager& sharedManager();
+        istream* streamForEntry(string name, vector<string> paths);
     private:
         map<string, vector<Pak*> > paks;
-        PakManager() {}
         PakManager(const PakManager&);
-        ~PakManager();
         vector<Pak*>* paksAtPath(string path);
     };
 }

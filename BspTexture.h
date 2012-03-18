@@ -25,13 +25,13 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     NSString* name;
     int width;
     int height;
-    NSData* image;
+    const unsigned char* image;
 }
 
-- (id)initWithName:(NSString *)theName image:(NSData *)theImage width:(int)theWidth height:(int)theHeight;
+- (id)initWithName:(NSString *)theName image:(const unsigned char *)theImage width:(int)theWidth height:(int)theHeight;
 
 - (NSString *)name;
-- (NSData *)image;
+- (const unsigned char *)image;
 - (int)width;
 - (int)height;
 

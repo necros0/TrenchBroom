@@ -22,6 +22,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #include <cstring>
 #include <dirent.h>
 #include <numeric>
+#include "substream.h"
 
 namespace TrenchBroom {
     Pak::Pak(string path) {
@@ -53,8 +54,7 @@ namespace TrenchBroom {
 
     }
 
-    char* Pak::streamForEntry(string name) {
-        char* buffer;
+    istream* Pak::streamForEntry(string name) {
         PakEntry* entry;
         
         map<string, PakEntry>::iterator it = entries.find(name);
@@ -65,21 +65,25 @@ namespace TrenchBroom {
         if (!mStream.is_open())
             mStream.open(path.c_str());
 
-        mStream.seekg(entry->address, ios::beg);
-        mStream.read(buffer, entry->length);
-        return buffer;
+        substreambuf* subStream = new substreambuf(mStream.rdbuf(), entry->address, entry->length);
+        return new isubstream(subStream);
     }
     
-    char* PakManager::streamForEntry(string name, vector<string> paths) {
+    PakManager& PakManager::sharedManager() {
+        static PakManager instance;
+        return instance;
+    }
+
+    istream* PakManager::streamForEntry(string name, vector<string> paths) {
         vector<string>::reverse_iterator path;
         for (path = paths.rbegin(); path < paths.rend(); ++path) {
             vector<Pak*>* paks = paksAtPath(*path);
             if (paks != NULL) {
                 vector<Pak*>::reverse_iterator pak;
                 for (pak = paks->rbegin(); pak < paks->rend(); ++pak) {
-                    char* buffer = (*pak)->streamForEntry(name);
-                    if (buffer != NULL)
-                        return buffer;
+                    istream* stream = (*pak)->streamForEntry(name);
+                    if (stream != NULL)
+                        return stream;
                 }
             }
         }
@@ -89,6 +93,9 @@ namespace TrenchBroom {
         return NULL;
     }
 
+    PakManager::PakManager() {
+    }
+    
     PakManager::~PakManager() {
         map<string, vector<Pak*> >::iterator it;
         for (it = paks.begin(); it != paks.end(); it++)

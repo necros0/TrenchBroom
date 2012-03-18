@@ -22,15 +22,15 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 @implementation BspTexture
 
-- (id)initWithName:(NSString *)theName image:(NSData *)theImage width:(int)theWidth height:(int)theHeight {
+- (id)initWithName:(NSString *)theName image:(const unsigned char *)theImage width:(int)theWidth height:(int)theHeight {
     NSAssert(theName != nil, @"name must not be nil");
-    NSAssert(theImage != nil, @"image must not be nil");
+    NSAssert(theImage != NULL, @"image must not be NULL");
     NSAssert(theWidth > 0, @"width must be a positive integer");
     NSAssert(theHeight > 0, @"height must be a positive integer");
     
     if ((self = [self init])) {
         name = [theName retain];
-        image = [theImage retain];
+        image = theImage
         width = theWidth;
         height = theHeight;
     }
@@ -40,7 +40,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 - (void)dealloc {
     [name release];
-    [image release];
+    delete image;
     [super dealloc];
 }
 
@@ -48,7 +48,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     return name;
 }
 
-- (NSData *)image {
+- (const unsigned char *)image {
     return image;
 }
 

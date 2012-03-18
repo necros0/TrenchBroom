@@ -19,18 +19,20 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "BspManager.h"
 #import "Bsp.h"
-#import "PakManager.h"
+#import "Pak.h"
 #import "PreferencesManager.h"
 
 static BspManager* sharedInstance = nil;
 
-@interface BspManager (private)
+using namespace TrenchBroom;
+
+@interface BspManager (Private)
 
 - (NSString *)keyForName:(NSString *)theName paths:(NSArray *)thePaths;
 
 @end
 
-@implementation BspManager (private)
+@implementation BspManager (Private)
 
 - (void)preferencesDidChange:(NSNotification *)notification {
     NSDictionary* userInfo = [notification userInfo];
@@ -119,7 +121,18 @@ static BspManager* sharedInstance = nil;
     Bsp* bsp = [bsps objectForKey:key];
     if (bsp == nil) {
         NSLog(@"Loading BSP model '%@', search paths: %@", theName, [thePaths componentsJoinedByString:@", "]);
-        PakManager* pakManager = [PakManager sharedManager];
+        PakManager& pakManager = PakManager::sharedManager();
+        
+        string cppName = [theName cStringUsingEncoding:NSASCIIStringEncoding];
+        vector<string> cppPaths;
+        for (NSString* path in thePaths)
+            cppPaths.push_back([path cStringUsingEncoding:NSASCIIStringEncoding]);
+        
+        istream* stream = pakManager.streamForEntry(cppName, cppPaths);
+        if (stream != NULL) {
+            
+        }
+        
         NSData* entry = [pakManager entryWithName:theName pakPaths:thePaths];
         if (entry != nil) {
             bsp = [[Bsp alloc] initWithName:theName data:entry];
