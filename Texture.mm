@@ -64,7 +64,7 @@ using namespace TrenchBroom;
 
 - (id)initWithBspTexture:(BspTexture *)theBspTexture palette:(NSData *)thePalette {
     NSAssert(theBspTexture != nil, @"BSP texture must not be nil");
-    return [self initWithName:[theBspTexture name] image:(unsigned char *)[[theBspTexture image] bytes] width:[theBspTexture width] height:[theBspTexture height] palette:thePalette];
+    return [self initWithName:[theBspTexture name] image:[theBspTexture image] width:[theBspTexture width] height:[theBspTexture height] palette:thePalette];
 }
 
 - (id)initWithName:(NSString *)theName image:(const unsigned char *)theImage width:(int)theWidth height:(int)theHeight palette:(NSData *)thePalette {

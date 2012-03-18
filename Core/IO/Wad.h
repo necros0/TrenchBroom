@@ -32,22 +32,20 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #define WAD_PAL_LENGTH 256
 #define WAD_TEX_WIDTH_OFFSET 16
 
+#define WT_STATUS 'B'
+#define WT_CONSOLE 'C'
+#define WT_MIP 'D'
+#define WT_PALETTE '@'
+
 using namespace std;
 
 namespace TrenchBroom {
-    typedef enum {
-        WT_STATUS = 'B',
-        WT_CONSOLE = 'C',
-        WT_MIP = 'D',
-        WT_PALETTE = '@'
-    } EWadEntryType;
-    
     class WadEntry {
     public:
         int32_t address;
         int32_t length;
         int32_t size;
-        EWadEntryType type;
+        char type;
         string name;
     };
     

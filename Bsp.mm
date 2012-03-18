@@ -31,7 +31,7 @@ using namespace std;
 #define BSP_DIR_ENTITIES_SIZE         0x8
 #define BSP_DIR_PLANES_ADDRESS        0xC
 #define BSP_DIR_PLANES_SIZE           0x10
-#define BSP_DIR_TEXTURES_ADDRESS      0x14
+#define BSP_DIR_TEXTURES_ADDRESS      0x10
 #define BSP_DIR_TEXTURES_SIZE         0x18
 #define BSP_DIR_VERTICES_ADDRESS      0x1C
 #define BSP_DIR_VERTICES_SIZE         0x20
@@ -82,7 +82,7 @@ using namespace std;
 #define BSP_FACE_EDGE_INDEX           0x4
 #define BSP_FACE_EDGE_COUNT           0x8
 #define BSP_FACE_TEXINFO              0xA
-#define BSP_FACE_REST                 (BSP_FACE_SIZE - 0xC)
+#define BSP_FACE_REST                 0x8
 
 #define BSP_TEXINFO_SIZE              0x28
 #define BSP_TEXINFO_S_AXIS            0x0
@@ -151,7 +151,7 @@ using namespace std;
     
     for (int i = 0; i < theCount; i++) {
         theStream->read((char *)&vertex0, sizeof(uint16_t));
-        theStream->read((char *)&vertex0, sizeof(uint16_t));
+        theStream->read((char *)&vertex1, sizeof(uint16_t));
         theResult[i].vertex0 = vertex0;
         theResult[i].vertex1 = vertex1;
     }
@@ -163,7 +163,7 @@ using namespace std;
     
     for (int i = 0; i < theCount; i++) {
         theStream->seekg(BSP_FACE_EDGE_INDEX, ios::cur);
-        theStream->read((char *)&edgeIndex, sizeof(uint32_t));
+        theStream->read((char *)&edgeIndex, sizeof(int32_t));
         theStream->read((char *)&edgeCount, sizeof(uint16_t));
         theStream->read((char *)&textureInfoIndex, sizeof(uint16_t));
         theStream->seekg(BSP_FACE_REST, ios::cur);
@@ -217,10 +217,12 @@ using namespace std;
     if ((self = [self init])) {
         name = [theName retain];
         istream* stream = (istream *)theStream;
-        streampos pos = stream->tellg();
+        
+        int32_t version;
+        stream->read((char *)&version, sizeof(int32_t));
         
         int32_t textureAddr;
-        stream->seekg(BSP_DIR_TEXTURES_ADDRESS, ios::beg);
+        stream->seekg(BSP_DIR_TEXTURES_ADDRESS, ios::cur);
         stream->read((char *)&textureAddr, sizeof(int32_t));
         stream->seekg(textureAddr, ios::beg);
         [self readTextures:stream];
@@ -228,8 +230,8 @@ using namespace std;
         int32_t texInfosAddr, texInfosLength;
         int texInfoCount;
         stream->seekg(BSP_DIR_TEXINFOS_ADDRESS, ios::beg);
-        stream->read((char *)texInfosAddr, sizeof(int32_t));
-        stream->read((char *)texInfosLength, sizeof(int32_t));
+        stream->read((char *)&texInfosAddr, sizeof(int32_t));
+        stream->read((char *)&texInfosLength, sizeof(int32_t));
         texInfoCount = texInfosLength / BSP_TEXINFO_SIZE;
         
         TTextureInfo texInfos[texInfoCount];
@@ -266,7 +268,7 @@ using namespace std;
         faceCount = facesLength / BSP_FACE_SIZE;
         
         TFace faces[faceCount];
-        stream->seekg(facesAddr, ios::cur);
+        stream->seekg(facesAddr, ios::beg);
         [self readFaces:stream count:faceCount result:faces];
         
         int32_t faceEdgesAddr, faceEdgesLength;
@@ -288,9 +290,10 @@ using namespace std;
         modelCount = modelsLength / BSP_MODEL_SIZE;
         
         BOOL vertexMark[vertexCount];
-        memset(vertexMark, 0, vertexCount * sizeof(BOOL));
+        memset(vertexMark, NO, vertexCount * sizeof(BOOL));
         int modelVertices[vertexCount];
 
+        stream->seekg(modelsAddr, ios::beg);
         for (int i = 0; i < modelCount; i++) {
             int32_t faceIndex, faceCount;
             int totalVertexCount = 0;

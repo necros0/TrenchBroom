@@ -136,6 +136,9 @@
 		48AC3E6C13E3FA99008F4BF8 /* TreeQBSP in Copy Compiler Binaries */ = {isa = PBXBuildFile; fileRef = 48AC3E6A13E3FA8D008F4BF8 /* TreeQBSP */; };
 		48AC3E6F13E418AC008F4BF8 /* MapCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AC3E6E13E418AC008F4BF8 /* MapCompiler.m */; };
 		48ACEC9913E162A900FEB81B /* DragPlaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 48ACEC9813E162A900FEB81B /* DragPlaceholder.png */; };
+		48AF57DA15166FD900EA0F86 /* PakDirectory.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF57D515166FD900EA0F86 /* PakDirectory.m */; };
+		48AF57DB15166FD900EA0F86 /* PakDirectoryEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF57D715166FD900EA0F86 /* PakDirectoryEntry.m */; };
+		48AF57DC15166FD900EA0F86 /* PakManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF57D915166FD900EA0F86 /* PakManager.m */; };
 		48AF852813D0D79400B62317 /* EntityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF852713D0D79400B62317 /* EntityView.m */; };
 		48AF852B13D0DCFD00B62317 /* EntityDefinitionLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF852A13D0DCFD00B62317 /* EntityDefinitionLayout.m */; };
 		48AF852E13D0DFF500B62317 /* EntityDefinitionLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AF852D13D0DFF500B62317 /* EntityDefinitionLayoutCell.m */; };
@@ -499,6 +502,12 @@
 		48AC3E6D13E418AB008F4BF8 /* MapCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapCompiler.h; sourceTree = "<group>"; };
 		48AC3E6E13E418AC008F4BF8 /* MapCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapCompiler.m; sourceTree = "<group>"; };
 		48ACEC9813E162A900FEB81B /* DragPlaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = DragPlaceholder.png; sourceTree = "<group>"; };
+		48AF57D415166FD900EA0F86 /* PakDirectory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PakDirectory.h; sourceTree = "<group>"; };
+		48AF57D515166FD900EA0F86 /* PakDirectory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PakDirectory.m; sourceTree = "<group>"; };
+		48AF57D615166FD900EA0F86 /* PakDirectoryEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PakDirectoryEntry.h; sourceTree = "<group>"; };
+		48AF57D715166FD900EA0F86 /* PakDirectoryEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PakDirectoryEntry.m; sourceTree = "<group>"; };
+		48AF57D815166FD900EA0F86 /* PakManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PakManager.h; sourceTree = "<group>"; };
+		48AF57D915166FD900EA0F86 /* PakManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PakManager.m; sourceTree = "<group>"; };
 		48AF852613D0D79400B62317 /* EntityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityView.h; sourceTree = "<group>"; };
 		48AF852713D0D79400B62317 /* EntityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityView.m; sourceTree = "<group>"; };
 		48AF852913D0DCFD00B62317 /* EntityDefinitionLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionLayout.h; sourceTree = "<group>"; };
@@ -882,6 +891,7 @@
 				483048F913A13A8A002CA97B /* Alias */,
 				4898D9C113E1989D00B9C8F1 /* Prefab */,
 				487437FD135ED49300F787E1 /* Texture */,
+				48AF57D215166FC700EA0F86 /* Pak */,
 				4881C74512E9CD69006BF922 /* Wad */,
 				48455A4913800A520096FEA5 /* IO.h */,
 				48455A4A13800A520096FEA5 /* IO.m */,
@@ -1233,6 +1243,19 @@
 				483B1128122441060072EAFB /* Math.c */,
 			);
 			name = Math;
+			sourceTree = "<group>";
+		};
+		48AF57D215166FC700EA0F86 /* Pak */ = {
+			isa = PBXGroup;
+			children = (
+				48AF57D415166FD900EA0F86 /* PakDirectory.h */,
+				48AF57D515166FD900EA0F86 /* PakDirectory.m */,
+				48AF57D615166FD900EA0F86 /* PakDirectoryEntry.h */,
+				48AF57D715166FD900EA0F86 /* PakDirectoryEntry.m */,
+				48AF57D815166FD900EA0F86 /* PakManager.h */,
+				48AF57D915166FD900EA0F86 /* PakManager.m */,
+			);
+			name = Pak;
 			sourceTree = "<group>";
 		};
 		48AF852213D0D50900B62317 /* Inspector */ = {
@@ -1597,6 +1620,9 @@
 				48EDC8BD15152986008D3D80 /* Wad.cpp in Sources */,
 				48EDC8C0151529B2008D3D80 /* Pak.cpp in Sources */,
 				48EDC8CD1515B858008D3D80 /* substream.cpp in Sources */,
+				48AF57DA15166FD900EA0F86 /* PakDirectory.m in Sources */,
+				48AF57DB15166FD900EA0F86 /* PakDirectoryEntry.m in Sources */,
+				48AF57DC15166FD900EA0F86 /* PakManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

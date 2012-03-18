@@ -130,12 +130,7 @@ using namespace TrenchBroom;
         
         istream* stream = pakManager.streamForEntry(cppName, cppPaths);
         if (stream != NULL) {
-            
-        }
-        
-        NSData* entry = [pakManager entryWithName:theName pakPaths:thePaths];
-        if (entry != nil) {
-            bsp = [[Bsp alloc] initWithName:theName data:entry];
+            bsp = [[Bsp alloc] initWithName:theName stream:stream];
             [bsps setObject:bsp forKey:key];
             [bsp release];
         }

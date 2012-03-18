@@ -46,18 +46,21 @@ namespace TrenchBroom {
             if (m_read >= m_len)
                 return traits_type::eof();
             m_read += 1;
-            return m_sbuf->snextc();
+            return m_sbuf->sbumpc();
         }
         
         streampos seekoff (streamoff off, ios_base::seekdir way, ios_base::openmode which = ios_base::in | ios_base::out) {
             if (way == ios_base::beg) {
+                m_read = off;
                 off += m_pos;
             } else if (way == ios_base::cur) {
+                m_read += off;
+                off = m_read;
                 off += m_pos;
-                off += m_read;
             } else if (way == ios_base::end) {
                 off += m_pos;
                 off += m_len;
+                m_read = 0;
             }
             
             return m_sbuf->pubseekpos(off,which)-m_pos;

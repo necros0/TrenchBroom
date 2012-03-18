@@ -17,22 +17,18 @@ You should have received a copy of the GNU General Public License
 along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#import "BspTexture.h"
+#import "PakDirectoryEntry.h"
 
 
-@implementation BspTexture
+@implementation PakDirectoryEntry
 
-- (id)initWithName:(NSString *)theName image:(const unsigned char *)theImage width:(int)theWidth height:(int)theHeight {
+- (id)initWithName:(NSString *)theName address:(int)theAddress size:(int)theSize {
     NSAssert(theName != nil, @"name must not be nil");
-    NSAssert(theImage != NULL, @"image must not be NULL");
-    NSAssert(theWidth > 0, @"width must be a positive integer");
-    NSAssert(theHeight > 0, @"height must be a positive integer");
     
-    if ((self = [self init])) {
+    if (self = [self init]) {
         name = [theName retain];
-        image = theImage;
-        width = theWidth;
-        height = theHeight;
+        address = theAddress;
+        size = theSize;
     }
     
     return self;
@@ -40,24 +36,17 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 - (void)dealloc {
     [name release];
-    delete image;
     [super dealloc];
 }
 
-- (NSString *)name; {
+- (NSString *)name {
     return name;
 }
 
-- (const unsigned char *)image {
-    return image;
-}
-
-- (int)width {
-    return width;
-}
-
-- (int)height {
-    return height;
+- (NSData *)entryDataFromHandle:(NSFileHandle *)theHandle {
+    NSAssert(theHandle != nil, @"handle must not be nil");
+    [theHandle seekToFileOffset:address];
+    return [theHandle readDataOfLength:size];
 }
 
 @end

@@ -28,30 +28,30 @@ namespace TrenchBroom {
     Pak::Pak(string path) {
         char magic[PAK_HEADER_MAGIC_LENGTH];
         char entryName[PAK_ENTRY_NAME_LENGTH];
-        uint32_t directoryAddr, directorySize, entryCount;
+        int32_t directoryAddr, directorySize;
+        int entryCount;
         
         this->path = path;
         mStream.open(this->path.c_str());
         if (mStream.is_open()) {
             mStream.seekg(PAK_HEADER_ADDRESS, ios::beg);
             mStream.read((char *)magic, PAK_HEADER_MAGIC_LENGTH); // todo check and throw exception
-            mStream.read((char *)&directoryAddr, sizeof(uint32_t));
-            mStream.read((char *)&directorySize, sizeof(uint32_t));
+            mStream.read((char *)&directoryAddr, sizeof(int32_t));
+            mStream.read((char *)&directorySize, sizeof(int32_t));
             entryCount = directorySize / PAK_ENTRY_LENGTH;
             
+            mStream.seekg(directoryAddr, ios::beg);
             for (int i = 0; i < entryCount; i++) {
                 PakEntry entry;
                 
-                mStream.seekg(directoryAddr + i * PAK_ENTRY_LENGTH, ios::beg);
                 mStream.read(entryName, PAK_ENTRY_NAME_LENGTH);
-                mStream.read((char *)entry.address, sizeof(int32_t));
-                mStream.read((char *)entry.length, sizeof(int32_t));
+                entry.name = entryName;
+                mStream.read((char *)&entry.address, sizeof(int32_t));
+                mStream.read((char *)&entry.length, sizeof(int32_t));
                 
                 entries[entry.name] = entry;
             }
-            mStream.close();
         }
-
     }
 
     istream* Pak::streamForEntry(string name) {
@@ -89,7 +89,7 @@ namespace TrenchBroom {
         }
         
         string nicePaths = accumulate(paths.begin(), paths.end(), string(", "));
-        fprintf(stdout, "Warning: Could not find pak entry %s at pak paths %s", name.c_str(), nicePaths.c_str());
+        fprintf(stdout, "Warning: Could not find pak entry %s at pak paths %s\n", name.c_str(), nicePaths.c_str());
         return NULL;
     }
 
@@ -117,19 +117,21 @@ namespace TrenchBroom {
         
         dir = opendir(path.c_str());
         if (!dir) {
-            fprintf(stdout, "Warning: Could not open pak path %s", path.c_str());
+            fprintf(stdout, "Warning: Could not open pak path %s\n", path.c_str());
             return NULL;
         }
         
         entry = readdir(dir);
         if (!entry) {
-            fprintf(stdout, "Warning: %s does not contain any pak files", path.c_str());
+            fprintf(stdout, "Warning: %s does not contain any pak files\n", path.c_str());
             closedir(dir);
             return NULL;
         }
         
         do {
-            if (strncmp(entry->d_name + entry->d_namlen - 5, ".pak", 4) == 0) {
+            if (entry->d_namlen > 5)
+                fprintf(stdout, "%s", entry->d_name + entry->d_namlen - 4);
+            if (strncmp(entry->d_name + entry->d_namlen - 4, ".pak", 4) == 0) {
                 string pakPath = path;
                 if (pakPath[pakPath.length() - 1] != '/')
                     pakPath += '/';
@@ -138,11 +140,13 @@ namespace TrenchBroom {
                 Pak* pak = new Pak(pakPath);
                 newPaks.push_back(pak);
             }
+            entry = readdir(dir);
         } while (entry);
         closedir(dir);
         
         sort(newPaks.begin(), newPaks.end(), comparePaks);
         paks[path] = newPaks;
+        
         return &paks[path];
     }
 }
