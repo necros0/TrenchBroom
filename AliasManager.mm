@@ -19,19 +19,22 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "AliasManager.h"
 #import "Alias.h"
-#import "PakManager.h"
+#import "Pak.h"
 #import "PreferencesManager.h"
+#include <istream>
+
+using namespace TrenchBroom;
 
 static AliasManager* sharedInstance = nil;
 
-@interface AliasManager (private)
+@interface AliasManager (Private)
 
 - (void)preferencesDidChange:(NSNotification *)notification;
 - (NSString *)keyForName:(NSString *)theName paths:(NSArray *)thePaths;
 
 @end
 
-@implementation AliasManager (private)
+@implementation AliasManager (Private)
 
 - (void)preferencesDidChange:(NSNotification *)notification {
     NSDictionary* userInfo = [notification userInfo];
@@ -121,10 +124,16 @@ static AliasManager* sharedInstance = nil;
     Alias* alias = [aliases objectForKey:key];
     if (alias == nil) {
         NSLog(@"Loading alias model '%@', search paths: %@", theName, [thePaths componentsJoinedByString:@", "]);
-        PakManager* pakManager = [PakManager sharedManager];
-        NSData* entry = [pakManager entryWithName:theName pakPaths:thePaths];
-        if (entry != nil) {
-            alias = [[Alias alloc] initWithName:theName data:entry];
+        
+        PakManager& pakManager = PakManager::sharedManager();
+        string cppName = [theName cStringUsingEncoding:NSASCIIStringEncoding];
+        vector<string> cppPaths;
+        for (NSString* path in thePaths)
+            cppPaths.push_back([path cStringUsingEncoding:NSASCIIStringEncoding]);
+        
+        istream* stream = pakManager.streamForEntry(cppName, cppPaths);
+        if (stream != NULL) {
+            alias = [[Alias alloc] initWithName:theName stream:stream];
             [aliases setObject:alias forKey:key];
             [alias release];
         }

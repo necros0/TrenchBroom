@@ -58,8 +58,7 @@ using namespace TrenchBroom;
 
 - (id)initWithName:(NSString *)theName skin:(AliasSkin *)theSkin index:(int)theIndex palette:(NSData *)thePalette {
     NSAssert(theSkin != nil, @"skin must not be nil");
-    NSData* picture = [theSkin pictureAtIndex:theIndex];
-    return [self initWithName:theName image:(unsigned char *)[picture bytes] width:[theSkin width] height:[theSkin height] palette:thePalette];
+    return [self initWithName:theName image:[theSkin pictureAtIndex:theIndex] width:[theSkin width] height:[theSkin height] palette:thePalette];
 }
 
 - (id)initWithBspTexture:(BspTexture *)theBspTexture palette:(NSData *)thePalette {

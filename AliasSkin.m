@@ -21,29 +21,33 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 
 @implementation AliasSkin
-- (id)initSingleSkin:(NSData *)thePicture width:(int)theWidth height:(int)theHeight {
+- (id)initSingleSkin:(const unsigned char *)thePicture width:(int)theWidth height:(int)theHeight {
     NSAssert(thePicture != nil, @"picture must not be nil");
     
     if ((self = [self init])) {
-        pictures = [[NSArray alloc] initWithObjects:thePicture, nil];
+        count = 1;
         times = NULL;
         width = theWidth;
         height = theHeight;
+        pictures = malloc(width * height);
+        memcpy(pictures, thePicture, width * height);
     }
     
     return self;
 }
 
-- (id)initMultiSkin:(NSArray *)thePictures times:(float *)theTimes width:(int)theWidth height:(int)theHeight {
+- (id)initMultiSkin:(const unsigned char *)thePictures times:(float *)theTimes count:(int)theCount width:(int)theWidth height:(int)theHeight {
     NSAssert(thePictures != nil, @"picture array must not be nil");
     NSAssert(theTimes != NULL, @"time array must not be NULL");
 
     if ((self = [self init])) {
-        pictures = [[NSArray alloc] initWithArray:thePictures];
-        times = malloc([pictures count] * sizeof(float));
-        memcpy(times, theTimes, [pictures count] * sizeof(float));
+        count = theCount;
         width = theWidth;
         height = theHeight;
+        times = malloc(count * sizeof(float));
+        memcpy(times, theTimes, count * sizeof(float));
+        pictures = malloc(count * width * height);
+        memcpy(pictures, thePictures, count * width * height);
     }
     
     return self;
@@ -52,7 +56,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 - (void)dealloc {
     if (times != NULL)
         free(times);
-    [pictures release];
+    free(pictures);
     [super dealloc];
 }
 
@@ -64,9 +68,9 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     return height;
 }
 
-- (NSData *)pictureAtIndex:(int)theIndex {
+- (const unsigned char *)pictureAtIndex:(int)theIndex {
     NSAssert(theIndex >= 0 && theIndex < [self pictureCount], @"index out of bounds");
-    return [pictures objectAtIndex:theIndex];
+    return pictures + theIndex * width * height;
 }
 
 - (float)timeAtIndex:(int)theIndex {
@@ -76,7 +80,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 - (int)pictureCount {
-    return [pictures count];
+    return count;
 }
 
 @end

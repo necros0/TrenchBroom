@@ -54,7 +54,7 @@ typedef struct {
     NSMutableArray* skins;
 }
 
-- (id)initWithName:(NSString *)theName data:(NSData *)theData;
+- (id)initWithName:(NSString *)theName stream:(void *)theStream;
 
 - (NSString *)name;
 - (AliasFrame *)firstFrame;

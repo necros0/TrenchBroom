@@ -23,17 +23,18 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 @interface AliasSkin : NSObject {
     int width;
     int height;
+    int count;
     float* times;
-    NSArray* pictures;
+    unsigned char* pictures;
 }
 
-- (id)initSingleSkin:(NSData *)thePicture width:(int)theWidth height:(int)theHeight;
-- (id)initMultiSkin:(NSArray *)thePictures times:(float *)theTimes width:(int)theWidth height:(int)theHeight;
+- (id)initSingleSkin:(const unsigned char *)thePicture width:(int)theWidth height:(int)theHeight;
+- (id)initMultiSkin:(const unsigned char *)thePictures times:(float *)theTimes count:(int)theCount width:(int)theWidth height:(int)theHeight;
 
 - (int)width;
 - (int)height;
 
-- (NSData *)pictureAtIndex:(int)theIndex;
+- (const unsigned char *)pictureAtIndex:(int)theIndex;
 - (float)timeAtIndex:(int)theIndex;
 - (int)pictureCount;
 
