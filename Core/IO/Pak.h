@@ -55,12 +55,12 @@ namespace TrenchBroom {
     class PakManager {
     public:
         PakManager();
+        PakManager(const PakManager&);
         ~PakManager();
         static PakManager& sharedManager();
-        istream* streamForEntry(string name, vector<string> paths);
+        istream* streamForEntry(string& name, vector<string>& paths);
     private:
         map<string, vector<Pak*> > paks;
-        PakManager(const PakManager&);
         vector<Pak*>* paksAtPath(string path);
     };
 }

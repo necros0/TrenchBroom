@@ -18,24 +18,24 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #import "BspRenderer.h"
-#import "Bsp.h"
-#import "BspModel.h"
-#import "BspFace.h"
+#import <OpenGL/gl.h>
 #import "IntData.h"
 #import "Entity.h"
-#import "BspTexture.h"
 #import "Texture.h"
 #import "PreferencesManager.h"
+#include "Bsp.h"
+
+using namespace TrenchBroom;
 
 @implementation BspRenderer
 
-- (id)initWithBsp:(Bsp *)theBsp vbo:(Vbo *)theVbo palette:(NSData *)thePalette {
+- (id)initWithBsp:(void *)theBsp vbo:(Vbo *)theVbo palette:(NSData *)thePalette {
     NSAssert(theBsp != nil, @"BSP must not be nil");
     NSAssert(theVbo != NULL, @"VBO must not be nil");
     NSAssert(thePalette != nil, @"palette must not be nil");
     
     if ((self = [self init])) {
-        bsp = [theBsp retain];
+        bsp = theBsp;
         vbo = theVbo;
         block = NULL;
         palette = [thePalette retain];
@@ -49,7 +49,6 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 - (void)dealloc {
     [palette release];
-    [bsp release];
     if (block != NULL)
         freeVboBlock(block);
     [textures release];
@@ -66,20 +65,22 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     if (block == nil) {
         mapVbo(vbo);
         
-        BspModel* model = [[bsp models] objectAtIndex:0];
-        int modelVertexCount = [model vertexCount];
+        BspModel& model = *((Bsp *)bsp)->models[0];
+        int modelVertexCount = model.vertexCount;
 
         block = allocVboBlock(vbo, modelVertexCount * 5 * sizeof(float));
         int address = block->address;
         uint8_t* vboBuffer = vbo->buffer;
         
-        for (BspFace* face in [model faces]) {
-            TTextureInfo* texInfo = [face textureInfo];
+        for (vector<BspFace*>::iterator face = model.faces.begin(); face != model.faces.end(); face++) {
+            BspTextureInfo* texInfo = (*face)->textureInfo;
             BspTexture* bspTexture = texInfo->texture;
-            Texture* texture = [textures objectForKey:[bspTexture name]];
+            NSString* textureKey = [NSString stringWithCString:bspTexture->name.c_str() encoding:NSASCIIStringEncoding];
+            
+            Texture* texture = [textures objectForKey:textureKey];
             if (texture == nil) {
                 texture = [[Texture alloc] initWithBspTexture:bspTexture palette:palette];
-                [textures setObject:texture forKey:[bspTexture name]];
+                [textures setObject:texture forKey:textureKey];
                 [texture release];
             }
             
@@ -98,14 +99,11 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
             }
             
             [indexBuffer appendInt:(address - block->address) / (5 * sizeof(float))];
-            [countBuffer appendInt:[face vertexCount]];
-            
-            TVector3f* faceVertices = [face vertices];
-            for (int i = 0; i < [face vertexCount]; i++) {
-                TVector3f* vertex = &faceVertices[i];
-                TVector2f texCoords;
-                [face texCoords:&texCoords forVertex:vertex];
-                
+            [countBuffer appendInt:(*face)->vertices.size()];
+
+            for (vector<TVector3f>::iterator it = (*face)->vertices.begin(); it != (*face)->vertices.end(); it++) {
+                TVector3f* vertex = it.base();
+                TVector2f texCoords = (*face)->textureCoordinates(*vertex);
                 address = writeVector2f(&texCoords, vboBuffer, address);
                 address = writeVector3f(vertex, vboBuffer, address);
             }
@@ -149,9 +147,9 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
         IntData* indexBuffer = [indices objectForKey:[texture name]];
         IntData* countBuffer = [counts objectForKey:[texture name]];
         
-        const void* indexBytes = [indexBuffer bytes];
-        const void* countBytes = [countBuffer bytes];
-        long primCount = [indexBuffer count];
+        GLint* indexBytes = (GLint *)[indexBuffer bytes];
+        GLsizei* countBytes = (GLsizei *)[countBuffer bytes];
+        GLsizei primCount = [indexBuffer count];
         
         [texture activate];
         glMultiDrawArrays(GL_POLYGON, indexBytes, countBytes, primCount);
@@ -162,17 +160,17 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 
 - (const TVector3f *)center {
-    BspModel* bspModel = [[bsp models] objectAtIndex:0];
-    return [bspModel center];
+    BspModel& model = *((Bsp *)bsp)->models[0];
+    return &model.center;
 }
 
 - (const TBoundingBox *)bounds {
-    BspModel* bspModel = [[bsp models] objectAtIndex:0];
-    return [bspModel bounds];
+    BspModel& model = *((Bsp *)bsp)->models[0];
+    return &model.bounds;
 }
 
 - (const TBoundingBox *)maxBounds {
-    BspModel* bspModel = [[bsp models] objectAtIndex:0];
-    return [bspModel maxBounds];
+    BspModel& model = *((Bsp *)bsp)->models[0];
+    return &model.maxBounds;
 }
 @end

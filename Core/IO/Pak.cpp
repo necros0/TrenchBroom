@@ -74,7 +74,7 @@ namespace TrenchBroom {
         return instance;
     }
 
-    istream* PakManager::streamForEntry(string name, vector<string> paths) {
+    istream* PakManager::streamForEntry(string& name, vector<string>& paths) {
         vector<string>::reverse_iterator path;
         for (path = paths.rbegin(); path < paths.rend(); ++path) {
             vector<Pak*>* paks = paksAtPath(*path);
@@ -93,8 +93,7 @@ namespace TrenchBroom {
         return NULL;
     }
 
-    PakManager::PakManager() {
-    }
+    PakManager::PakManager() {}
     
     PakManager::~PakManager() {
         map<string, vector<Pak*> >::iterator it;
@@ -129,8 +128,6 @@ namespace TrenchBroom {
         }
         
         do {
-            if (entry->d_namlen > 5)
-                fprintf(stdout, "%s", entry->d_name + entry->d_namlen - 4);
             if (strncmp(entry->d_name + entry->d_namlen - 4, ".pak", 4) == 0) {
                 string pakPath = path;
                 if (pakPath[pakPath.length() - 1] != '/')

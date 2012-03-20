@@ -21,11 +21,9 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #import "EntityRenderer.h"
 #import "Vbo.h"
 
-@class Bsp;
-
 @interface BspRenderer : NSObject <EntityRenderer> {
 @private
-    Bsp* bsp;
+    void* bsp;
     NSData* palette;
     Vbo* vbo;
     VboBlock* block;
@@ -34,6 +32,6 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     NSMutableDictionary* counts;
 }
 
-- (id)initWithBsp:(Bsp *)theBsp vbo:(Vbo *)theVbo palette:(NSData *)thePalette;
+- (id)initWithBsp:(void *)theBsp vbo:(Vbo *)theVbo palette:(NSData *)thePalette;
 
 @end

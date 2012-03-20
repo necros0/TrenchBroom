@@ -22,16 +22,16 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #import "EntityDefinition.h"
 #import "Entity.h"
 #import "ModelProperty.h"
-#import "AliasManager.h"
 #import "Alias.h"
-#import "BspManager.h"
 #import "Bsp.h"
 #import "AliasRenderer.h"
 #import "BspRenderer.h"
 #import "Vbo.h"
 #import "PreferencesManager.h"
 
-@interface EntityRendererManager (private)
+using namespace TrenchBroom;
+
+@interface EntityRendererManager (Private)
 
 - (void)preferencesDidChange:(NSNotification *)notification;
 - (id <NSCopying>)rendererKey:(ModelProperty *)theModelProperty pakPaths:(NSArray *)thePaths;
@@ -39,7 +39,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 @end
 
-@implementation EntityRendererManager (private)
+@implementation EntityRendererManager (Private)
 
 - (void)preferencesDidChange:(NSNotification *)notification {
     NSDictionary* userInfo = [notification userInfo];
@@ -67,11 +67,16 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     
     if (entityRenderer == nil) {
         NSString* modelName = [[theModelProperty modelPath] substringFromIndex:1];
+        string cppName = [modelName cStringUsingEncoding:NSASCIIStringEncoding];
+        vector<string> cppPaths;
+        for (NSString* path in pakPaths)
+            cppPaths.push_back([path cStringUsingEncoding:NSASCIIStringEncoding]);
+
         if ([[modelName pathExtension] isEqualToString:@"mdl"]) {
-            AliasManager* aliasManager = [AliasManager sharedManager];
-            Alias* alias = [aliasManager aliasWithName:modelName paths:pakPaths];
+            AliasManager& aliasManager = AliasManager::sharedManager();
+            Alias* alias = aliasManager.aliasForName(cppName, cppPaths);
             
-            if (alias != nil) {
+            if (alias != NULL) {
                 int skinIndex = [theModelProperty skinIndex];
                 
                 entityRenderer = [[AliasRenderer alloc] initWithAlias:alias skinIndex:skinIndex vbo:&vbo palette:palette];
@@ -81,10 +86,10 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
                 NSLog(@"Model '%@' not found in %@", modelName, [pakPaths componentsJoinedByString:@", "]);
             }
         } else if ([[modelName pathExtension] isEqualToString:@"bsp"]) {
-            BspManager* bspManager = [BspManager sharedManager];
-            Bsp* bsp = [bspManager bspWithName:modelName paths:pakPaths];
+            BspManager& bspManager = BspManager::sharedManager();
+            Bsp* bsp = bspManager.bspForName(cppName, cppPaths);
             
-            if (bsp != nil) {
+            if (bsp != NULL) {
                 entityRenderer = [[BspRenderer alloc] initWithBsp:bsp vbo:&vbo palette:palette];
                 [entityRenderers setObject:entityRenderer forKey:rendererKey];
                 [entityRenderer release];

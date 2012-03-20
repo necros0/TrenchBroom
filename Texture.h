@@ -21,9 +21,6 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #import <OpenGL/gl.h>
 #import "Math.h"
 
-@class AliasSkin;
-@class BspTexture;
-
 @interface Texture : NSObject {
     NSString* name;
     NSNumber* uniqueId;
@@ -32,12 +29,12 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     int height;
     int usageCount;
     TVector4f color;
-    char* textureBuffer;
+    unsigned char* textureBuffer;
 }
 
 - (id)initWithWadEntry:(void *)theEntry palette:(NSData *)thePalette;
-- (id)initWithName:(NSString *)theName skin:(AliasSkin *)theSkin index:(int)theIndex palette:(NSData *)thePalette;
-- (id)initWithBspTexture:(BspTexture *)theBspTexture palette:(NSData *)thePalette;
+- (id)initWithName:(NSString *)theName skin:(void *)theSkin index:(int)theIndex palette:(NSData *)thePalette;
+- (id)initWithBspTexture:(void *)theBspTexture palette:(NSData *)thePalette;
 - (id)initWithName:(NSString *)theName image:(const unsigned char *)theImage width:(int)theWidth height:(int)theHeight palette:(NSData *)thePalette;
 - (id)initDummyWithName:(NSString *)theName;
 

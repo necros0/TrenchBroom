@@ -35,10 +35,10 @@ namespace TrenchBroom {
     }
     
     Mip::~Mip() {
-        delete mip0;
-        delete mip1;
-        delete mip2;
-        delete mip3;
+        delete[] mip0;
+        delete[] mip1;
+        delete[] mip2;
+        delete[] mip3;
     }
     
     

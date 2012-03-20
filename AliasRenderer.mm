@@ -18,25 +18,24 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #import "AliasRenderer.h"
-#import "Alias.h"
-#import "AliasSkin.h"
-#import "AliasFrame.h"
 #import "Texture.h"
-#import "Vbo.h"
 #import "Math.h"
 #import "Entity.h"
 #import "PreferencesManager.h"
+#import "Alias.h"
+
+using namespace TrenchBroom;
 
 @implementation AliasRenderer
 
-- (id)initWithAlias:(Alias *)theAlias skinIndex:(int)theSkinIndex vbo:(Vbo *)theVbo palette:(NSData *)thePalette {
+- (id)initWithAlias:(void *)theAlias skinIndex:(int)theSkinIndex vbo:(Vbo *)theVbo palette:(NSData *)thePalette {
     NSAssert(theAlias != nil, @"alias must not be nil");
     NSAssert(theSkinIndex >= 0, @"skin index must be at least 0");
     NSAssert(theVbo != NULL, @"VBO must not be nil");
     NSAssert(thePalette != nil, @"palette must not be nil");
     
     if ((self = [self init])) {
-        alias = [theAlias retain];
+        alias = theAlias;
         skinIndex = theSkinIndex;
         vbo = theVbo;
         vboBlock = NULL;
@@ -47,7 +46,6 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 - (void)dealloc {
-    [alias release];
     if (vboBlock != NULL)
         freeVboBlock(vboBlock);
     [texture release];
@@ -61,27 +59,29 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 - (void)renderAtOrigin:(const TVector3f *)theOrigin angle:(NSNumber *)theAngle {
     if (vboBlock == nil) {
-        AliasSkin* skin = [alias skinWithIndex:skinIndex];
-        texture = [[Texture alloc] initWithName:[alias name] skin:skin index:0 palette:palette];
+        Alias* al = (Alias *)alias;
+        AliasSkin& skin = *al->skins[skinIndex];
+        NSString* aliasName = [NSString stringWithCString:al->name.c_str() encoding:NSASCIIStringEncoding];
+        texture = [[Texture alloc] initWithName:aliasName skin:&skin index:0 palette:palette];
         
-        AliasFrame* frame = [alias firstFrame];
-        triangleCount = [frame triangleCount];
+        AliasSingleFrame& frame = al->firstFrame();
+        triangleCount = frame.triangles.size();
         int vertexSize = 3 * 8;
         
         vboBlock = allocVboBlock(vbo, triangleCount * vertexSize * sizeof(float));
         mapVbo(vbo);
         
         int address = vboBlock->address;
-        uint8_t* vboBuffer = vbo->buffer;
+        unsigned char* vboBuffer = vbo->buffer;
         
         for (int i = 0; i < triangleCount; i++) {
-            const TFrameTriangle* triangle = [frame triangleAtIndex:i];
+            AliasFrameTriangle* triangle = frame.triangles[i];
             for (int j = 0; j < 3; j++) {
-                const TFrameVertex* vertex = &triangle->vertices[j];
+                AliasFrameVertex& vertex = triangle->vertices[j];
                 // GL_T2F_N3F_V3F format
-                address = writeVector2f(&vertex->texCoords, vboBuffer, address);
-                address = writeVector3f(&vertex->norm, vboBuffer, address);
-                address = writeVector3f(&vertex->position, vboBuffer, address);
+                address = writeVector2f(&vertex.texCoords, vboBuffer, address);
+                address = writeVector3f(&vertex.norm, vboBuffer, address);
+                address = writeVector3f(&vertex.position, vboBuffer, address);
             }
         }
         
@@ -127,15 +127,15 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 - (const TVector3f *)center {
-    return [[alias firstFrame] center];
+    return &((Alias *)alias)->firstFrame().center;
 }
 
 - (const TBoundingBox *)bounds {
-    return [[alias firstFrame] bounds];
+    return &((Alias *)alias)->firstFrame().bounds;
 }
 
 - (const TBoundingBox *)maxBounds {
-    return [[alias firstFrame] maxBounds];
+    return &((Alias *)alias)->firstFrame().maxBounds;
 }
 
 @end

@@ -17,16 +17,21 @@ You should have received a copy of the GNU General Public License
 along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#import <Cocoa/Cocoa.h>
-#import "Math.h"
+#ifndef TrenchBroom_Vbo_h
+#define TrenchBroom_Vbo_h
 
-extern NSString* const BufferNotMappedException;
+#ifdef __cplusplus
+extern "C" {
+#endif
+    
+#include "Math.h"
+#include <OpenGL/gl.h>
 
 typedef struct TVboBlockTag {
     struct TVboTag* vbo;
     unsigned int address;
     unsigned int capacity;
-    BOOL free;
+    char free;
     struct TVboBlockTag* next;
     struct TVboBlockTag* previous;
 } VboBlock;
@@ -39,20 +44,20 @@ typedef struct TVboTag {
     int freeBlocksCapacity;
     VboBlock* firstBlock;
     VboBlock* lastBlock;
-    uint8_t* buffer;
+    unsigned char* buffer;
     GLuint vboId;
     GLenum type;
-    BOOL active;
-    BOOL mapped;
+    char active;
+    char mapped;
 } Vbo;
 
-int writeBuffer(const uint8_t* buffer, uint8_t* vbo, int address, int count);
-int writeByte(unsigned char b, uint8_t* vbo, int address);
-int writeFloat(float f, uint8_t* vbo, int address);
-int writeColor4fAsBytes(const TVector4f* color, uint8_t* vbo, int address);
-int writeVector4f(const TVector4f* vector, uint8_t* vbo, int address);
-int writeVector3f(const TVector3f* vector, uint8_t* vbo, int address);
-int writeVector2f(const TVector2f* vector, uint8_t* vbo, int address);
+int writeBuffer(const unsigned char* buffer, unsigned char* vbo, int address, int count);
+int writeByte(unsigned char b, unsigned char* vbo, int address);
+int writeFloat(float f, unsigned char* vbo, int address);
+int writeColor4fAsBytes(const TVector4f* color, unsigned char* vbo, int address);
+int writeVector4f(const TVector4f* vector, unsigned char* vbo, int address);
+int writeVector3f(const TVector3f* vector, unsigned char* vbo, int address);
+int writeVector2f(const TVector2f* vector, unsigned char* vbo, int address);
 
 void initVbo(Vbo* vbo, GLenum type, int capacity);
 void freeVbo(Vbo* vbo);
@@ -64,3 +69,9 @@ VboBlock* allocVboBlock(Vbo* vbo, int capacity);
 VboBlock* freeVboBlock(VboBlock* block);
 void freeAllVboBlocks(Vbo* vbo);
 void packVbo(Vbo* vbo);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

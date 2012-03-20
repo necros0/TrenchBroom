@@ -19,10 +19,10 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "Texture.h"
 #import "IdGenerator.h"
-#import "AliasSkin.h"
-#import "BspTexture.h"
 #import "Math.h"
 #import "Wad.h"
+#import "Bsp.h"
+#import "Alias.h"
 
 using namespace TrenchBroom;
 
@@ -32,7 +32,7 @@ using namespace TrenchBroom;
     int size;
     
     size = width * height;
-    textureBuffer = new char[size * 3];
+    textureBuffer = new unsigned char[size * 3];
     
     for (int i = 0; i < size; i++) {
         unsigned char paletteIndex = theTextureData[i];
@@ -56,14 +56,18 @@ using namespace TrenchBroom;
     return [self initWithName:[NSString stringWithCString:mip->name.c_str() encoding:NSASCIIStringEncoding] image:mip->mip0 width:mip->width height:mip->height palette:thePalette];
 }
 
-- (id)initWithName:(NSString *)theName skin:(AliasSkin *)theSkin index:(int)theIndex palette:(NSData *)thePalette {
-    NSAssert(theSkin != nil, @"skin must not be nil");
-    return [self initWithName:theName image:[theSkin pictureAtIndex:theIndex] width:[theSkin width] height:[theSkin height] palette:thePalette];
+- (id)initWithName:(NSString *)theName skin:(void *)theSkin index:(int)theIndex palette:(NSData *)thePalette {
+    NSAssert(theSkin != NULL, @"skin must not be NULL");
+    
+    AliasSkin* skin = (AliasSkin *)theSkin;
+    return [self initWithName:theName image:skin->pictures[theIndex] width:skin->width height:skin->height palette:thePalette];
 }
 
-- (id)initWithBspTexture:(BspTexture *)theBspTexture palette:(NSData *)thePalette {
-    NSAssert(theBspTexture != nil, @"BSP texture must not be nil");
-    return [self initWithName:[theBspTexture name] image:[theBspTexture image] width:[theBspTexture width] height:[theBspTexture height] palette:thePalette];
+- (id)initWithBspTexture:(void *)theBspTexture palette:(NSData *)thePalette {
+    NSAssert(theBspTexture != NULL, @"BSP texture must not be NULL");
+    
+    BspTexture* bspTexture = (BspTexture *)theBspTexture;
+    return [self initWithName:[NSString stringWithCString:bspTexture->name.c_str() encoding:NSASCIIStringEncoding] image:bspTexture->image width:bspTexture->width height:bspTexture->height palette:thePalette];
 }
 
 - (id)initWithName:(NSString *)theName image:(const unsigned char *)theImage width:(int)theWidth height:(int)theHeight palette:(NSData *)thePalette {
@@ -152,7 +156,7 @@ using namespace TrenchBroom;
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
             
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, textureBuffer);
-            delete textureBuffer;
+            delete[] textureBuffer;
             textureBuffer = NULL;
         } else {
             NSLog(@"Warning: cannot recreate texture '%@'", self);

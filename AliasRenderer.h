@@ -21,11 +21,10 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #import "EntityRenderer.h"
 #import "Vbo.h"
 
-@class Alias;
 @class Texture;
 
 @interface AliasRenderer : NSObject <EntityRenderer> {
-    Alias* alias;
+    void* alias;
     int skinIndex;
     Vbo* vbo;
     VboBlock* vboBlock;
@@ -34,5 +33,5 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
     int triangleCount;
 }
 
-- (id)initWithAlias:(Alias *)theAlias skinIndex:(int)theSkinIndex vbo:(Vbo *)theVbo palette:(NSData *)thePalette;
+- (id)initWithAlias:(void *)theAlias skinIndex:(int)theSkinIndex vbo:(Vbo *)theVbo palette:(NSData *)thePalette;
 @end

@@ -17,25 +17,28 @@ You should have received a copy of the GNU General Public License
 along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#import "Vbo.h"
+#include "Vbo.h"
+#include <assert.h>
+#include <string.h>
+#include <stdlib.h>
 
-int writeBuffer(const uint8_t* buffer, uint8_t* vbo, int address, int count) {
+int writeBuffer(const unsigned char* buffer, unsigned char* vbo, int address, int count) {
     memcpy(vbo + address, buffer, count);
     return address + count;
 }
 
-int writeByte(unsigned char b, uint8_t* vbo, int address){
+int writeByte(unsigned char b, unsigned char* vbo, int address){
     vbo[address] = b;
     return address + 1;
 }
 
-int writeFloat(float f, uint8_t* vbo, int address) {
+int writeFloat(float f, unsigned char* vbo, int address) {
     for (int i = 0; i < 4; i++)
         vbo[address + i] = ((char *)&f)[i];
     return address + sizeof(float);
 }
 
-int writeColor4fAsBytes(const TVector4f* color, uint8_t* vbo, int address) {
+int writeColor4fAsBytes(const TVector4f* color, unsigned char* vbo, int address) {
     int a = address;
     a = writeByte(color->x * 0xFF, vbo, a);
     a = writeByte(color->y * 0xFF, vbo, a);
@@ -44,7 +47,7 @@ int writeColor4fAsBytes(const TVector4f* color, uint8_t* vbo, int address) {
     return a;
 }
 
-int writeVector4f(const TVector4f* vector, uint8_t* vbo, int address) {
+int writeVector4f(const TVector4f* vector, unsigned char* vbo, int address) {
     int a = address;
     a = writeFloat(vector->x, vbo, a);
     a = writeFloat(vector->y, vbo, a);
@@ -53,7 +56,7 @@ int writeVector4f(const TVector4f* vector, uint8_t* vbo, int address) {
     return a;
 }
 
-int writeVector3f(const TVector3f* vector, uint8_t* vbo, int address) {
+int writeVector3f(const TVector3f* vector, unsigned char* vbo, int address) {
     int a = address;
     a = writeFloat(vector->x, vbo, a);
     a = writeFloat(vector->y, vbo, a);
@@ -61,7 +64,7 @@ int writeVector3f(const TVector3f* vector, uint8_t* vbo, int address) {
     return a;
 }
 
-int writeVector2f(const TVector2f* vector, uint8_t* vbo, int address) {
+int writeVector2f(const TVector2f* vector, unsigned char* vbo, int address) {
     int a = address;
     a = writeFloat(vector->x, vbo, a);
     a = writeFloat(vector->y, vbo, a);
@@ -103,7 +106,7 @@ void initVbo(Vbo* vbo, GLenum type, int capacity) {
     vbo->firstBlock->capacity = capacity;
     vbo->firstBlock->previous = NULL;
     vbo->firstBlock->next = NULL;
-    vbo->firstBlock->free = YES;
+    vbo->firstBlock->free = 1;
     vbo->lastBlock = vbo->firstBlock;
     
     vbo->freeBlocksCapacity = 0xFF;
@@ -148,7 +151,7 @@ void activateVbo(Vbo* vbo) {
     }
     
     assert(glGetError() == GL_NO_ERROR);
-    vbo->active = YES;
+    vbo->active = 1;
     
     // checkVbo(vbo);
 }
@@ -159,7 +162,7 @@ void deactivateVbo(Vbo* vbo) {
     
     // checkVbo(vbo);
     glBindBuffer(vbo->type, 0);
-    vbo->active = NO;
+    vbo->active = 0;
     // checkVbo(vbo);
 }
 
@@ -172,7 +175,7 @@ void mapVbo(Vbo* vbo) {
     vbo->buffer = glMapBuffer(vbo->type, GL_WRITE_ONLY);
     assert(glGetError() == GL_NO_ERROR);
     assert(vbo->buffer != NULL);
-    vbo->mapped = YES;
+    vbo->mapped = 1;
     // checkVbo(vbo);
 }
 
@@ -185,29 +188,29 @@ void unmapVbo(Vbo* vbo) {
     glUnmapBuffer(vbo->type);
     assert(glGetError() == GL_NO_ERROR);
     vbo->buffer = NULL;
-    vbo->mapped = NO;
+    vbo->mapped = 0;
     // checkVbo(vbo);
 }
 
-int findFreeVboBlockInRange(Vbo* vbo, int capacity, NSRange range) {
-    if (range.length== 1) {
-        VboBlock* block = vbo->freeBlocks[range.location];
+int findFreeVboBlockInRange(Vbo* vbo, int capacity, int start, int length) {
+    if (length== 1) {
+        VboBlock* block = vbo->freeBlocks[start];
         if (block->capacity >= capacity)
-            return range.location;
+            return start;
         return vbo->freeBlocksCount;
     }
     
-    int s = range.length / 2;
-    int l = findFreeVboBlockInRange(vbo, capacity, NSMakeRange(range.location, s));
+    int s = length / 2;
+    int l = findFreeVboBlockInRange(vbo, capacity, start, s);
     if (l < vbo->freeBlocksCount)
         return l;
-    return findFreeVboBlockInRange(vbo, capacity, NSMakeRange(range.location + s, range.length - s));
+    return findFreeVboBlockInRange(vbo, capacity, start + s, length - s);
 }
 
 int findFreeVboBlock(Vbo* vbo, int capacity) {
     if (vbo->freeBlocksCount == 0)
         return 0;
-    return findFreeVboBlockInRange(vbo, capacity, NSMakeRange(0, vbo->freeBlocksCount));
+    return findFreeVboBlockInRange(vbo, capacity, 0, vbo->freeBlocksCount);
 }
 
 void insertFreeVboBlock(VboBlock* block) {
@@ -266,10 +269,10 @@ void resizeVboBlock(VboBlock* block, int capacity) {
 }
 
 void resizeVbo(Vbo* vbo, int capacity) {
-    BOOL wasActive = vbo->active;
-    BOOL wasMapped = vbo->mapped;
+    char wasActive = vbo->active;
+    char wasMapped = vbo->mapped;
     
-    uint8_t* temp = NULL;
+    unsigned char* temp = NULL;
     if (vbo->vboId != 0 && vbo->freeCapacity < vbo->totalCapacity) {
         if (!wasActive)
             activateVbo(vbo);
@@ -291,7 +294,7 @@ void resizeVbo(Vbo* vbo, int capacity) {
         block->vbo = vbo;
         block->address = vbo->lastBlock->address + vbo->lastBlock->capacity;
         block->capacity = addedCapacity;
-        block->free = YES;
+        block->free = 1;
 
         block->previous = vbo->lastBlock;
         block->next = NULL;
@@ -358,7 +361,7 @@ VboBlock* allocVboBlock(Vbo* vbo, int capacity) {
         remainder->vbo = vbo;
         remainder->address = block->address + capacity;
         remainder->capacity = block->capacity - capacity;
-        remainder->free = YES;
+        remainder->free = 1;
         block->capacity = capacity;
         
         VboBlock* next = block->next;
@@ -374,7 +377,7 @@ VboBlock* allocVboBlock(Vbo* vbo, int capacity) {
             vbo->lastBlock = remainder;
     }
     
-    block->free = NO;
+    block->free = 0;
     vbo->freeCapacity -= block->capacity;
 
     // checkVbo(vbo);
@@ -393,7 +396,7 @@ VboBlock* freeVboBlock(VboBlock* block) {
     assert(block != next);
     
     vbo->freeCapacity += block->capacity;
-    block->free = YES;
+    block->free = 1;
     
     if (previous != NULL && previous->free && next != NULL && next->free) {
         resizeVboBlock(previous, previous->capacity + block->capacity + next->capacity);
@@ -443,7 +446,7 @@ VboBlock* freeVboBlock(VboBlock* block) {
             vbo->lastBlock = block;
         
         block->capacity += next->capacity;
-        block->free = YES;
+        block->free = 1;
         
         insertFreeVboBlock(block);
         removeFreeVboBlock(next);
@@ -500,7 +503,7 @@ VboBlock* packVboBlock(VboBlock* block) {
     if (size <= block->capacity) {
         memcpy(vbo->buffer + block->address, vbo->buffer + address, size);
     } else {
-        uint8_t* temp = malloc(size);
+        unsigned char* temp = malloc(size);
         memcpy(temp, vbo->buffer + address, size);
         memcpy(vbo->buffer + block->address, temp, size);
         free(temp);
@@ -514,7 +517,7 @@ VboBlock* packVboBlock(VboBlock* block) {
         newBlock->vbo = vbo;
         newBlock->address = previous->address + previous->capacity;
         newBlock->capacity = block->capacity;
-        newBlock->free = YES;
+        newBlock->free = 1;
         
         insertFreeVboBlock(newBlock);
         previous->next = newBlock;

@@ -7,6 +7,9 @@
  *
  */
 
+#ifndef TrenchBroom_AliasNormals_h
+#define TrenchBroom_AliasNormals_h
+
 #import "Math.h"
 
 #define NUMVERTEXNORMALS 162
@@ -175,3 +178,5 @@ TVector3f AliasNormals[NUMVERTEXNORMALS] = {
 {-0.587785, -0.425325, -0.688191},
 {-0.688191, -0.587785, -0.425325},
 };
+
+#endif
