@@ -63,6 +63,11 @@
 		485D2EAF1308624900CF73D8 /* Options.m in Sources */ = {isa = PBXBuildFile; fileRef = 485D2EAE1308624900CF73D8 /* Options.m */; };
 		4862297B1517AFC600B54545 /* Bsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4862297A1517AFC600B54545 /* Bsp.cpp */; };
 		4862297F1517C83D00B54545 /* Alias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4862297E1517C83D00B54545 /* Alias.cpp */; };
+		4862298C151A7B5500B54545 /* Face.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4862298B151A7B5500B54545 /* Face.cpp */; };
+		4862298F151A7BB400B54545 /* Brush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4862298E151A7BB400B54545 /* Brush.cpp */; };
+		48622992151A7BEB00B54545 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622991151A7BEB00B54545 /* Entity.cpp */; };
+		48622995151A7C1C00B54545 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622994151A7C1C00B54545 /* Map.cpp */; };
+		48622999151A7C8D00B54545 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622998151A7C8D00B54545 /* Texture.cpp */; };
 		48639BF412EA227100808576 /* QuakePalette.lmp in Resources */ = {isa = PBXBuildFile; fileRef = 48639BF312EA227100808576 /* QuakePalette.lmp */; };
 		4864E2BD140D1840000DE923 /* CompilerProfileCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864E2BC140D1840000DE923 /* CompilerProfileCommand.m */; };
 		4864E2C1140E2682000DE923 /* CompilerProfileRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864E2C0140E2682000DE923 /* CompilerProfileRunner.m */; };
@@ -349,6 +354,17 @@
 		4862297D1517C83100B54545 /* Alias.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Alias.h; path = Model/Alias.h; sourceTree = "<group>"; };
 		4862297E1517C83D00B54545 /* Alias.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Alias.cpp; path = Model/Alias.cpp; sourceTree = "<group>"; };
 		486229801517D18100B54545 /* AliasNormals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AliasNormals.h; path = Core/Model/AliasNormals.h; sourceTree = SOURCE_ROOT; };
+		48622989151A7B4800B54545 /* Face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Face.h; path = Model/Face.h; sourceTree = "<group>"; };
+		4862298B151A7B5500B54545 /* Face.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Face.cpp; path = Model/Face.cpp; sourceTree = "<group>"; };
+		4862298D151A7B9C00B54545 /* Brush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Brush.h; path = Model/Brush.h; sourceTree = "<group>"; };
+		4862298E151A7BB400B54545 /* Brush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Brush.cpp; path = Model/Brush.cpp; sourceTree = "<group>"; };
+		48622990151A7BD200B54545 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entity.h; path = Model/Entity.h; sourceTree = "<group>"; };
+		48622991151A7BEB00B54545 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = Model/Entity.cpp; sourceTree = "<group>"; };
+		48622993151A7C0300B54545 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Map.h; path = Model/Map.h; sourceTree = "<group>"; };
+		48622994151A7C1C00B54545 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = Model/Map.cpp; sourceTree = "<group>"; };
+		48622996151A7C6200B54545 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = Model/Texture.h; sourceTree = "<group>"; };
+		48622998151A7C8D00B54545 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.cpp; path = Model/Texture.cpp; sourceTree = "<group>"; };
+		4862299A151A839A00B54545 /* BrushGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrushGeometry.h; path = Model/BrushGeometry.h; sourceTree = "<group>"; };
 		48639BF312EA227100808576 /* QuakePalette.lmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = QuakePalette.lmp; sourceTree = "<group>"; };
 		4864E2BB140D1840000DE923 /* CompilerProfileCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompilerProfileCommand.h; sourceTree = "<group>"; };
 		4864E2BC140D1840000DE923 /* CompilerProfileCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerProfileCommand.m; sourceTree = "<group>"; };
@@ -803,6 +819,17 @@
 				4862297D1517C83100B54545 /* Alias.h */,
 				4862297E1517C83D00B54545 /* Alias.cpp */,
 				486229801517D18100B54545 /* AliasNormals.h */,
+				48622989151A7B4800B54545 /* Face.h */,
+				4862298B151A7B5500B54545 /* Face.cpp */,
+				4862298D151A7B9C00B54545 /* Brush.h */,
+				4862298E151A7BB400B54545 /* Brush.cpp */,
+				48622990151A7BD200B54545 /* Entity.h */,
+				48622991151A7BEB00B54545 /* Entity.cpp */,
+				48622993151A7C0300B54545 /* Map.h */,
+				48622994151A7C1C00B54545 /* Map.cpp */,
+				48622996151A7C6200B54545 /* Texture.h */,
+				48622998151A7C8D00B54545 /* Texture.cpp */,
+				4862299A151A839A00B54545 /* BrushGeometry.h */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1533,6 +1560,11 @@
 				48EDC8CD1515B858008D3D80 /* substream.cpp in Sources */,
 				4862297B1517AFC600B54545 /* Bsp.cpp in Sources */,
 				4862297F1517C83D00B54545 /* Alias.cpp in Sources */,
+				4862298C151A7B5500B54545 /* Face.cpp in Sources */,
+				4862298F151A7BB400B54545 /* Brush.cpp in Sources */,
+				48622992151A7BEB00B54545 /* Entity.cpp in Sources */,
+				48622995151A7C1C00B54545 /* Map.cpp in Sources */,
+				48622999151A7C8D00B54545 /* Texture.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
