@@ -56,13 +56,16 @@ namespace TrenchBroom {
         TVector3f m_texAxisY;
         TVector3f m_scaledTexAxisX;
         TVector3f m_scaledTexAxisY;
-        bool m_valid;
+        bool m_texAxesValid;
         
         int m_filePosition;
         bool m_selected;
         VboBlock* m_vboBlock;
         
         void init();
+        void texAxesAndIndices(const TVector3f& faceNormal, TVector3f& xAxis, TVector3f& yAxis, int& planeNormIndex, int& faceNormIndex);
+        void validateTexAxes(const TVector3f& faceNormal);
+        void compensateTransformation(const TMatrix4f& transformation);
     public:
         Face(TBoundingBox& worldBounds);
         Face(TBoundingBox& worldBounds, TVector3f point1, TVector3f point2, TVector3f point3);

@@ -25,6 +25,8 @@ namespace TrenchBroom {
     class Texture {
     public:
         int usageCount;
+        int width;
+        int height;
     };
 
 }
