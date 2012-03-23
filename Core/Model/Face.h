@@ -31,14 +31,15 @@ using namespace std;
 
 namespace TrenchBroom {
     
+    class Brush;
     class Face {
-    private:
+    protected:
         int m_faceId;
         Brush* m_brush;
         
         TVector3f m_points[3];
         TPlane m_boundary;
-        TBoundingBox& m_worldBounds;
+        const TBoundingBox& m_worldBounds;
         
         Texture* m_texture;
         float m_xOffset;
@@ -47,8 +48,8 @@ namespace TrenchBroom {
         float m_xScale;
         float m_yScale;
         
-        vector<Vertex*>* m_vertices;
-        vector<Edge*>* m_edges;
+        vector<Vertex*> m_vertices;
+        vector<Edge*> m_edges;
         
         int m_texPlaneNormIndex;
         int m_texFaceNormIndex;
@@ -63,40 +64,41 @@ namespace TrenchBroom {
         VboBlock* m_vboBlock;
         
         void init();
-        void texAxesAndIndices(const TVector3f& faceNormal, TVector3f& xAxis, TVector3f& yAxis, int& planeNormIndex, int& faceNormIndex);
+        void texAxesAndIndices(const TVector3f& faceNormal, TVector3f& xAxis, TVector3f& yAxis, int& planeNormIndex, int& faceNormIndex) const;
         void validateTexAxes(const TVector3f& faceNormal);
         void compensateTransformation(const TMatrix4f& transformation);
     public:
-        Face(TBoundingBox& worldBounds);
-        Face(TBoundingBox& worldBounds, TVector3f point1, TVector3f point2, TVector3f point3);
-        Face(TBoundingBox& worldBounds, Face& faceTemplate);
+        Face(const TBoundingBox& worldBounds);
+        Face(const TBoundingBox& worldBounds, TVector3f point1, TVector3f point2, TVector3f point3);
+        Face(const TBoundingBox& worldBounds, const Face& faceTemplate);
+        Face(const TBoundingBox& worldBounds, Edge* edges[], bool invert[], int count);
         ~Face();
         
-        void restore(Face& faceTemplate);
+        void restore(const Face& faceTemplate);
         
-        int faceId();
-        Brush* brush();
+        int faceId() const;
+        Brush* brush() const;
         void setBrush(Brush* brush);
         
-        void points(TVector3f& point1, TVector3f& point2, TVector3f& point3);
+        void points(TVector3f& point1, TVector3f& point2, TVector3f& point3) const;
         void updatePoints();
-        TVector3f normal();
-        TPlane boundary();
-        const TBoundingBox& worldBounds();
-        const vector<Vertex*>& vertices();
-        const vector<Edge*>& edges();
+        TVector3f normal() const;
+        TPlane boundary() const;
+        const TBoundingBox& worldBounds() const;
+        const vector<Vertex*>& vertices() const;
+        const vector<Edge*>& edges() const;
         
-        Texture* texture();
+        Texture* texture() const;
         void setTexture(Texture* texture);
-        int xOffset();
+        int xOffset() const;
         void setXOffset(int xOffset);
-        int yOffset();
+        int yOffset() const;
         void setYOffset(int yOffset);
-        float rotation();
+        float rotation() const;
         void setRotation(float rotation);
-        float xScale();
+        float xScale() const;
         void setXScale(float xScale);
-        float yScale();
+        float yScale() const;
         void setYScale(float yScale);
         
         void translateOffsets(float delta, TVector3f dir);
@@ -111,11 +113,11 @@ namespace TrenchBroom {
         TVector2f textureCoords(TVector3f vertex);
         TVector2f gridCoords(TVector3f vertex);
         
-        int filePosition();
+        int filePosition() const;
         void setFilePosition(int filePosition);
-        bool selected();
+        bool selected() const;
         void setSelected(bool selected);
-        VboBlock* vboBlock();
+        VboBlock* vboBlock() const;
         void setVboBlock(VboBlock* vboBlock);
     };
     

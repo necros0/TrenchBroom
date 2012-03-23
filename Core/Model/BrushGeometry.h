@@ -20,16 +20,59 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef TrenchBroom_BrushGeometry_h
 #define TrenchBroom_BrushGeometry_h
 
+#include <vector>
+#include "Math.h"
+#include "Face.h"
+
+using namespace std;
+
 namespace TrenchBroom {
     
+    typedef enum {
+        VM_DROP,
+        VM_KEEP,
+        VM_UNDECIDED,
+        VM_NEW,
+        VM_UNKNOWN
+    } EVertexMark;
+    
+    typedef enum {
+        EM_KEEP,
+        EM_DROP,
+        EM_SPLIT,
+        EM_UNDECIDED,
+        EM_NEW,
+        EM_UNKNOWN
+    } EEdgeMark;
+    
+    typedef enum {
+        SM_KEEP,
+        SM_DROP,
+        SM_SPLIT,
+        SM_NEW,
+        SM_UNKNOWN
+    } ESideMark;
+
     class Vertex {
     public:
         TVector3f position;
+        EVertexMark mark;
+        Vertex(float x, float y, float z);
     };
     
+    class Face;
     class Edge {
+    public:
+        Vertex* start;
+        Vertex* end;
+        Face* left;
+        Face* right;
+        EEdgeMark mark;
+        Edge(Vertex* start, Vertex* end);
     };
     
+    void centerOfVertices(vector<Vertex*>& vertices, TVector3f& center);
+    EPointStatus vertexStatusFromRay(TVector3f origin, TVector3f direction, const vector<Vertex*>& vertices);
 }
 
 #endif

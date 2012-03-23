@@ -30,7 +30,7 @@ namespace TrenchBroom {
                                              &YAxisPos, &XAxisPos, &ZAxisNeg,
                                              &YAxisNeg, &XAxisPos, &ZAxisNeg};
 
-    void Face::texAxesAndIndices(const TVector3f& faceNormal, TVector3f& xAxis, TVector3f& yAxis, int& planeNormIndex, int& faceNormIndex) {
+    void Face::texAxesAndIndices(const TVector3f& faceNormal, TVector3f& xAxis, TVector3f& yAxis, int& planeNormIndex, int& faceNormIndex) const {
             int bestIndex = 0;
             float bestDot = -1;
             for (int i = 0; i < 6; i++) {
@@ -75,7 +75,7 @@ namespace TrenchBroom {
         float radX, radY, rad;
         
         // calculate the current texture coordinates of the face's center
-        centerOfVertices(m_vertices, &curCenter);
+        centerOfVertices(m_vertices, curCenter);
         curCenterTexCoords.x = dotV3f(&curCenter, &m_scaledTexAxisX) + m_xOffset;
         curCenterTexCoords.y = dotV3f(&curCenter, &m_scaledTexAxisY) + m_yOffset;
         
@@ -205,34 +205,51 @@ namespace TrenchBroom {
     void Face::init() {
         static int currentId = 0;
         m_faceId = currentId++;
+        m_brush = NULL;
         m_texture = NULL;
         m_vboBlock = NULL;
         m_filePosition = -1;
+        m_selected = false;
         m_texAxesValid = false;
     }
     
-    Face::Face(TBoundingBox& worldBounds) : m_worldBounds(worldBounds) {
+    Face::Face(const TBoundingBox& worldBounds) : m_worldBounds(worldBounds) {
         init();
     }
     
-    Face::Face(TBoundingBox& worldBounds, TVector3f point1, TVector3f point2, TVector3f point3) : m_worldBounds(worldBounds) {
+    Face::Face(const TBoundingBox& worldBounds, TVector3f point1, TVector3f point2, TVector3f point3) : m_worldBounds(worldBounds) {
         init();
         m_points[0] = point1;
         m_points[1] = point2;
         m_points[3] = point3;
     }
     
-    Face::Face(TBoundingBox& worldBounds, Face& faceTemplate) : m_worldBounds(worldBounds) {
+    Face::Face(const TBoundingBox& worldBounds, const Face& faceTemplate) : m_worldBounds(worldBounds) {
         init();
         restore(faceTemplate);
     }
     
+    Face::Face(const TBoundingBox& worldBounds, Edge* edges[], bool invert[], int count) : m_worldBounds(worldBounds) {
+        init();
+        for (int i = 0; i < count; i++) {
+            m_edges.push_back(edges[i]);
+            if (invert[i]) {
+                edges[i]->left = this;
+                m_vertices.push_back(edges[i]->end);
+            } else {
+                edges[i]->right = this;
+                m_vertices.push_back(edges[i]->start);
+            }
+        }
+        updatePoints();
+    }
+
     Face::~Face() {
         if (m_vboBlock != NULL)
             freeVboBlock(m_vboBlock);
     }
     
-    void Face::restore(Face& faceTemplate) {
+    void Face::restore(const Face& faceTemplate) {
         assert(m_faceId == faceTemplate.faceId());
                
         faceTemplate.points(m_points[0], m_points[1], m_points[2]);
@@ -246,11 +263,11 @@ namespace TrenchBroom {
         m_texAxesValid = false;
     }
     
-    int Face::faceId() {
+    int Face::faceId() const {
         return m_faceId;
     }
     
-    Brush* Face::brush() {
+    Brush* Face::brush() const {
         return m_brush;
     }
     
@@ -258,7 +275,7 @@ namespace TrenchBroom {
         m_brush = brush;
     }
     
-    void Face::points(TVector3f& point1, TVector3f& point2, TVector3f& point3) {
+    void Face::points(TVector3f& point1, TVector3f& point2, TVector3f& point3) const {
         point1 = m_points[0];
         point2 = m_points[1];
         point3 = m_points[2];
@@ -297,29 +314,27 @@ namespace TrenchBroom {
         setPlanePointsV3f(&m_boundary, &m_points[0], &m_points[1], &m_points[2]);
     }
     
-    TVector3f Face::normal() {
+    TVector3f Face::normal() const {
         return m_boundary.norm;
     }
     
-    TPlane Face::boundary() {
+    TPlane Face::boundary() const {
         return m_boundary;
     }
     
-    const TBoundingBox& Face::worldBounds() {
+    const TBoundingBox& Face::worldBounds() const {
         return m_worldBounds;
     }
     
-    const vector<Vertex*>& Face::vertices() {
-        assert(m_vertices != NULL);
-        return *m_vertices;
+    const vector<Vertex*>& Face::vertices() const {
+        return m_vertices;
     }
     
-    const vector<Edge*>& Face::edges() {
-        assert(m_edges != NULL);
-        return *m_edges;
+    const vector<Edge*>& Face::edges() const {
+        return m_edges;
     }
     
-    Texture* Face::texture() {
+    Texture* Face::texture() const {
         return m_texture;
     }
     
@@ -333,7 +348,7 @@ namespace TrenchBroom {
             m_texture->usageCount++;
     }
     
-    int Face::xOffset() {
+    int Face::xOffset() const {
         return m_xOffset;
     }
     
@@ -342,7 +357,7 @@ namespace TrenchBroom {
         m_texAxesValid = false;
     }
     
-    int Face::yOffset() {
+    int Face::yOffset() const {
         return m_yOffset;
     }
     
@@ -351,7 +366,7 @@ namespace TrenchBroom {
         m_texAxesValid = false;
     }
     
-    float Face::rotation() {
+    float Face::rotation() const {
         return m_rotation;
     }
     
@@ -360,7 +375,7 @@ namespace TrenchBroom {
         m_texAxesValid = false;
     }
     
-    float Face::xScale() {
+    float Face::xScale() const {
         return m_xScale;
     }
     
@@ -369,7 +384,7 @@ namespace TrenchBroom {
         m_texAxesValid = false;
     }
 
-    float Face::yScale() {
+    float Face::yScale() const {
         return m_yScale;
     }
 
@@ -652,7 +667,7 @@ namespace TrenchBroom {
         return gridCoords;
     }
     
-    int Face::filePosition() {
+    int Face::filePosition() const {
         return m_filePosition;
     }
     
@@ -660,7 +675,7 @@ namespace TrenchBroom {
         m_filePosition = filePosition;
     }
     
-    bool Face::selected() {
+    bool Face::selected() const {
         return m_selected;
     }
     
@@ -668,7 +683,7 @@ namespace TrenchBroom {
         m_selected = selected;
     }
     
-    VboBlock* Face::vboBlock() {
+    VboBlock* Face::vboBlock() const {
         return m_vboBlock;
     }
     

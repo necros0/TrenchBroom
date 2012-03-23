@@ -20,9 +20,86 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef TrenchBroom_Brush_h
 #define TrenchBroom_Brush_h
 
+#include <vector>
+#include "Entity.h"
+#include "Face.h"
+#include "Texture.h"
+#include "BrushGeometry.h"
+
+using namespace std;
+
 namespace TrenchBroom {
     
+    class MoveResult {
+    };
+    
+    class Entity;
+    class Face;
+    class Vertex;
+    class Edge;
+    
     class Brush {
+    protected:
+        int m_brushId;
+        Entity* m_entity;
+        vector<Face*> m_faces;
+        
+        bool m_onGrid;
+        const TBoundingBox& m_worldBounds;
+        TBoundingBox m_bounds;
+        
+        vector<Vertex*> m_vertices;
+        vector<Edge*> m_edges;
+        
+        int m_filePosition;
+        bool m_selected;
+        
+        void init();
+        void init(const TBoundingBox& bounds, Texture* texture);
+        void reset();
+    public:
+        Brush(const TBoundingBox& worldBounds, Texture* texture);
+        Brush(const TBoundingBox& worldBounds, const Brush& brushTemplate);
+        Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture* texture);
+        
+        void restore(const Brush& brushTemplate);
+        
+        int brushId() const;
+        Entity* entity() const;
+        void setEntity(Entity* entity);
+        const vector<Face*>& faces() const;
+        const TBoundingBox& bounds() const;
+        const TBoundingBox& worldBounds() const;
+        const vector<Vertex*>& vertices() const;
+        const vector<Edge*>& edges() const;
+        
+        bool containsPoint(TVector3f point);
+        bool intersectsBrush(const Brush& brush);
+        bool containsBrush(const Brush& brush);
+        bool intersectsEntity(const Entity& entity);
+        bool containsEntity(const Entity& entity);
+        
+        bool addFace(Face& face);
+        bool canDeleteFace(Face& face);
+        bool deleteFace(Face& face);
+        
+        void translate(TVector3f delta, bool lockTextures);
+        void rotate90CW(EAxis axis, TVector3f center, bool lockTextures);
+        void rotate90CCW(EAxis axis, TVector3f center, bool lockTextures);
+        void rotate(TQuaternion rotation, TVector3f center, bool lockTextures);
+        void flip(EAxis axis, TVector3f center, bool lockTextures);
+        bool resize(Face& face, float dist, bool lockTextures);
+        void enlarge(float delta, bool lockTextures);
+        void snapToGrid();
+        
+        MoveResult moveVertex(int vertexIndex, TVector3f delta);
+        MoveResult moveEdge(int edgeIndex, TVector3f delta);
+        MoveResult moveFace(int faceIndex, TVector3f delta);
+        
+        int filePosition() const;
+        void setFilePosition(int filePosition);
+        bool selected() const;
+        void setSelected(bool selected);
     };
 
 }

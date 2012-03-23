@@ -17,6 +17,9 @@ You should have received a copy of the GNU General Public License
 along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifndef TrenchBroom_VertexData_h
+#define TrenchBroom_VertexData_h
+
 #include "Math.h"
 
 @class PickingHitList;
@@ -200,3 +203,5 @@ TDragResult dragSide(TVertexData* vd, int s, TVector3f d, NSMutableArray* newFac
 
 void snapVertexData(TVertexData* vd);
 BOOL sanityCheck(const TVertexData* vd, BOOL cc);
+
+#endif

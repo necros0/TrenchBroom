@@ -20,9 +20,16 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef TrenchBroom_Entity_h
 #define TrenchBroom_Entity_h
 
+#include "Brush.h"
+#include "Math.h"
+
 namespace TrenchBroom {
-    
+
+    class Brush;
     class Entity {
+    public:
+        const TBoundingBox& bounds() const;
+        void brushChanged(Brush& brush);
     };
 
 }

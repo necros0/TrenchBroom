@@ -68,6 +68,7 @@
 		48622992151A7BEB00B54545 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622991151A7BEB00B54545 /* Entity.cpp */; };
 		48622995151A7C1C00B54545 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622994151A7C1C00B54545 /* Map.cpp */; };
 		48622999151A7C8D00B54545 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622998151A7C8D00B54545 /* Texture.cpp */; };
+		486229A4151CEF4100B54545 /* BrushGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 486229A3151CEF4100B54545 /* BrushGeometry.cpp */; };
 		48639BF412EA227100808576 /* QuakePalette.lmp in Resources */ = {isa = PBXBuildFile; fileRef = 48639BF312EA227100808576 /* QuakePalette.lmp */; };
 		4864E2BD140D1840000DE923 /* CompilerProfileCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864E2BC140D1840000DE923 /* CompilerProfileCommand.m */; };
 		4864E2C1140E2682000DE923 /* CompilerProfileRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864E2C0140E2682000DE923 /* CompilerProfileRunner.m */; };
@@ -365,6 +366,7 @@
 		48622996151A7C6200B54545 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = Model/Texture.h; sourceTree = "<group>"; };
 		48622998151A7C8D00B54545 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.cpp; path = Model/Texture.cpp; sourceTree = "<group>"; };
 		4862299A151A839A00B54545 /* BrushGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrushGeometry.h; path = Model/BrushGeometry.h; sourceTree = "<group>"; };
+		486229A3151CEF4100B54545 /* BrushGeometry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BrushGeometry.cpp; path = Model/BrushGeometry.cpp; sourceTree = "<group>"; };
 		48639BF312EA227100808576 /* QuakePalette.lmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = QuakePalette.lmp; sourceTree = "<group>"; };
 		4864E2BB140D1840000DE923 /* CompilerProfileCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompilerProfileCommand.h; sourceTree = "<group>"; };
 		4864E2BC140D1840000DE923 /* CompilerProfileCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerProfileCommand.m; sourceTree = "<group>"; };
@@ -830,6 +832,7 @@
 				48622996151A7C6200B54545 /* Texture.h */,
 				48622998151A7C8D00B54545 /* Texture.cpp */,
 				4862299A151A839A00B54545 /* BrushGeometry.h */,
+				486229A3151CEF4100B54545 /* BrushGeometry.cpp */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1565,6 +1568,7 @@
 				48622992151A7BEB00B54545 /* Entity.cpp in Sources */,
 				48622995151A7C1C00B54545 /* Map.cpp in Sources */,
 				48622999151A7C8D00B54545 /* Texture.cpp in Sources */,
+				486229A4151CEF4100B54545 /* BrushGeometry.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
