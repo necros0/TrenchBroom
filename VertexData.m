@@ -2119,6 +2119,7 @@ TDragResult dragEdge(TVertexData* vd, int e, TVector3f d, NSMutableArray* newFac
     if (lengthV3f(&d) == 0) {
         result.moved = NO;
         result.index = e;
+        return result;
     }
     
     assert(sanityCheck(vd, YES));

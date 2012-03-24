@@ -19,6 +19,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "BrushGeometry.h"
 #include <assert.h>
+#include <map>
 
 namespace TrenchBroom {
     
@@ -95,52 +96,63 @@ namespace TrenchBroom {
 
     Side::Side(Edge* edges[], bool invert[], int count) {
         for (int i = 0; i < count; i++) {
-            m_edges.push_back(edges[i]);
+            this->edges.push_back(edges[i]);
             if (invert[i]) {
                 edges[i]->left = this;
-                m_vertices.push_back(edges[i]->end);
+                vertices.push_back(edges[i]->end);
             } else {
                 edges[i]->right = this;
-                m_vertices.push_back(edges[i]->start);
+                vertices.push_back(edges[i]->start);
             }
         }
         
-        m_face = NULL;
-        m_mark = SM_NEW;
+        face = NULL;
+        mark = SM_NEW;
     }
     
     Side::Side(Face& face, vector<Edge*>& edges) {
         for (int i = 0; i < edges.size(); i++) {
             edges[i]->left = this;
-            m_edges.push_back(edges[i]);
-            m_vertices.push_back(edges[i]->startVertex(this));
+            edges.push_back(edges[i]);
+            vertices.push_back(edges[i]->startVertex(this));
         }
         
-        m_face = &face;
-        m_face->setSide(this);
-        m_mark = SM_NEW;
+        this->face = &face;
+        this->face->setSide(this);
+        mark = SM_NEW;
     }
     
-    vector<Vertex*>& Side::vertices() {
-        return m_vertices;
+    void Side::replaceEdges(int index1, int index2, Edge* edge) {
+        vector<Edge*> newEdges;
+        vector<Vertex*> newVertices;
+        
+        if (index2 > index1) {
+            for (int i = 0; i <= index1; i++) {
+                newEdges.push_back(edges[i]);
+                newVertices.push_back(edges[i]->startVertex(this));
+            }
+            
+            newEdges.push_back(edge);
+            newVertices.push_back(edge->startVertex(this));
+            
+            for (int i = index2; i < edges.size(); i++) {
+                newEdges.push_back(edges[i]);
+                newVertices.push_back(edges[i]->startVertex(this));
+            }
+        } else {
+            for (int i = index2; i <= index1; i++) {
+                newEdges.push_back(edges[i]);
+                newVertices.push_back(edges[i]->startVertex(this));
+            }
+            
+            newEdges.push_back(edge);
+            newVertices.push_back(edge->startVertex(this));
+        }
+        
+        edges = newEdges;
+        vertices = newVertices;
     }
     
-    vector<Edge*>& Side::edges() {
-        return m_edges;
-    }
-    
-    Face* Side::face() {
-        return m_face;
-    }
-    
-    ESideMark Side::mark() {
-        return m_mark;
-    }
-
-    void Side::setMark(ESideMark mark) {
-        m_mark = mark;
-    }
-
     Edge* Side::split() {
         int keep = 0;
         int drop = 0;
@@ -151,10 +163,10 @@ namespace TrenchBroom {
         int splitIndex1 = -2;
         int splitIndex2 = -2;
         
-        Edge* edge = m_edges.back();
+        Edge* edge = edges.back();
         EEdgeMark lastMark = edge->mark;
-        for (int i = 0; i < m_edges.size(); i++) {
-            edge = m_edges[i];
+        for (int i = 0; i < edges.size(); i++) {
+            edge = edges[i];
             EEdgeMark currentMark = edge->mark;
             if (currentMark == EM_SPLIT) {
                 Vertex* start = edge->startVertex(this);
@@ -172,33 +184,33 @@ namespace TrenchBroom {
                 keep++;
             } else if (currentMark == EM_DROP) {
                 if (lastMark == EM_KEEP)
-                    splitIndex1 = i > 0 ? i - 1 : m_edges.size() - 1;
+                    splitIndex1 = i > 0 ? i - 1 : edges.size() - 1;
                 drop++;
             }
             lastMark = currentMark;
         }
         
-        if (keep == m_edges.size()) {
-            m_mark = SM_KEEP;
+        if (keep == edges.size()) {
+            mark = SM_KEEP;
             return NULL;
         }
         
-        if (undecided == 1 && keep == m_edges.size() - 1) {
-            m_mark = SM_KEEP;
+        if (undecided == 1 && keep == edges.size() - 1) {
+            mark = SM_KEEP;
             return undecidedEdge;
         }
         
-        if (drop + undecided == m_edges.size()) {
-            m_mark = SM_DROP;
+        if (drop + undecided == edges.size()) {
+            mark = SM_DROP;
             return NULL;
         }
         
         assert(splitIndex1 >= 0 && splitIndex2 >= 0);
-        m_mark = SM_SPLIT;
+        mark = SM_SPLIT;
         
         Edge* newEdge = new Edge();
-        newEdge->start = m_edges[splitIndex1]->endVertex(this);
-        newEdge->end = m_edges[splitIndex2]->startVertex(this);
+        newEdge->start = edges[splitIndex1]->endVertex(this);
+        newEdge->end = edges[splitIndex2]->startVertex(this);
         newEdge->left = NULL;
         newEdge->right = this;
         newEdge->mark = EM_NEW;
@@ -207,39 +219,72 @@ namespace TrenchBroom {
         return newEdge;
     }
 
-    void Side::replaceEdges(int index1, int index2, Edge* edge) {
-        vector<Edge*> newEdges;
-        vector<Vertex*> newVertices;
-        
-        if (index2 > index1) {
-            for (int i = 0; i <= index1; i++) {
-                newEdges.push_back(m_edges[i]);
-                newVertices.push_back(m_edges[i]->startVertex(this));
-            }
-            
-            newEdges.push_back(edge);
-            newVertices.push_back(edge->startVertex(this));
-            
-            for (int i = index2; i < m_edges.size(); i++) {
-                newEdges.push_back(m_edges[i]);
-                newVertices.push_back(m_edges[i]->startVertex(this));
-            }
-        } else {
-            for (int i = index2; i <= index1; i++) {
-                newEdges.push_back(m_edges[i]);
-                newVertices.push_back(m_edges[i]->startVertex(this));
-            }
-            
-            newEdges.push_back(edge);
-            newVertices.push_back(edge->startVertex(this));
+    void Side::flip() {
+        Vertex* tempVertex;
+        int j;
+        for (int i = 0; i < vertices.size() / 2; i++) {
+            j = vertices.size() - i - 1;
+            tempVertex = vertices[i];
+            vertices[i] = vertices[j];
+            vertices[j] = tempVertex;
         }
-
-        m_edges = newEdges;
-        m_vertices = newVertices;
+    }
+    
+    MoveResult BrushGeometry::moveVertex(int vertexIndex, bool killable, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces) {
+    }
+    
+    MoveResult BrushGeometry::splitAndMoveEdge(int edgeIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces) {
+    }
+    
+    MoveResult BrushGeometry::splitAndMoveSide(int sideIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces) {
     }
 
+    void BrushGeometry::copy(const BrushGeometry& original) {
+        map<Vertex*, Vertex*> vertexMap;
+        map<Edge*, Edge*> edgeMap;
+        map<Side*, Side*> sideMap;
+        
+        vertices.reserve(original.vertices.size());
+        edges.reserve(original.edges.size());
+        sides.reserve(original.sides.size());
+        
+        for (int i = 0; i < original.vertices.size(); i++) {
+            Vertex* originalVertex = original.vertices[i];
+            Vertex* copyVertex = new Vertex(*originalVertex);
+            vertexMap[originalVertex] = copyVertex;
+            vertices.push_back(copyVertex);
+        }
+        
+        for (int i = 0; i < original.edges.size(); i++) {
+            Edge* originalEdge = original.edges[i];
+            Edge* copyEdge = new Edge(*originalEdge);
+            copyEdge->start = vertexMap[originalEdge->start];
+            copyEdge->end = vertexMap[originalEdge->end];
+            edgeMap[originalEdge] = copyEdge;
+            edges.push_back(copyEdge);
+        }
+        
+        for (int i = 0; i < original.sides.size(); i++) {
+            Side* originalSide = original.sides[i];
+            Side* copySide = new Side(*originalSide);
+            copySide->vertices.clear();
+            copySide->edges.clear();
+            
+            for (int j = 0; j < originalSide->edges.size(); j++) {
+                Edge* originalEdge = originalSide->edges[j];
+                Edge* copyEdge = edgeMap[originalEdge];
+                
+                if (originalEdge->left == originalSide) copyEdge->left = copySide;
+                else copyEdge->right = copySide;
+                copySide->edges.push_back(copyEdge);
+                copySide->vertices.push_back(copyEdge->startVertex(copySide));
+            }
+        }
+        
+        bounds = original.bounds;
+    }
     
-    BrushGeometry::BrushGeometry(const TBoundingBox& bounds) : m_bounds(bounds) {
+    BrushGeometry::BrushGeometry(const TBoundingBox& bounds) {
         Vertex* lfd = new Vertex(bounds.min.x, bounds.min.y, bounds.min.z);
         Vertex* lfu = new Vertex(bounds.min.x, bounds.min.y, bounds.max.z);
         Vertex* lbd = new Vertex(bounds.min.x, bounds.max.y, bounds.min.z);
@@ -284,58 +329,63 @@ namespace TrenchBroom {
         Edge* downEdges[4] = {rfdlfd, rbdrfd, lbdrbd, lfdlbd};
         Side* down = new Side(downEdges, invertAll, 4);
         
-        m_vertices.resize(8);
-        m_vertices[0] = lfd;
-        m_vertices[1] = lfu;
-        m_vertices[2] = lbd;
-        m_vertices[3] = lbu;
-        m_vertices[4] = rfd;
-        m_vertices[5] = rfu;
-        m_vertices[6] = rbd;
-        m_vertices[7] = rbu;
+        vertices.resize(8);
+        vertices[0] = lfd;
+        vertices[1] = lfu;
+        vertices[2] = lbd;
+        vertices[3] = lbu;
+        vertices[4] = rfd;
+        vertices[5] = rfu;
+        vertices[6] = rbd;
+        vertices[7] = rbu;
         
-        m_edges.resize(12);
-        m_edges[ 0] = lfdlbd;
-        m_edges[ 1] = lbdlbu;
-        m_edges[ 2] = lbulfu;
-        m_edges[ 3] = lfulfd;
-        m_edges[ 4] = rfdrfu;
-        m_edges[ 5] = rfurbu;
-        m_edges[ 6] = rburbd;
-        m_edges[ 7] = rbdrfd;
-        m_edges[ 8] = lfurfu;
-        m_edges[ 9] = rfdlfd;
-        m_edges[10] = lbdrbd;
-        m_edges[11] = rbulbu;
+        edges.resize(12);
+        edges[ 0] = lfdlbd;
+        edges[ 1] = lbdlbu;
+        edges[ 2] = lbulfu;
+        edges[ 3] = lfulfd;
+        edges[ 4] = rfdrfu;
+        edges[ 5] = rfurbu;
+        edges[ 6] = rburbd;
+        edges[ 7] = rbdrfd;
+        edges[ 8] = lfurfu;
+        edges[ 9] = rfdlfd;
+        edges[10] = lbdrbd;
+        edges[11] = rbulbu;
         
-        m_sides.resize(6);
-        m_sides[0] = left;
-        m_sides[1] = right;
-        m_sides[2] = front;
-        m_sides[3] = back;
-        m_sides[4] = top;
-        m_sides[5] = down;
+        sides.resize(6);
+        sides[0] = left;
+        sides[1] = right;
+        sides[2] = front;
+        sides[3] = back;
+        sides[4] = top;
+        sides[5] = down;
+        
+        this->bounds = bounds;
     }
     
-    BrushGeometry::BrushGeometry(const TBoundingBox& worldBounds, vector<Face*>& faces) {
+    BrushGeometry::BrushGeometry(const BrushGeometry& original) {
+        copy(original);
     }
     
-    const vector<Vertex*>& BrushGeometry::vertices() const {
-        return m_vertices;
-    }
-    
-    const vector<Edge*>& BrushGeometry::edges() const {
-        return m_edges;
-    }
-    
-    const vector<Side*>& BrushGeometry::sides() const {
-        return m_sides;
-    }
-    
-    const TBoundingBox& BrushGeometry::bounds() const {
-        return m_bounds;
+    BrushGeometry::~BrushGeometry() {
+        while(!sides.empty()) delete sides.back(), sides.pop_back();
+        while(!edges.empty()) delete edges.back(), edges.pop_back();
+        while(!vertices.empty()) delete vertices.back(), vertices.pop_back();
     }
 
+    bool BrushGeometry::closed() const {
+        for (int i = 0; i < sides.size(); i++)
+            if (sides[i]->face == NULL)
+                return false;
+        return true;
+    }
+
+    void BrushGeometry::restoreFaceSides() {
+        for (int i = 0; i < sides.size(); i++)
+            sides[i]->face->setSide(sides[i]);
+    }
+    
     ECutResult BrushGeometry::addFace(Face& face, vector<Face*>& droppedFaces) {
         TPlane boundary = face.boundary();
         
@@ -344,8 +394,8 @@ namespace TrenchBroom {
         int undecided = 0;
         
         // mark vertices
-        for (int i = 0; i < m_vertices.size(); i++) {
-            Vertex& vertex = *m_vertices[i];
+        for (int i = 0; i < vertices.size(); i++) {
+            Vertex& vertex = *vertices[i];
             EPointStatus vs = pointStatusFromPlane(&boundary, &vertex.position);
             if (vs == PS_ABOVE) {
                 vertex.mark = VM_DROP;
@@ -359,49 +409,49 @@ namespace TrenchBroom {
             }
         }
         
-        if (keep + undecided == m_vertices.size())
+        if (keep + undecided == vertices.size())
             return CR_REDUNDANT;
         
-        if (drop + undecided == m_vertices.size())
+        if (drop + undecided == vertices.size())
             return CR_NULL;
         
         // mark and split edges
-        for (int i = 0; i < m_edges.size(); i++) {
-            Edge& edge = *m_edges[i];
+        for (int i = 0; i < edges.size(); i++) {
+            Edge& edge = *edges[i];
             edge.updateMark();
             if (edge.mark == EM_SPLIT) {
                 Vertex* vertex = edge.split(boundary);
-                m_vertices.push_back(vertex);
+                vertices.push_back(vertex);
             }
         }
         
         // mark, split and drop sides
         vector<Edge*> newEdges;
         vector<Side*>::iterator sideIt;
-        for (sideIt = m_sides.begin(); sideIt != m_sides.end(); sideIt++) {
+        for (sideIt = sides.begin(); sideIt != sides.end(); sideIt++) {
             Side* side = *sideIt;
             Edge* newEdge = side->split();
             
-            if (side->mark() == SM_DROP) {
-                Face* face = side->face();
+            if (side->mark == SM_DROP) {
+                Face* face = side->face;
                 if (face != NULL) {
                     droppedFaces.push_back(face);
                     face->setSide(NULL);
                 }
                 delete side;
-                sideIt = m_sides.erase(sideIt);
-            } else if (side->mark() == SM_SPLIT) {
-                m_edges.push_back(newEdge);
+                sideIt = sides.erase(sideIt);
+            } else if (side->mark == SM_SPLIT) {
+                edges.push_back(newEdge);
                 newEdges.push_back(newEdge);
-                side->setMark(SM_UNKNOWN);
-            } else if (side->mark() == SM_KEEP && newEdge != NULL) {
+                side->mark = SM_UNKNOWN;
+            } else if (side->mark == SM_KEEP && newEdge != NULL) {
                 // the edge is an undecided edge, so it needs to be flipped in order to act as a new edge
                 if (newEdge->right != side)
                     newEdge->flip();
                 newEdges.push_back(newEdge);
-                side->setMark(SM_UNKNOWN);
+                side->mark = SM_UNKNOWN;
             } else {
-                side->setMark(SM_UNKNOWN);
+                side->mark = SM_UNKNOWN;
             }
         }
         
@@ -420,16 +470,16 @@ namespace TrenchBroom {
         
         // now create the new side
         Side* newSide = new Side(face, newEdges);
-        m_sides.push_back(newSide);
+        sides.push_back(newSide);
         
         // clean up
         // delete dropped vertices
         vector<Vertex*>::iterator vertexIt;
-        for (vertexIt = m_vertices.begin(); vertexIt != m_vertices.end(); vertexIt++) {
+        for (vertexIt = vertices.begin(); vertexIt != vertices.end(); vertexIt++) {
             Vertex* vertex = *vertexIt;
             if (vertex->mark == VM_DROP) {
                 delete vertex;
-                vertexIt = m_vertices.erase(vertexIt);
+                vertexIt = vertices.erase(vertexIt);
             } else {
                 vertex->mark = VM_UNDECIDED;
             }
@@ -437,18 +487,284 @@ namespace TrenchBroom {
         
         // delete dropped edges
         vector<Edge*>::iterator edgeIt;
-        for (edgeIt = m_edges.begin(); edgeIt != m_edges.end(); edgeIt++) {
+        for (edgeIt = edges.begin(); edgeIt != edges.end(); edgeIt++) {
             Edge* edge = *edgeIt;
             if (edge->mark == EM_DROP) {
                 delete edge;
-                edgeIt = m_edges.erase(edgeIt);
+                edgeIt = edges.erase(edgeIt);
             } else {
                 edge->mark = EM_UNDECIDED;
             }
         }
         
-        m_bounds = boundsOfVertices(m_vertices);
+        bounds = boundsOfVertices(vertices);
         return CR_SPLIT;
+    }
+    
+    bool BrushGeometry::addFaces(vector<Face*>& faces, vector<Face*>& droppedFaces) {
+        for (int i = 0; i < faces.size(); i++)
+            if (addFace(*faces[i], droppedFaces) == CR_NULL)
+                return false;
+        return true;
+    }
+    
+    void BrushGeometry::translate(TVector3f delta) {
+        for (int i = 0; i < vertices.size(); i++)
+            addV3f(&vertices[i]->position, &delta, &vertices[i]->position);
+        translateBounds(&bounds, &delta, &bounds);
+    }
+
+    void BrushGeometry::rotate90CW(EAxis axis, TVector3f center) {
+        for (int i = 0; i < vertices.size(); i++) {
+            subV3f(&vertices[i]->position, &center, &vertices[i]->position);
+            rotate90CWV3f(&vertices[i]->position, axis, &vertices[i]->position);
+            addV3f(&vertices[i]->position, &center, &vertices[i]->position);
+        }
+        rotateBounds90CW(&bounds, axis, &center, &bounds);
+    }
+    
+    void BrushGeometry::rotate90CCW(EAxis axis, TVector3f center) {
+        for (int i = 0; i < vertices.size(); i++) {
+            subV3f(&vertices[i]->position, &center, &vertices[i]->position);
+            rotate90CCWV3f(&vertices[i]->position, axis, &vertices[i]->position);
+            addV3f(&vertices[i]->position, &center, &vertices[i]->position);
+        }
+        rotateBounds90CCW(&bounds, axis, &center, &bounds);
+    }
+    
+    void BrushGeometry::rotate(TQuaternion rotation, TVector3f center) {
+        for (int i = 0; i < vertices.size(); i++) {
+            subV3f(&vertices[i]->position, &center, &vertices[i]->position);
+            rotateQ(&rotation, &vertices[i]->position, &vertices[i]->position);
+            addV3f(&vertices[i]->position, &center, &vertices[i]->position);
+        }
+        rotateBounds(&bounds, &rotation, &center, &bounds);
+    }
+    
+    void BrushGeometry::flip(EAxis axis, TVector3f center) {
+        float min, max;
+        switch (axis) {
+            case A_X:
+                for (int i = 0; i < vertices.size(); i++) {
+                    vertices[i]->position.x -= center.x;
+                    vertices[i]->position.x *= -1;
+                    vertices[i]->position.x += center.x;
+                }
+                
+                min = bounds.max.x;
+                max = bounds.min.x;
+                min -= center.x;
+                min *= -1;
+                min += center.x;
+                max -= center.x;
+                max *= -1;
+                max += center.x;
+                bounds.min.x = min;
+                bounds.max.x = max;
+                break;
+            case A_Y:
+                for (int i = 0; i < vertices.size(); i++) {
+                    vertices[i]->position.y -= center.y;
+                    vertices[i]->position.y *= -1;
+                    vertices[i]->position.y += center.y;
+                }
+                
+                min = bounds.max.y;
+                max = bounds.min.y;
+                min -= center.y;
+                min *= -1;
+                min += center.y;
+                max -= center.y;
+                max *= -1;
+                max += center.y;
+                bounds.min.y = min;
+                bounds.max.y = max;
+                break;
+            default:
+                for (int i = 0; i < vertices.size(); i++) {
+                    vertices[i]->position.z -= center.z;
+                    vertices[i]->position.z *= -1;
+                    vertices[i]->position.z += center.z;
+                }
+                
+                min = bounds.max.z;
+                max = bounds.min.z;
+                min -= center.z;
+                min *= -1;
+                min += center.z;
+                max -= center.z;
+                max *= -1;
+                max += center.z;
+                bounds.min.z = min;
+                bounds.max.z = max;
+                break;
+        }
+        
+        for (int i = 0; i < edges.size(); i++)
+            edges[i]->flip();
+        
+        for (int i = 0; i < sides.size(); i++)
+            sides[i]->flip();
+
+    }
+    
+    void BrushGeometry::snap() {
+    }
+    
+    MoveResult BrushGeometry::moveVertex(int vertexIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces) {
+        assert(vertexIndex >= 0);
+        assert(vertexIndex < vertices.size() + edges.size() + sides.size());
+        
+        MoveResult result;
+        if (lengthSquaredV3f(&delta) == 0)
+            result = MoveResult(vertexIndex, false);
+        else if (vertexIndex < vertices.size())
+            result = moveVertex(vertexIndex, true, delta, newFaces, droppedFaces);
+        else if (vertexIndex < vertices.size() + edges.size())
+            result = splitAndMoveEdge(vertexIndex, delta, newFaces, droppedFaces);
+        else
+            result = splitAndMoveSide(vertexIndex, delta, newFaces, droppedFaces);
+        
+        return result;
+    }
+    
+    MoveResult BrushGeometry::moveEdge(int edgeIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces) {
+        assert(edgeIndex >= 0 && edgeIndex < edges.size());
+        
+        if (lengthSquaredV3f(&delta) == 0)
+            return MoveResult(edgeIndex, false);
+        
+        BrushGeometry testGeometry(*this);
+        testGeometry.restoreFaceSides();
+        
+        TVector3f dir;
+        Edge* edge = testGeometry.edges[edgeIndex];
+        TVector3f start = edge->start->position;
+        TVector3f end = edge->end->position;
+        subV3f(&end, &start, &dir);
+        addV3f(&start, &delta, &start);
+        addV3f(&end, &delta, &end);
+        
+        MoveResult result;
+        if (dotV3f(&dir, &delta) > 0) {
+            result = testGeometry.moveVertex(indexOf<Vertex>(testGeometry.vertices, edge->end), false, delta, newFaces, droppedFaces);
+            if (result.moved)
+                result = testGeometry.moveVertex(indexOf<Vertex>(testGeometry.vertices, edge->start), false, delta, newFaces, droppedFaces);
+        } else {
+            result = testGeometry.moveVertex(indexOf<Vertex>(testGeometry.vertices, edge->start), false, delta, newFaces, droppedFaces);
+            if (result.moved)
+                result = testGeometry.moveVertex(indexOf<Vertex>(testGeometry.vertices, edge->end), false, delta, newFaces, droppedFaces);
+        }
+        
+        if (result.moved) {
+            result.index = indexOf(testGeometry.edges, start, end);
+            copy(testGeometry);
+        } else {
+            result.index = edgeIndex;
+            newFaces.clear();
+            droppedFaces.clear();
+        }
+        
+        restoreFaceSides();
+        return result;
+    }
+    
+    MoveResult BrushGeometry::moveSide(int sideIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces) {
+        assert(sideIndex >= 0 && sideIndex < sides.size());
+        
+        float dist = lengthV3f(&delta);
+        if (dist == 0)
+            return MoveResult(sideIndex, false);
+        
+        BrushGeometry testGeometry(*this);
+        testGeometry.restoreFaceSides();
+        
+        TVector3f dir, diff;
+        scaleV3f(&delta, 1 / dist, &dir);
+        Side* side = testGeometry.sides[sideIndex];
+        TVector3f center = centerOfVertices(side->vertices);
+        
+        int sideVertexCount = side->vertices.size();
+        vector<TVector3f> sideVertices(sideVertexCount);
+        vector<int> indices(sideVertexCount);
+        vector<float> dots(sideVertexCount);
+        for (int i = 0; i < sideVertexCount; i++) {
+            sideVertices[i] = side->vertices[i]->position;
+            subV3f(&sideVertices[i], &center, &diff);
+            dots[i] = dotV3f(&diff, &dir);
+            indices[i] = indexOf<Vertex>(testGeometry.vertices, side->vertices[i]);
+            addV3f(&sideVertices[i], &delta, &sideVertices[i]);
+        }
+        
+        // sort indices by dot value, eek, bubblesort
+        bool switched = true;
+        for (int j = sideVertexCount - 1; j >= 0 && switched; j--) {
+            switched = false;
+            for (int i = 0; i < j; i++) {
+                if (dots[i] > dots[i + 1]) {
+                    float dt = dots[i];
+                    dots[i] = dots[i + 1];
+                    dots[i + 1] = dt;
+                    
+                    int di = indices[i];
+                    indices[i] = indices[i + 1];
+                    indices[i + 1] = di;
+                    switched = true;
+                }
+            }
+        }
+        
+        MoveResult result(-1, true);
+        for (int i = 0; i < sideVertexCount && result.moved; i++)
+            result = moveVertex(indices[i], false, delta, newFaces, droppedFaces);
+        
+        if (result.moved) {
+            result.index = indexOf(testGeometry.sides, sideVertices);
+            copy(testGeometry);
+        } else {
+            result.index = sideIndex;
+            newFaces.clear();
+            droppedFaces.clear();
+        }
+
+        restoreFaceSides();
+        return result;
+    }
+
+    template <class T>
+    int indexOf(const vector<T*>& vec, const T* element) {
+        for (int i = 0; i < vec.size(); i++)
+            if (vec[i] == element)
+                return i;
+        return -1;
+    }
+    
+    int indexOf(const vector<Edge*>& edges, TVector3f v1, TVector3f v2) {
+        for (int i = 0; i < edges.size(); i++) {
+            Edge* edge = edges[i];
+            if ((equalV3f(&edge->start->position, &v1) && equalV3f(&edge->end->position, &v2)) ||
+                (equalV3f(&edge->start->position, &v2) && equalV3f(&edge->end->position, &v1)))
+                return i;
+        }
+        return -1;
+    }
+
+    int indexOf(const vector<Side*>& sides, const vector<TVector3f>& vertices) {
+        for (int i = 0; i < sides.size(); i++) {
+            Side* side = sides[i];
+            if (side->vertices.size() == vertices.size()) {
+                for (int j = 0; j < vertices.size(); j++) {
+                    int k = 0;
+                    while (k < vertices.size() && equalV3f(&side->vertices[(j + k) % vertices.size()]->position, &vertices[k]))
+                        k++;
+                    
+                    if (k == vertices.size())
+                        return i;
+                }
+            }
+        }
+        
+        return -1;    
     }
     
     TVector3f centerOfVertices(vector<Vertex*>& vertices) {

@@ -30,13 +30,12 @@ using namespace std;
 
 namespace TrenchBroom {
     
-    class MoveResult {
-    };
-    
     class Entity;
     class Face;
     class Vertex;
     class Edge;
+    class BrushGeometry;
+    class MoveResult;
     
     class Brush {
     protected:
@@ -44,23 +43,20 @@ namespace TrenchBroom {
         Entity* m_entity;
         vector<Face*> m_faces;
         
+        BrushGeometry* m_geometry;
+        
         bool m_onGrid;
         const TBoundingBox& m_worldBounds;
-        TBoundingBox m_bounds;
-        
-        vector<Vertex*> m_vertices;
-        vector<Edge*> m_edges;
         
         int m_filePosition;
         bool m_selected;
         
         void init();
-        void init(const TBoundingBox& bounds, Texture* texture);
-        void reset();
+        void rebuildGeometry();
     public:
-        Brush(const TBoundingBox& worldBounds, Texture* texture);
         Brush(const TBoundingBox& worldBounds, const Brush& brushTemplate);
         Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture* texture);
+        ~Brush();
         
         void restore(const Brush& brushTemplate);
         
@@ -81,16 +77,17 @@ namespace TrenchBroom {
         
         bool addFace(Face& face);
         bool canDeleteFace(Face& face);
-        bool deleteFace(Face& face);
+        void deleteFace(Face& face);
         
         void translate(TVector3f delta, bool lockTextures);
         void rotate90CW(EAxis axis, TVector3f center, bool lockTextures);
         void rotate90CCW(EAxis axis, TVector3f center, bool lockTextures);
         void rotate(TQuaternion rotation, TVector3f center, bool lockTextures);
         void flip(EAxis axis, TVector3f center, bool lockTextures);
-        bool resize(Face& face, float dist, bool lockTextures);
+        bool canResize(Face& face, float dist);
+        void resize(Face& face, float dist, bool lockTextures);
         void enlarge(float delta, bool lockTextures);
-        void snapToGrid();
+        void snap();
         
         MoveResult moveVertex(int vertexIndex, TVector3f delta);
         MoveResult moveEdge(int edgeIndex, TVector3f delta);

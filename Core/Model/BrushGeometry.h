@@ -59,6 +59,14 @@ namespace TrenchBroom {
         SM_UNKNOWN
     } ESideMark;
 
+    class MoveResult {
+    public:
+        int index;
+        bool moved;
+        MoveResult();
+        MoveResult(int index, bool moved) : index(index), moved(moved) {}
+    };
+    
     class Vertex {
     public:
         TVector3f position;
@@ -86,45 +94,59 @@ namespace TrenchBroom {
 
     class Face;
     class Side {
-    private:
-        vector<Vertex*> m_vertices;
-        vector<Edge*> m_edges;
-        Face* m_face;
-        ESideMark m_mark;
     public:
+        vector<Vertex*> vertices;
+        vector<Edge*> edges;
+        Face* face;
+        ESideMark mark;
+        
         Side(Edge* edges[], bool invert[], int count);
         Side(Face& face, vector<Edge*>& edges);
 
-        vector<Vertex*>& vertices();
-        vector<Edge*>& edges();
-        Face* face();
-        ESideMark mark();
-        void setMark(ESideMark mark);
-
-        Edge* split();
         void replaceEdges(int index1, int index2, Edge* edge);
+        Edge* split();
+        void flip();
     };
     
     class BrushGeometry {
     private:
-        vector<Vertex*> m_vertices;
-        vector<Edge*> m_edges;
-        vector<Side*> m_sides;
-        TBoundingBox m_bounds;
-
-        void init();
+        MoveResult moveVertex(int vertexIndex, bool killable, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        MoveResult splitAndMoveEdge(int edgeIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        MoveResult splitAndMoveSide(int sideIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        void copy(const BrushGeometry& original);
     public:
+        vector<Vertex*> vertices;
+        vector<Edge*> edges;
+        vector<Side*> sides;
+        TBoundingBox bounds;
+
         BrushGeometry(const TBoundingBox& bounds);
-        BrushGeometry(const TBoundingBox& worldBounds, vector<Face*>& faces);
+        BrushGeometry(const BrushGeometry& original);
+        ~BrushGeometry();
         
-        const vector<Vertex*>& vertices() const;
-        const vector<Edge*>& edges() const;
-        const vector<Side*>& sides() const;
-        const TBoundingBox& bounds() const;
+        bool closed() const;
+        void restoreFaceSides();
         
         ECutResult addFace(Face& face, vector<Face*>& droppedFaces);
+        bool addFaces(vector<Face*>& faces, vector<Face*>& droppedFaces);
+        
+        void translate(TVector3f delta);
+        void rotate90CW(EAxis axis, TVector3f center);
+        void rotate90CCW(EAxis axis, TVector3f center);
+        void rotate(TQuaternion rotation, TVector3f center);
+        void flip(EAxis axis, TVector3f center);
+        void snap();
+        
+        MoveResult moveVertex(int vertexIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        MoveResult moveEdge(int edgeIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        MoveResult moveSide(int sideIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
     };
     
+    template <class T>
+    int indexOf(const vector<T*>& vec, const T* element);
+    int indexOf(const vector<Edge*>& edges, TVector3f v1, TVector3f v2);
+    int indexOf(const vector<Side*>& sides, const vector<TVector3f>& vertices);
+
     TVector3f centerOfVertices(vector<Vertex*>& vertices);
     TBoundingBox boundsOfVertices(vector<Vertex*>& vertices);
     EPointStatus vertexStatusFromRay(TVector3f origin, TVector3f direction, const vector<Vertex*>& vertices);

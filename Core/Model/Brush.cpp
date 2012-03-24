@@ -19,6 +19,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "Brush.h"
 #include <assert.h>
+#include <algorithm>
 
 namespace TrenchBroom {
     void Brush::init() {
@@ -30,131 +31,100 @@ namespace TrenchBroom {
         m_selected = false;
     }
     
-    void Brush::init(const TBoundingBox& bounds, Texture* texture) {
-        init();
-        
-        Vertex* lfd = new Vertex(bounds.min.x, bounds.min.y, bounds.min.z);
-        Vertex* lfu = new Vertex(bounds.min.x, bounds.min.y, bounds.max.z);
-        Vertex* lbd = new Vertex(bounds.min.x, bounds.max.y, bounds.min.z);
-        Vertex* lbu = new Vertex(bounds.min.x, bounds.max.y, bounds.max.z);
-        Vertex* rfd = new Vertex(bounds.max.x, bounds.min.y, bounds.min.z);
-        Vertex* rfu = new Vertex(bounds.max.x, bounds.min.y, bounds.max.z);
-        Vertex* rbd = new Vertex(bounds.max.x, bounds.max.y, bounds.min.z);
-        Vertex* rbu = new Vertex(bounds.max.x, bounds.max.y, bounds.max.z);
-        
-        Edge* lfdlbd = new Edge(lfd, lbd);
-        Edge* lbdlbu = new Edge(lbd, lbu);
-        Edge* lbulfu = new Edge(lbu, lfu);
-        Edge* lfulfd = new Edge(lfu, lfd);
-        Edge* rfdrfu = new Edge(rfd, rfu);
-        Edge* rfurbu = new Edge(rfu, rbu);
-        Edge* rburbd = new Edge(rbu, rbd);
-        Edge* rbdrfd = new Edge(rbd, rfd);
-        Edge* lfurfu = new Edge(lfu, rfu);
-        Edge* rfdlfd = new Edge(rfd, lfd);
-        Edge* lbdrbd = new Edge(lbd, rbd);
-        Edge* rbulbu = new Edge(rbu, lbu);
-        
-        bool invertNone[4] = {false, false, false, false};
-        bool invertAll[4] = {true, true, true, true};
-        bool invertOdd[4] = {false, true, false, true};
-        
-        Edge* leftEdges[4] = {lfdlbd, lbdlbu, lbulfu, lfulfd};
-        Face* left = new Face(m_worldBounds, leftEdges, invertNone, 4);
-        left->setTexture(texture);
-        left->setBrush(this);
-        
-        Edge* rightEdges[4] = {rfdrfu, rfurbu, rburbd, rbdrfd};
-        Face* right = new Face(m_worldBounds, rightEdges, invertNone, 4);
-        right->setTexture(texture);
-        right->setBrush(this);
-        
-        Edge* frontEdges[4] = {lfurfu, rfdrfu, rfdlfd, lfulfd};
-        Face* front = new Face(m_worldBounds, frontEdges, invertOdd, 4);
-        front->setTexture(texture);
-        front->setBrush(this);
-        
-        Edge* backEdges[4] = {rbulbu, lbdlbu, lbdrbd, rburbd};
-        Face* back = new Face(m_worldBounds, backEdges, invertOdd, 4);
-        back->setTexture(texture);
-        back->setBrush(this);
-        
-        Edge* topEdges[4] = {lbulfu, rbulbu, rfurbu, lfurfu};
-        Face* top = new Face(m_worldBounds, topEdges, invertAll, 4);
-        top->setTexture(texture);
-        top->setBrush(this);
-        
-        Edge* downEdges[4] = {rfdlfd, rbdrfd, lbdrbd, lfdlbd};
-        Face* down = new Face(m_worldBounds, downEdges, invertAll, 4);
-        down->setTexture(texture);
-        down->setBrush(this);
-        
-        m_vertices.resize(8);
-        m_vertices[0] = lfd;
-        m_vertices[1] = lfu;
-        m_vertices[2] = lbd;
-        m_vertices[3] = lbu;
-        m_vertices[4] = rfd;
-        m_vertices[5] = rfu;
-        m_vertices[6] = rbd;
-        m_vertices[7] = rbu;
-        
-        m_edges.resize(12);
-        m_edges[ 0] = lfdlbd;
-        m_edges[ 1] = lbdlbu;
-        m_edges[ 2] = lbulfu;
-        m_edges[ 3] = lfulfd;
-        m_edges[ 4] = rfdrfu;
-        m_edges[ 5] = rfurbu;
-        m_edges[ 6] = rburbd;
-        m_edges[ 7] = rbdrfd;
-        m_edges[ 8] = lfurfu;
-        m_edges[ 9] = rfdlfd;
-        m_edges[10] = lbdrbd;
-        m_edges[11] = rbulbu;
-        
-        m_faces.resize(6);
-        m_faces[0] = left;
-        m_faces[1] = right;
-        m_faces[2] = front;
-        m_faces[3] = back;
-        m_faces[4] = top;
-        m_faces[5] = down;
-        
-        m_bounds = bounds;
-    }
-
-    void Brush::reset() {
-        while(!m_faces.empty()) delete m_faces.back(), m_faces.pop_back();
-        while(!m_edges.empty()) delete m_edges.back(), m_faces.pop_back();
-        while(!m_vertices.empty()) delete m_vertices.back(), m_faces.pop_back();
-        init(m_worldBounds, NULL);
-    }
-    
-    Brush::Brush(const TBoundingBox& worldBounds, Texture* texture) : m_worldBounds(worldBounds) {
-        init(m_worldBounds, texture);
-    }
-    
     Brush::Brush(const TBoundingBox& worldBounds, const Brush& brushTemplate) : m_worldBounds(worldBounds) {
         init();
         restore(brushTemplate);
     }
     
     Brush::Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture* texture) : m_worldBounds(worldBounds) {
-        init(brushBounds, texture);
+        init();
+        m_geometry = new BrushGeometry(m_worldBounds);
+        
+        TVector3f p1, p2, p3;
+        
+        p1 = brushBounds.min;
+        p2 = p1;
+        p2.z = brushBounds.max.z;
+        p3 = p1;
+        p3.x = brushBounds.max.x;
+        Face* front = new Face(m_worldBounds, p1, p2, p3);
+        front->setTexture(texture);
+        addFace(*front);
+        
+        p2 = p1;
+        p2.y = brushBounds.max.y;
+        p3 = p1;
+        p3.z = brushBounds.max.z;
+        Face* left = new Face(m_worldBounds, p1, p2, p3);
+        left->setTexture(texture);
+        addFace(*left);
+        
+        p2 = p1;
+        p2.x = brushBounds.max.x;
+        p3 = p1;
+        p3.y = brushBounds.max.y;
+        Face* bottom = new Face(m_worldBounds, p1, p2, p3);
+        bottom->setTexture(texture);
+        addFace(*bottom);
+
+        p1 = brushBounds.max;
+        p2 = p1;
+        p2.x = brushBounds.min.x;
+        p3 = p1;
+        p3.z = brushBounds.min.z;
+        Face* back = new Face(m_worldBounds, p1, p2, p3);
+        back->setTexture(texture);
+        addFace(*back);
+        
+        p2 = p1;
+        p2.z = brushBounds.min.z;
+        p3 = p1;
+        p3.y = brushBounds.min.y;
+        Face* right = new Face(m_worldBounds, p1, p2, p3);
+        right->setTexture(texture);
+        addFace(*right);
+        
+        p2 = p1;
+        p2.y = brushBounds.min.y;
+        p3 = p1;
+        p3.x = brushBounds.min.x;
+        Face* top = new Face(m_worldBounds, p1, p2, p3);
+        top->setTexture(texture);
+        addFace(*top);
     }
     
+    Brush::~Brush() {
+        delete m_geometry;
+        while(!m_faces.empty()) delete m_faces.back(), m_faces.pop_back();
+    }
+    
+    void Brush::rebuildGeometry() {
+        vector<Face*> droppedFaces;
+        
+        delete m_geometry;
+        m_geometry = new BrushGeometry(m_worldBounds);
+        m_geometry->addFaces(m_faces, droppedFaces);
+        for (int i = 0; i < droppedFaces.size(); i++) {
+            Face* droppedFace = droppedFaces[i];
+            vector<Face*>::iterator it = find(m_faces.begin(), m_faces.end(), droppedFace);
+            delete *it;
+            m_faces.erase(it);
+        }
+    }
+
     void Brush::restore(const Brush& brushTemplate) {
         assert(m_brushId == brushTemplate.brushId());
         
-        reset();
+        while(!m_faces.empty()) delete m_faces.back(), m_faces.pop_back();
+        if (m_geometry != NULL)
+            delete m_geometry;
+        m_geometry = new BrushGeometry(m_worldBounds);
+
         vector<Face* > templateFaces = brushTemplate.faces();
         for (int i = 0; i < templateFaces.size(); i++) {
             Face* face = new Face(m_worldBounds, *templateFaces[i]);
             addFace(*face);
         }
-        m_bounds = brushTemplate.bounds();
-        
         m_entity->brushChanged(*this);
     }
     
@@ -175,7 +145,7 @@ namespace TrenchBroom {
     }
     
     const TBoundingBox& Brush::bounds() const {
-        return m_bounds;
+        return m_geometry->bounds;
     }
     
     const TBoundingBox& Brush::worldBounds() const {
@@ -183,15 +153,16 @@ namespace TrenchBroom {
     }
 
     const vector<Vertex*>& Brush::vertices() const {
-        return m_vertices;
+        return m_geometry->vertices;
     }
     
     const vector<Edge*>& Brush::edges() const {
-        return m_edges;
+        return m_geometry->edges;
     }
 
     bool Brush::containsPoint(TVector3f point) {
-        if (!boundsContainPoint(&m_bounds, &point))
+        const TBoundingBox& myBounds = bounds();
+        if (!boundsContainPoint(&myBounds, &point))
             return false;
         
         for (int i = 0; i < m_faces.size(); i++) {
@@ -203,14 +174,26 @@ namespace TrenchBroom {
     }
     
     bool Brush::intersectsBrush(const Brush& brush) {
-        TBoundingBox theirBounds = brush.bounds();
-        if (!boundsIntersectWithBounds(&m_bounds, &theirBounds))
+        const TBoundingBox myBounds = bounds();
+        const TBoundingBox theirBounds = brush.bounds();
+        if (!boundsIntersectWithBounds(&myBounds, &theirBounds))
             return false;
         
         // separating axis theorem
         // http://www.geometrictools.com/Documentation/MethodOfSeparatingAxes.pdf
 
-        const vector<Vertex*> theirVertices = brush.vertices();
+        const vector<Vertex*>& myVertices = vertices();
+        const vector<Face*>& theirFaces = brush.faces();
+        for (int i = 0; i < theirFaces.size(); i++) {
+            Face* theirFace = theirFaces[i];
+            TVector3f origin = theirFace->vertices()[0]->position;
+            TVector3f direction = theirFace->boundary().norm;
+            if (vertexStatusFromRay(origin, direction, myVertices) == PS_ABOVE)
+                return false;
+        }
+        
+
+        const vector<Vertex*>& theirVertices = brush.vertices();
         for (int i = 0; i < m_faces.size(); i++) {
             Face* myFace = m_faces[i];
             TVector3f origin = myFace->vertices()[0]->position;
@@ -219,18 +202,10 @@ namespace TrenchBroom {
                 return false;
         }
 
-        const vector<Face*>& theirFaces = brush.faces();
-        for (int i = 0; i < theirFaces.size(); i++) {
-            Face* theirFace = theirFaces[i];
-            TVector3f origin = theirFace->vertices()[0]->position;
-            TVector3f direction = theirFace->boundary().norm;
-            if (vertexStatusFromRay(origin, direction, m_vertices) == PS_ABOVE)
-                return false;
-        }
-        
+        const vector<Edge*>& myEdges = edges();
         const vector<Edge*>& theirEdges = brush.edges();
-        for (int i = 0; i < m_edges.size(); i++) {
-            Edge* myEdge = m_edges[i];
+        for (int i = 0; i < myEdges.size(); i++) {
+            Edge* myEdge = myEdges[i];
             for (int j = 0; j < theirEdges.size(); j++) {
                 Edge* theirEdge = theirEdges[i];
                 TVector3f myEdgeVec, theirEdgeVec, direction;
@@ -240,7 +215,7 @@ namespace TrenchBroom {
                 crossV3f(&myEdgeVec, &theirEdgeVec, &direction);
                 TVector3f origin = myEdge->start->position;
                 
-                EPointStatus myStatus = vertexStatusFromRay(origin, direction, m_vertices);
+                EPointStatus myStatus = vertexStatusFromRay(origin, direction, myVertices);
                 if (myStatus != PS_INSIDE) {
                     EPointStatus theirStatus = vertexStatusFromRay(origin, direction, theirVertices);
                     if (theirStatus != PS_INSIDE) {
@@ -255,8 +230,9 @@ namespace TrenchBroom {
     }
     
     bool Brush::containsBrush(const Brush& brush) {
-        TBoundingBox theirBounds = brush.bounds();
-        if (!boundsContainBounds(&m_bounds, &theirBounds))
+        const TBoundingBox myBounds = bounds();
+        const TBoundingBox theirBounds = brush.bounds();
+        if (!boundsContainBounds(&myBounds, &theirBounds))
             return false;
         
         const vector<Vertex*>& theirVertices = brush.vertices();
@@ -267,8 +243,9 @@ namespace TrenchBroom {
     }
     
     bool Brush::intersectsEntity(const Entity& entity) {
+        const TBoundingBox myBounds = bounds();
         const TBoundingBox theirBounds = entity.bounds();
-        if (!boundsIntersectWithBounds(&m_bounds, &theirBounds))
+        if (!boundsIntersectWithBounds(&myBounds, &theirBounds))
             return false;
         
         TVector3f point = theirBounds.min;
@@ -299,8 +276,9 @@ namespace TrenchBroom {
     }
     
     bool Brush::containsEntity(const Entity& entity) {
+        const TBoundingBox myBounds = bounds();
         const TBoundingBox theirBounds = entity.bounds();
-        if (!boundsContainBounds(&m_bounds, &theirBounds))
+        if (!boundsContainBounds(&myBounds, &theirBounds))
             return false;
         
         TVector3f point = theirBounds.min;
@@ -330,4 +308,143 @@ namespace TrenchBroom {
         return true;
     }
 
+    bool Brush::addFace(Face& face) {
+        vector<Face*> droppedFaces;
+        ECutResult result = m_geometry->addFace(face, droppedFaces);
+        if (result == CR_REDUNDANT) return true;
+        if (result == CR_NULL) return false;
+
+        for (int i = 0; i < droppedFaces.size(); i++) {
+            Face* droppedFace = droppedFaces[i];
+            vector<Face*>::iterator it = find(m_faces.begin(), m_faces.end(), droppedFace);
+            delete *it;
+            m_faces.erase(it);
+        }
+        face.setBrush(this);
+        m_faces.push_back(&face);
+        return true;
+    }
+    
+    bool Brush::canDeleteFace(Face& face) {
+        vector<Face*> droppedFaces;
+        BrushGeometry testGeometry(m_worldBounds);
+        
+        for (int i = 0; i < m_faces.size(); i++)
+            if (m_faces[i] != &face)
+                testGeometry.addFace(*m_faces[i], droppedFaces);
+        
+        bool canDelete = testGeometry.closed();
+        
+        m_geometry->restoreFaceSides();
+        return canDelete;
+    }
+    
+    void Brush::deleteFace(Face& face) {
+        vector<Face*>::iterator it = find(m_faces.begin(), m_faces.end(), &face);
+        delete *it;
+        m_faces.erase(it);
+        rebuildGeometry();
+    }
+
+    void Brush::translate(TVector3f delta, bool lockTextures) {
+        for (int i = 0; i < m_faces.size(); i++)
+            m_faces[i]->translate(delta, lockTextures);
+        m_geometry->translate(delta);
+        m_entity->brushChanged(*this);
+    }
+    
+    void Brush::rotate90CW(EAxis axis, TVector3f center, bool lockTextures) {
+        for (int i = 0; i < m_faces.size(); i++)
+            m_faces[i]->rotate90CW(axis, center, lockTextures);
+        m_geometry->rotate90CW(axis, center);
+        m_entity->brushChanged(*this);
+    }
+    
+    void Brush::rotate90CCW(EAxis axis, TVector3f center, bool lockTextures) {
+        for (int i = 0; i < m_faces.size(); i++)
+            m_faces[i]->rotate90CCW(axis, center, lockTextures);
+        m_geometry->rotate90CCW(axis, center);
+        m_entity->brushChanged(*this);
+    }
+
+    void Brush::rotate(TQuaternion rotation, TVector3f center, bool lockTextures) {
+        for (int i = 0; i < m_faces.size(); i++)
+            m_faces[i]->rotate(rotation, center, lockTextures);
+        m_geometry->rotate(rotation, center);
+        m_entity->brushChanged(*this);
+    }
+
+    void Brush::flip(EAxis axis, TVector3f center, bool lockTextures) {
+        for (int i = 0; i < m_faces.size(); i++)
+            m_faces[i]->flip(axis, center, lockTextures);
+        m_geometry->flip(axis, center);
+        m_entity->brushChanged(*this);
+    }
+    
+    bool Brush::canResize(Face& face, float dist) {
+        Face testFace(m_worldBounds, face);
+        testFace.move(dist, false);
+        
+        TPlane oldBoundary = face.boundary();
+        TPlane newBoundary = testFace.boundary();
+        if (equalPlane(&oldBoundary, &newBoundary)) return false;
+        
+        vector<Face*> droppedFaces;
+        BrushGeometry testGeometry(m_worldBounds);
+        for (int i = 0; i < m_faces.size(); i++)
+            if (m_faces[i] != &face)
+                testGeometry.addFace(*m_faces[i], droppedFaces);
+        
+        ECutResult result = testGeometry.addFace(testFace, droppedFaces);
+        bool canDrag = droppedFaces.size() == 0 && result != CR_NULL && boundsContainBounds(&m_worldBounds, &testGeometry.bounds);
+        
+        m_geometry->restoreFaceSides();
+        return canDrag;
+    }
+
+    void Brush::resize(Face& face, float dist, bool lockTextures) {
+        face.move(dist, lockTextures);
+        rebuildGeometry();
+        m_entity->brushChanged(*this);
+    }
+    
+    void Brush::enlarge(float delta, bool lockTextures) {
+        for (int i = 0; i < m_faces.size(); i++)
+            m_faces[i]->move(delta, lockTextures);
+        rebuildGeometry();
+        m_entity->brushChanged(*this);
+    }
+    
+    void Brush::snap() {
+        m_geometry->snap();
+        m_entity->brushChanged(*this);
+    }
+    
+    MoveResult moveVertex(int vertexIndex, TVector3f delta) {
+        vector<Face*> newFaces;
+        vector<Face*> droppedFaces;
+        
+    }
+    
+    MoveResult moveEdge(int edgeIndex, TVector3f delta) {
+    }
+    
+    MoveResult moveFace(int faceIndex, TVector3f delta) {
+    }
+
+    int Brush::filePosition() const {
+        return m_filePosition;
+    }
+    
+    void Brush::setFilePosition(int filePosition) {
+        m_filePosition = filePosition;
+    }
+    
+    bool Brush::selected() const {
+        return m_selected;
+    }
+    
+    void Brush::setSelected(bool selected) {
+        m_selected = selected;
+    }
 }

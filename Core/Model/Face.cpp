@@ -75,7 +75,7 @@ namespace TrenchBroom {
         float radX, radY, rad;
         
         // calculate the current texture coordinates of the face's center
-        centerOfVertices(m_side->vertices, curCenter);
+        curCenter = centerOfVertices(m_side->vertices);
         curCenterTexCoords.x = dotV3f(&curCenter, &m_scaledTexAxisX) + m_xOffset;
         curCenterTexCoords.y = dotV3f(&curCenter, &m_scaledTexAxisY) + m_yOffset;
         
