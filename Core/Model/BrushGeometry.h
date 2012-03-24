@@ -29,6 +29,12 @@ using namespace std;
 namespace TrenchBroom {
     
     typedef enum {
+        CR_REDUNDANT, // the given face is redundant and need not be added to the brush
+        CR_NULL, // the given face has nullified the entire brush
+        CR_SPLIT // the given face has split the brush
+    } ECutResult;
+
+    typedef enum {
         VM_DROP,
         VM_KEEP,
         VM_UNDECIDED,
@@ -58,20 +64,69 @@ namespace TrenchBroom {
         TVector3f position;
         EVertexMark mark;
         Vertex(float x, float y, float z);
+        Vertex();
     };
     
-    class Face;
+    class Side;
     class Edge {
     public:
         Vertex* start;
         Vertex* end;
-        Face* left;
-        Face* right;
+        Side* left;
+        Side* right;
         EEdgeMark mark;
         Edge(Vertex* start, Vertex* end);
+        Edge();
+        Vertex* startVertex(Side* side);
+        Vertex* endVertex(Side* side);
+        void updateMark();
+        Vertex* split(TPlane plane);
+        void flip();
+    };
+
+    class Face;
+    class Side {
+    private:
+        vector<Vertex*> m_vertices;
+        vector<Edge*> m_edges;
+        Face* m_face;
+        ESideMark m_mark;
+    public:
+        Side(Edge* edges[], bool invert[], int count);
+        Side(Face& face, vector<Edge*>& edges);
+
+        vector<Vertex*>& vertices();
+        vector<Edge*>& edges();
+        Face* face();
+        ESideMark mark();
+        void setMark(ESideMark mark);
+
+        Edge* split();
+        void replaceEdges(int index1, int index2, Edge* edge);
     };
     
-    void centerOfVertices(vector<Vertex*>& vertices, TVector3f& center);
+    class BrushGeometry {
+    private:
+        vector<Vertex*> m_vertices;
+        vector<Edge*> m_edges;
+        vector<Side*> m_sides;
+        TBoundingBox m_bounds;
+
+        void init();
+    public:
+        BrushGeometry(const TBoundingBox& bounds);
+        BrushGeometry(const TBoundingBox& worldBounds, vector<Face*>& faces);
+        
+        const vector<Vertex*>& vertices() const;
+        const vector<Edge*>& edges() const;
+        const vector<Side*>& sides() const;
+        const TBoundingBox& bounds() const;
+        
+        ECutResult addFace(Face& face, vector<Face*>& droppedFaces);
+    };
+    
+    TVector3f centerOfVertices(vector<Vertex*>& vertices);
+    TBoundingBox boundsOfVertices(vector<Vertex*>& vertices);
     EPointStatus vertexStatusFromRay(TVector3f origin, TVector3f direction, const vector<Vertex*>& vertices);
 }
 

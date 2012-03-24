@@ -32,6 +32,7 @@ using namespace std;
 namespace TrenchBroom {
     
     class Brush;
+    class Side;
     class Face {
     protected:
         int m_faceId;
@@ -47,9 +48,8 @@ namespace TrenchBroom {
         float m_rotation;
         float m_xScale;
         float m_yScale;
-        
-        vector<Vertex*> m_vertices;
-        vector<Edge*> m_edges;
+
+        Side* m_side;
         
         int m_texPlaneNormIndex;
         int m_texFaceNormIndex;
@@ -71,7 +71,6 @@ namespace TrenchBroom {
         Face(const TBoundingBox& worldBounds);
         Face(const TBoundingBox& worldBounds, TVector3f point1, TVector3f point2, TVector3f point3);
         Face(const TBoundingBox& worldBounds, const Face& faceTemplate);
-        Face(const TBoundingBox& worldBounds, Edge* edges[], bool invert[], int count);
         ~Face();
         
         void restore(const Face& faceTemplate);
@@ -79,6 +78,7 @@ namespace TrenchBroom {
         int faceId() const;
         Brush* brush() const;
         void setBrush(Brush* brush);
+        void setSide(Side* side);
         
         void points(TVector3f& point1, TVector3f& point2, TVector3f& point3) const;
         void updatePoints();

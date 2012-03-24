@@ -75,7 +75,7 @@ namespace TrenchBroom {
         float radX, radY, rad;
         
         // calculate the current texture coordinates of the face's center
-        centerOfVertices(m_vertices, curCenter);
+        centerOfVertices(m_side->vertices, curCenter);
         curCenterTexCoords.x = dotV3f(&curCenter, &m_scaledTexAxisX) + m_xOffset;
         curCenterTexCoords.y = dotV3f(&curCenter, &m_scaledTexAxisY) + m_yOffset;
         
@@ -229,21 +229,6 @@ namespace TrenchBroom {
         restore(faceTemplate);
     }
     
-    Face::Face(const TBoundingBox& worldBounds, Edge* edges[], bool invert[], int count) : m_worldBounds(worldBounds) {
-        init();
-        for (int i = 0; i < count; i++) {
-            m_edges.push_back(edges[i]);
-            if (invert[i]) {
-                edges[i]->left = this;
-                m_vertices.push_back(edges[i]->end);
-            } else {
-                edges[i]->right = this;
-                m_vertices.push_back(edges[i]->start);
-            }
-        }
-        updatePoints();
-    }
-
     Face::~Face() {
         if (m_vboBlock != NULL)
             freeVboBlock(m_vboBlock);
@@ -273,6 +258,10 @@ namespace TrenchBroom {
     
     void Face::setBrush(Brush* brush) {
         m_brush = brush;
+    }
+    
+    void Face::setSide(Side* side) {
+        m_side = side;
     }
     
     void Face::points(TVector3f& point1, TVector3f& point2, TVector3f& point3) const {
@@ -327,11 +316,11 @@ namespace TrenchBroom {
     }
     
     const vector<Vertex*>& Face::vertices() const {
-        return m_vertices;
+        return m_side->vertices;
     }
     
     const vector<Edge*>& Face::edges() const {
-        return m_edges;
+        return m_side->edges;
     }
     
     Texture* Face::texture() const {
