@@ -63,7 +63,7 @@ namespace TrenchBroom {
     public:
         int index;
         bool moved;
-        MoveResult();
+        MoveResult() {};
         MoveResult(int index, bool moved) : index(index), moved(moved) {}
     };
     
@@ -88,6 +88,7 @@ namespace TrenchBroom {
         Vertex* startVertex(Side* side);
         Vertex* endVertex(Side* side);
         TVector3f vector();
+        TVector3f center();
         void updateMark();
         Vertex* split(TPlane plane);
         void flip();
@@ -101,6 +102,7 @@ namespace TrenchBroom {
         Face* face;
         ESideMark mark;
         
+        Side() : mark(SM_NEW) {}
         Side(Edge* edges[], bool invert[], int count);
         Side(Face& face, vector<Edge*>& edges);
 
@@ -113,6 +115,7 @@ namespace TrenchBroom {
     class BrushGeometry {
     private:
         vector<Side*> incidentSides(int vertexIndex);
+        void deleteDegenerateTriangle(Side* side, Edge* edge, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
         void triangulateSide(Side* side, int vertexIndex, vector<Face*>& newFaces);
         void splitSide(Side* side, int vertexIndex, vector<Face*>& newFaces);
         void splitSides(vector<Side*>& sides, TRay ray, int vertexIndex, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
@@ -122,7 +125,7 @@ namespace TrenchBroom {
         void mergeSides(vector<Face*>& newFaces, vector<Face*>&droppedFaces);
         float minVertexMoveDist(const vector<Side*>& sides, const Vertex* vertex, TRay ray, float maxDist);
         MoveResult moveVertex(int vertexIndex, bool mergeIncidentVertex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
-        MoveResult splitAndMoveEdge(int edgeIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        MoveResult splitAndMoveEdge(int index, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
         MoveResult splitAndMoveSide(int sideIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
         void copy(const BrushGeometry& original);
     public:
@@ -155,6 +158,7 @@ namespace TrenchBroom {
     
 
     template <class T> int indexOf(const vector<T*>& vec, const T* element);
+    template <class T> bool removeElement(vector<T*>& vec, T* element);
     template <class T> bool deleteElement(vector<T*>& vec, T* element);
     int indexOf(const vector<Vertex*>& vertices, TVector3f v);
     int indexOf(const vector<Edge*>& edges, TVector3f v1, TVector3f v2);

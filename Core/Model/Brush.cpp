@@ -420,16 +420,79 @@ namespace TrenchBroom {
         m_entity->brushChanged(*this);
     }
     
-    MoveResult moveVertex(int vertexIndex, TVector3f delta) {
+    MoveResult Brush::moveVertex(int vertexIndex, TVector3f delta) {
         vector<Face*> newFaces;
         vector<Face*> droppedFaces;
+        vector<Face*>::iterator faceIt;
+        vector<Face*>::iterator newFaceIt;
+        vector<Face*>::iterator droppedFaceIt;
         
+        MoveResult result = m_geometry->moveVertex(vertexIndex, delta, newFaces, droppedFaces);
+        
+        for (droppedFaceIt = newFaces.begin(); droppedFaceIt != newFaces.end(); droppedFaceIt++) {
+            (*droppedFaceIt)->setBrush(NULL);
+            faceIt = find(m_faces.begin(), m_faces.end(), *droppedFaceIt);
+            delete *faceIt;
+            m_faces.erase(faceIt);
+        }
+        
+        for (newFaceIt = newFaces.begin(); newFaceIt != newFaces.end(); newFaceIt++) {
+            (*newFaceIt)->setBrush(this);
+            m_faces.push_back(*newFaceIt);
+        }
+        
+        m_entity->brushChanged(*this);
+        return result;
     }
     
-    MoveResult moveEdge(int edgeIndex, TVector3f delta) {
+    MoveResult Brush::moveEdge(int edgeIndex, TVector3f delta) {
+        vector<Face*> newFaces;
+        vector<Face*> droppedFaces;
+        vector<Face*>::iterator faceIt;
+        vector<Face*>::iterator newFaceIt;
+        vector<Face*>::iterator droppedFaceIt;
+        
+        MoveResult result = m_geometry->moveEdge(edgeIndex, delta, newFaces, droppedFaces);
+        
+        for (droppedFaceIt = newFaces.begin(); droppedFaceIt != newFaces.end(); droppedFaceIt++) {
+            (*droppedFaceIt)->setBrush(NULL);
+            faceIt = find(m_faces.begin(), m_faces.end(), *droppedFaceIt);
+            delete *faceIt;
+            m_faces.erase(faceIt);
+        }
+        
+        for (newFaceIt = newFaces.begin(); newFaceIt != newFaces.end(); newFaceIt++) {
+            (*newFaceIt)->setBrush(this);
+            m_faces.push_back(*newFaceIt);
+        }
+        
+        m_entity->brushChanged(*this);
+        return result;
     }
     
-    MoveResult moveFace(int faceIndex, TVector3f delta) {
+    MoveResult Brush::moveFace(int faceIndex, TVector3f delta) {
+        vector<Face*> newFaces;
+        vector<Face*> droppedFaces;
+        vector<Face*>::iterator faceIt;
+        vector<Face*>::iterator newFaceIt;
+        vector<Face*>::iterator droppedFaceIt;
+        
+        MoveResult result = m_geometry->moveSide(faceIndex, delta, newFaces, droppedFaces);
+        
+        for (droppedFaceIt = newFaces.begin(); droppedFaceIt != newFaces.end(); droppedFaceIt++) {
+            (*droppedFaceIt)->setBrush(NULL);
+            faceIt = find(m_faces.begin(), m_faces.end(), *droppedFaceIt);
+            delete *faceIt;
+            m_faces.erase(faceIt);
+        }
+        
+        for (newFaceIt = newFaces.begin(); newFaceIt != newFaces.end(); newFaceIt++) {
+            (*newFaceIt)->setBrush(this);
+            m_faces.push_back(*newFaceIt);
+        }
+        
+        m_entity->brushChanged(*this);
+        return result;
     }
 
     int Brush::filePosition() const {
