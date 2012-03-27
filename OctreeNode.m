@@ -29,12 +29,12 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 @implementation OctreeNode (private)
 
 - (BOOL)bounds:(const TBoundingBox *)theBounds containedInMin:(TVector3f *)theMin max:(TVector3f *)theMax {
-    return fgte(theBounds->min.x, theMin->x)
-    && fgte(theBounds->min.y, theMin->y)
-    && fgte(theBounds->min.z, theMin->z)
-    && flte(theBounds->max.x, theMax->x)
-    && flte(theBounds->max.y, theMax->y)
-    && flte(theBounds->max.z, theMax->z);
+    return gtef(theBounds->min.x, theMin->x)
+    && gtef(theBounds->min.y, theMin->y)
+    && gtef(theBounds->min.z, theMin->z)
+    && ltef(theBounds->max.x, theMax->x)
+    && ltef(theBounds->max.y, theMax->y)
+    && ltef(theBounds->max.z, theMax->z);
 }
 
 @end
@@ -154,12 +154,12 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 }
 
 - (void)addObjectsForRay:(const TRay *)ray to:(NSMutableArray *)list {
-    BOOL hit = fgte(ray->origin.x, min.x)
-        && fgte(ray->origin.y, min.y)
-        && fgte(ray->origin.z, min.z)
-        && flte(ray->origin.x, max.x)
-        && flte(ray->origin.y, max.y)
-        && flte(ray->origin.z, max.z);
+    BOOL hit = gtef(ray->origin.x, min.x)
+        && gtef(ray->origin.y, min.y)
+        && gtef(ray->origin.z, min.z)
+        && ltef(ray->origin.x, max.x)
+        && ltef(ray->origin.y, max.y)
+        && ltef(ray->origin.z, max.z);
     
     if (!hit) {
         TPlane plane;
@@ -174,7 +174,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
                 if (!isnan(dist)) {
                     TVector3f is;
                     rayPointAtDistance(ray, dist, &is);
-                    hit = fgte(is.y, min.y) && flte(is.y, max.y) && fgte(is.z, min.z) && flte(is.z, max.z);
+                    hit = gtef(is.y, min.y) && ltef(is.y, max.y) && gtef(is.z, min.z) && ltef(is.z, max.z);
                 }
             } else if (ray->direction.x < 0) {
                 plane.point.x = max.x;
@@ -186,7 +186,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
                 if (!isnan(dist)) {
                     TVector3f is;
                     rayPointAtDistance(ray, dist, &is);
-                    hit = fgte(is.y, min.y) && flte(is.y, max.y) && fgte(is.z, min.z) && flte(is.z, max.z);
+                    hit = gtef(is.y, min.y) && ltef(is.y, max.y) && gtef(is.z, min.z) && ltef(is.z, max.z);
                 }
             }
         }
@@ -202,7 +202,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
                 if (!isnan(dist)) {
                     TVector3f is;
                     rayPointAtDistance(ray, dist, &is);
-                    hit = fgte(is.x, min.x) && flte(is.x, max.x) && fgte(is.z, min.z) && flte(is.z, max.z);
+                    hit = gtef(is.x, min.x) && ltef(is.x, max.x) && gtef(is.z, min.z) && ltef(is.z, max.z);
                 }
             } else if (ray->direction.y < 0) {
                 plane.point.x = max.x;
@@ -214,7 +214,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
                 if (!isnan(dist)) {
                     TVector3f is;
                     rayPointAtDistance(ray, dist, &is);
-                    hit = fgte(is.x, min.x) && flte(is.x, max.x) && fgte(is.z, min.z) && flte(is.z, max.z);
+                    hit = gtef(is.x, min.x) && ltef(is.x, max.x) && gtef(is.z, min.z) && ltef(is.z, max.z);
                 }
             }
         }
@@ -230,7 +230,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
                 if (!isnan(dist)) {
                     TVector3f is;
                     rayPointAtDistance(ray, dist, &is);
-                    hit = fgte(is.x, min.x) && flte(is.x, max.x) && fgte(is.y, min.y) && flte(is.y, max.y);
+                    hit = gtef(is.x, min.x) && ltef(is.x, max.x) && gtef(is.y, min.y) && ltef(is.y, max.y);
                 }
             } else if (ray->direction.z < 0) {
                 plane.point.x = max.x;
@@ -242,7 +242,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
                 if (!isnan(dist)) {
                     TVector3f is;
                     rayPointAtDistance(ray, dist, &is);
-                    hit = fgte(is.x, min.x) && flte(is.x, max.x) && fgte(is.y, min.y) && flte(is.y, max.y);
+                    hit = gtef(is.x, min.x) && ltef(is.x, max.x) && gtef(is.y, min.y) && ltef(is.y, max.y);
                 }
             }
         }

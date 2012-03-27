@@ -53,8 +53,8 @@ float horizontalAngle(const TVector3f* f, const TVector3f* t) {
         if (equalV3f(&initialDirection, &targetDirection)) {
             vAngle = 0;
             hAngle = 0;
-        } else if (feq(initialDirection.z, 1)) {
-            if (feq(targetDirection.z, -1)) {
+        } else if (eqf(initialDirection.z, 1)) {
+            if (eqf(targetDirection.z, -1)) {
                 vAngle = -M_PI;
                 hAngle = 0;
             } else {
@@ -64,18 +64,18 @@ float horizontalAngle(const TVector3f* f, const TVector3f* t) {
                 scaleV3f(&initialUp, -1, &inverseUp);
                 hAngle = horizontalAngle(&inverseUp, &targetDirection);
             }
-        } else if (feq(initialDirection.z, -1)) {
-            if (feq(targetDirection.z, 1)) {
+        } else if (eqf(initialDirection.z, -1)) {
+            if (eqf(targetDirection.z, 1)) {
                 vAngle = M_PI;
                 hAngle = 0;
             } else {
                 vAngle = acos(dotV3f(&initialDirection, &targetDirection));
                 hAngle = horizontalAngle(&initialUp, &targetDirection);
             }
-        } else if (feq(targetDirection.z, 1)) {
+        } else if (eqf(targetDirection.z, 1)) {
             vAngle = acos(dotV3f(&initialDirection, &targetDirection));
             hAngle = 0;
-        } else if (feq(targetDirection.z, -1)) {
+        } else if (eqf(targetDirection.z, -1)) {
             vAngle = -acos(dotV3f(&initialDirection, &targetDirection));
             hAngle = 0;
         } else {
@@ -96,23 +96,23 @@ float horizontalAngle(const TVector3f* f, const TVector3f* t) {
             
             
         } else {
-            if (feq(initialDirection.z, 1)) {
-                if (feq(targetDirection.z, -1)) {
+            if (eqf(initialDirection.z, 1)) {
+                if (eqf(targetDirection.z, -1)) {
                     vAngle = M_PI;
                 } else {
                     vAngle = acos(dotV3f(&initialDirection, &targetDirection));
                 }
                 hAngle = 0;
-            } else if (feq(initialDirection.z, -1)) {
-                if (feq(targetDirection.z, -1)) {
+            } else if (eqf(initialDirection.z, -1)) {
+                if (eqf(targetDirection.z, -1)) {
                     vAngle = -M_PI;
                 } else {
                     vAngle = acos(dotV3f(&initialDirection, &targetDirection));
                 }
                 hAngle = 0;
             } else {
-                if (feq(targetDirection.z, 1)) {
-                } else if (feq(targetDirection.z, -1)) {
+                if (eqf(targetDirection.z, 1)) {
+                } else if (eqf(targetDirection.z, -1)) {
                 } else {
                 }
             }

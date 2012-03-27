@@ -152,18 +152,18 @@ extern TMatrix4f const MirZM4f;
 
 extern float const PointStatusEpsilon;
 
-boolean fzero(float v);
-boolean fpos(float v);
-boolean fneg(float v);
-boolean feq(float v1, float v2);
-boolean fgt(float v1, float v2);
-boolean flt(float v1, float v2);
-boolean fgte(float v1, float v2);
-boolean flte(float v1, float v2);
-boolean finxx(float v, float b1, float b2);
-boolean finxi(float v, float b1, float b2);
-boolean finix(float v, float b1, float b2);
-boolean finii(float v, float b1, float b2);
+boolean zerof(float v);
+boolean posf(float v);
+boolean negf(float v);
+boolean eqf(float v1, float v2);
+boolean gtf(float v1, float v2);
+boolean ltf(float v1, float v2);
+boolean gtef(float v1, float v2);
+boolean ltef(float v1, float v2);
+boolean inxxf(float v, float b1, float b2);
+boolean inxif(float v, float b1, float b2);
+boolean inixf(float v, float b1, float b2);
+boolean iniif(float v, float b1, float b2);
 int mini(int v1, int v2);
 int maxi(int v1, int v2);
 

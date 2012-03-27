@@ -87,6 +87,7 @@ namespace TrenchBroom {
         Edge();
         Vertex* startVertex(Side* side);
         Vertex* endVertex(Side* side);
+        TVector3f vector();
         void updateMark();
         Vertex* split(TPlane plane);
         void flip();
@@ -106,11 +107,21 @@ namespace TrenchBroom {
         void replaceEdges(int index1, int index2, Edge* edge);
         Edge* split();
         void flip();
+        void shift(int offset);
     };
     
     class BrushGeometry {
     private:
-        MoveResult moveVertex(int vertexIndex, bool killable, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        vector<Side*> incidentSides(int vertexIndex);
+        void triangulateSide(Side* side, int vertexIndex, vector<Face*>& newFaces);
+        void splitSide(Side* side, int vertexIndex, vector<Face*>& newFaces);
+        void splitSides(vector<Side*>& sides, TRay ray, int vertexIndex, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        void mergeVertices(Vertex* keepVertex, Vertex* dropVertex, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
+        void mergeEdges();
+        void mergeNeighbours(Side* side, int edgeIndex);
+        void mergeSides(vector<Face*>& newFaces, vector<Face*>&droppedFaces);
+        float minVertexMoveDist(const vector<Side*>& sides, const Vertex* vertex, TRay ray, float maxDist);
+        MoveResult moveVertex(int vertexIndex, bool mergeIncidentVertex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
         MoveResult splitAndMoveEdge(int edgeIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
         MoveResult splitAndMoveSide(int sideIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
         void copy(const BrushGeometry& original);
@@ -142,8 +153,10 @@ namespace TrenchBroom {
         MoveResult moveSide(int sideIndex, TVector3f delta, vector<Face*>& newFaces, vector<Face*>& droppedFaces);
     };
     
-    template <class T>
-    int indexOf(const vector<T*>& vec, const T* element);
+
+    template <class T> int indexOf(const vector<T*>& vec, const T* element);
+    template <class T> bool deleteElement(vector<T*>& vec, T* element);
+    int indexOf(const vector<Vertex*>& vertices, TVector3f v);
     int indexOf(const vector<Edge*>& edges, TVector3f v1, TVector3f v2);
     int indexOf(const vector<Side*>& sides, const vector<TVector3f>& vertices);
 

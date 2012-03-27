@@ -76,52 +76,52 @@ char* const XAxisName = "X";
 char* const YAxisName = "Y";
 char* const ZAxisName = "Z";
 
-boolean fzero(float v) {
+boolean zerof(float v) {
     return fabsf(v) <= AlmostZero;
 }
 
-boolean fpos(float v) {
+boolean posf(float v) {
     return v > AlmostZero;
 }
 
-boolean fneg(float v) {
+boolean negf(float v) {
     return v < -AlmostZero;
 }
 
-boolean feq(float v1, float v2) {
+boolean eqf(float v1, float v2) {
     return fabsf(v1 - v2) < AlmostZero;
 }
 
-boolean fgt(float v1, float v2) {
+boolean gtf(float v1, float v2) {
     return v1 > v2 + AlmostZero;
 }
 
-boolean flt(float v1, float v2) {
+boolean ltf(float v1, float v2) {
     return v1 < v2 - AlmostZero;
 }
 
-boolean fgte(float v1, float v2) {
-    return !flt(v1, v2);
+boolean gtef(float v1, float v2) {
+    return !ltf(v1, v2);
 }
 
-boolean flte(float v1, float v2) {
-    return !fgt(v1, v2);
+boolean ltef(float v1, float v2) {
+    return !gtf(v1, v2);
 }
              
-boolean finxx(float v, float b1, float b2) {
-    return b1 < b2 ? fgt(v, b1) && flt(v, b2) : fgt(v, b2) && flt(v, b1);
+boolean inxxf(float v, float b1, float b2) {
+    return b1 < b2 ? gtf(v, b1) && ltf(v, b2) : gtf(v, b2) && ltf(v, b1);
 }
 
-boolean finxi(float v, float b1, float b2) {
-    return b1 < b2 ? fgt(v, b1) && flte(v, b2) : fgt(v, b2) && flte(v, b1);
+boolean inxif(float v, float b1, float b2) {
+    return b1 < b2 ? gtf(v, b1) && ltef(v, b2) : gtf(v, b2) && ltef(v, b1);
 }
 
-boolean finix(float v, float b1, float b2) {
-    return b1 < b2 ? fgte(v, b1) && flt(v, b2) : fgte(v, b2) && flt(v, b1);
+boolean inixf(float v, float b1, float b2) {
+    return b1 < b2 ? gtef(v, b1) && ltf(v, b2) : gtef(v, b2) && ltf(v, b1);
 }
 
-boolean finii(float v, float b1, float b2) {
-    return b1 < b2 ? fgte(v, b1) && flte(v, b2) : fgte(v, b2) && flte(v, b1);
+boolean iniif(float v, float b1, float b2) {
+    return b1 < b2 ? gtef(v, b1) && ltef(v, b2) : gtef(v, b2) && ltef(v, b1);
 }
 
 int mini(int v1, int v2) {
@@ -250,11 +250,11 @@ void normalizeV3f(const TVector3f* v, TVector3f* o) {
 }
 
 boolean equalV3f(const TVector3f* l, const TVector3f* r) {
-    return feq(l->x, r->x) && feq(l->y, r->y) && feq(l->z, r->z);
+    return eqf(l->x, r->x) && eqf(l->y, r->y) && eqf(l->z, r->z);
 }
 
 boolean absEqualV3f(const TVector3f* l, const TVector3f* r) {
-    return feq(fabsf(l->x), fabsf(r->x)) && feq(fabsf(l->y), fabsf(r->y)) && feq(fabsf(l->z), fabsf(r->z));
+    return eqf(fabsf(l->x), fabsf(r->x)) && eqf(fabsf(l->y), fabsf(r->y)) && eqf(fabsf(l->z), fabsf(r->z));
 }
 
 boolean nullV3f(const TVector3f* v) {
@@ -910,7 +910,7 @@ EPointStatus pointStatusFromRay(const TVector3f* o, const TVector3f* d, const TV
 
 float intersectPlaneWithLine(const TPlane* p, const TLine* l) {
     float d = dotV3f(&l->direction, &p->norm);
-    if (fzero(d))
+    if (zerof(d))
         return NAN;
     
     TVector3f v;
@@ -920,13 +920,13 @@ float intersectPlaneWithLine(const TPlane* p, const TLine* l) {
 
 float intersectPlaneWithRay(const TPlane* p, const TRay* r) {
     float d = dotV3f(&r->direction, &p->norm);
-    if (fzero(d))
+    if (zerof(d))
         return NAN;
     
     TVector3f v;
     subV3f(&p->point, &r->origin, &v);
     float s = dotV3f(&v, &p->norm) / d;
-    if (fneg(s))
+    if (negf(s))
         return NAN;
     
     return s;
@@ -1056,7 +1056,7 @@ float distanceOfSegmentAndRaySquared(const TVector3f* ss, const TVector3f* se, c
     float sN, sD = D;
     float tN, tD = D;
     
-    if (fzero(D)) {
+    if (zerof(D)) {
         sN = 0;
         sD = 1;
         tN = e;
@@ -1078,8 +1078,8 @@ float distanceOfSegmentAndRaySquared(const TVector3f* ss, const TVector3f* se, c
     if (tN < 0)
         return NAN;
     
-    float sc = fzero(sN) ? 0.0 : sN / sD;
-    float tc = fzero(tN) ? 0.0 : tN / tD;
+    float sc = zerof(sN) ? 0.0 : sN / sD;
+    float tc = zerof(tN) ? 0.0 : tN / tD;
     
     TVector3f dP;
     scaleV3f(&u, sc, &u);
@@ -1436,7 +1436,7 @@ void setValueM2f(const TMatrix2f* m, float v, int col, int row, TMatrix2f* o) {
 
 boolean invertM2f(const TMatrix2f* m, TMatrix2f* o) {
     float det = determinantM2f(m);
-    if (fzero(det))
+    if (zerof(det))
         return FALSE;
     
     adjugateM2f(m, o);
@@ -1524,7 +1524,7 @@ void setValueM3f(const TMatrix3f* m, float v, int col, int row, TMatrix3f* o) {
 
 boolean invertM3f(const TMatrix3f* m, TMatrix3f* o) {
     float det = determinantM3f(m);
-    if (fzero(det))
+    if (zerof(det))
         return FALSE;
     
     adjugateM3f(m, o);
@@ -1669,7 +1669,7 @@ void setValueM4f(const TMatrix4f* m, float v, int col, int row, TMatrix4f* o) {
 
 boolean invertM4f(const TMatrix4f* m, TMatrix4f* o) {
     float det = determinantM4f(m);
-    if (fzero(det))
+    if (zerof(det))
         return FALSE;
     
     TMatrix2f A, Ai;
@@ -1949,7 +1949,7 @@ void projectOntoCoordinatePlane(EPlane plane, const TVector3f* v, TVector3f* o) 
 
 boolean projectVectorOntoPlane(const TVector3f* planeNorm, const TVector3f* dir, const TVector3f* v, TVector3f* o) {
     float d = dotV3f(dir, planeNorm);
-    if (fzero(d))
+    if (zerof(d))
         return FALSE;
     
     d = -dotV3f(v, planeNorm) / d;

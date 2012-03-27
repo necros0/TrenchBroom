@@ -216,7 +216,7 @@ NSString* const CameraViewChanged = @"CameraViewChanged";
         // correct rounding errors here
         float cos = fmaxf(-1, fminf(1, dotV3f(&direction, &d)));
         float angle = acos(cos);
-        if (!fzero(angle)) {
+        if (!zerof(angle)) {
             TQuaternion q;
             TVector3f axis;
 
@@ -391,11 +391,11 @@ NSString* const CameraViewChanged = @"CameraViewChanged";
     subV3f(&position, theCenter, &bbLook);
     normalizeV3f(&bbLook, &bbLook);
     
-    if (feq(bbLook.z, 1)) {
+    if (eqf(bbLook.z, 1)) {
         bbUp = direction;
         scaleV3f(&bbUp, 1 / (1 - direction.z * direction.z), &bbUp); // project onto XY plane
         crossV3f(&bbUp, &bbLook, &bbRight);
-    } else if (feq(bbLook.z, -1)) {
+    } else if (eqf(bbLook.z, -1)) {
         scaleV3f(&bbUp, -1 / (1 - direction.z * direction.z), &bbUp); // project onto XY plane
         crossV3f(&bbUp, &bbLook, &bbRight);
     } else {

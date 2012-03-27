@@ -611,7 +611,7 @@ void flipSide(TSide* s) {
 float pickSide(const TSide* s, const TRay* r, TVector3f* h) {
     const TVector3f* norm = [s->face norm];
     float d = dotV3f(norm, &r->direction);
-    if (!fneg(d))
+    if (!negf(d))
         return NAN;
 
     const TPlane* plane = [s->face boundary];
@@ -647,7 +647,7 @@ float pickSide(const TSide* s, const TRay* r, TVector3f* h) {
         projectOntoCoordinatePlane(cPlane, &v->position, &v1);
         subV3f(&v1, &pis, &v1);
         
-        if ((fzero(v0.x) && fzero(v0.y)) || (fzero(v1.x) && fzero(v1.y))) {
+        if ((zerof(v0.x) && zerof(v0.y)) || (zerof(v1.x) && zerof(v1.y))) {
             // the point is identical to a polygon vertex, cancel search
 //            NSLog(@"face %@ discarded because ray hit a vertex", s->face);
             c = 1;
@@ -1326,9 +1326,9 @@ EPointStatus vertexStatusFromRay(const TVector3f* o, const TVector3f* d, const T
 int polygonShape(const TVertexList* p, const TVector3f* n) {
     const TVector3f* a;
     
-    if (!fzero(n->x))
+    if (!zerof(n->x))
         a = &XAxisPos;
-    else if (!fzero(n->y))
+    else if (!zerof(n->y))
         a = &YAxisPos;
     else
         a = &ZAxisPos;
@@ -1540,7 +1540,7 @@ void splitSides(TVertexData* vd, const TSideList* sides, const TRay* dragRay, in
             subV3f(&side->vertices.items[1]->position, &side->vertices.items[0]->position, &v2);
             crossV3f(&v1, &v2, &v1);
             
-            if (fneg(dotV3f(&v1, &dragRay->direction))) {
+            if (negf(dotV3f(&v1, &dragRay->direction))) {
                 splitFace(vd, side, dragVertexIndex, newFaces);
             } else {
                 triangulateFace(vd, side, dragVertexIndex, newFaces);
@@ -1664,9 +1664,9 @@ float calculateShortestDragDist(const TSideList* sides, const TVertex* dragVerte
         TSide* neighbor = neighborEdge->leftSide != side ? neighborEdge->leftSide : neighborEdge->rightSide;
         float neighborDragDist = intersectPlaneWithRay([neighbor->face boundary], dragRay);
         
-        if (!isnan(sideDragDist) && fpos(sideDragDist) && flt(sideDragDist, actualDragDist))
+        if (!isnan(sideDragDist) && posf(sideDragDist) && ltf(sideDragDist, actualDragDist))
             actualDragDist = sideDragDist;
-        if (!isnan(neighborDragDist) && fpos(neighborDragDist) && flt(neighborDragDist, actualDragDist))
+        if (!isnan(neighborDragDist) && posf(neighborDragDist) && ltf(neighborDragDist, actualDragDist))
             actualDragDist = neighborDragDist;
     }
     
@@ -1930,8 +1930,8 @@ TDragResult splitAndDragEdge(TVertexData* vd, int e, const TVector3f d, NSMutabl
     edge = vd->edges.items[index];
     
     // detect whether the drag would make the incident faces invalid
-    if (fneg(dotV3f(&d, [edge->leftSide->face norm])) ||
-        fneg(dotV3f(&d, [edge->rightSide->face norm]))) {
+    if (negf(dotV3f(&d, [edge->leftSide->face norm])) ||
+        negf(dotV3f(&d, [edge->rightSide->face norm]))) {
         result.moved = NO;
         result.index = e;
         return result;
@@ -1997,7 +1997,7 @@ TDragResult splitAndDragSide(TVertexData* vd, int s, const TVector3f d, NSMutabl
     side = vd->sides.items[index];
     
     // detect whether the drag would lead to an indented face
-    if (!fpos(dotV3f(&d, [side->face norm]))) {
+    if (!posf(dotV3f(&d, [side->face norm]))) {
         result.moved = NO;
         result.index = s;
         return result;

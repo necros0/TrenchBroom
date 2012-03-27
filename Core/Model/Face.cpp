@@ -235,8 +235,6 @@ namespace TrenchBroom {
     }
     
     void Face::restore(const Face& faceTemplate) {
-        assert(m_faceId == faceTemplate.faceId());
-               
         faceTemplate.points(m_points[0], m_points[1], m_points[2]);
         m_boundary = faceTemplate.boundary();
         m_xOffset = faceTemplate.xOffset();
