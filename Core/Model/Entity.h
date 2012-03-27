@@ -21,17 +21,99 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 #define TrenchBroom_Entity_h
 
 #include "Brush.h"
+#include <string>
+#include <vector>
+#include <map>
 #include "Math.h"
+#include "Vbo.h"
+#include "Map.h"
+#include "EntityDefinition.h"
+
+using namespace std;
 
 namespace TrenchBroom {
 
+    static string const ClassnameKey = "classname";
+    static string const SpawnFlagsKey = "spawnflags";
+    static string const WorldspawnClassname = "worldspawn";
+    static string const GroupClassname = "func_group";
+    static string const GroupVisibilityKey = "__tb_group_visible";
+    static string const OriginKey = "origin";
+    static string const AngleKey = "angle";
+    static string const MessageKey = "message";
+    static string const ModsKey = "__tb_mods";
+
     class Brush;
     class Entity {
+    private:
+        int m_entityId;
+        EntityDefinition* m_entityDefinition;
+        TVector3f m_center;
+        TVector3f m_origin;
+        float m_angle;
+        TBoundingBox m_bounds;
+        TBoundingBox m_maxBounds;
+        
+        Map* m_map;
+        vector<Brush*> m_brushes;
+        
+        map<string, string> m_properties;
+        
+        int m_filePosition;
+        bool m_selected;
+        VboBlock* m_vboBlock;
+        
+        void init();
+        void rebuildGeometry();
+        void rotate90(EAxis axis, TVector3f rotationCenter, bool clockwise);
     public:
+        int entityId() const;
+        const EntityDefinition* entityDefinition() const;
+        void setEntityDefinition(EntityDefinition* entityDefinition);
+        const TVector3f& center() const;
+        const TVector3f& origin() const;
         const TBoundingBox& bounds() const;
-        void brushChanged(Brush& brush);
+        const TBoundingBox& maxBounds() const;
+        
+        Map* quakeMap() const;
+        void setMap(Map* quakeMap);
+        const vector<Brush*>& brushes() const;
+        
+        const map<string, string> properties() const;
+        const string* propertyForKey(const string& key) const;
+        bool propertyWritable(const string& key) const;
+        bool propertyDeletable(const string& key) const;
+        void setProperty(const string& key, const string& value);
+        void setProperty(const string& key, const string* value);
+        void setProperty(const string& key, TVector3f value, bool round);
+        void setProperty(const string& key, float value, bool round);
+        void setProperties(map<string, string> properties, bool replace);
+        void deleteProperty(const string& key);
+        
+        const string* classname() const;
+        const int angle() const;
+        bool worldSpawn() const;
+        bool group() const;
+        
+        void addBrush(Brush* brush);
+        void addBrushes(vector<Brush*>& brushes);
+        void brushChanged(Brush* brush);
+        void deleteBrush(Brush* brush);
+        void deleteBrushes(vector<Brush*>& brushes);
+        
+        void translate(TVector3f delta);
+        void rotate90CW(EAxis axis, TVector3f rotationCenter);
+        void rotate90CCW(EAxis axis, TVector3f rotationCenter);
+        void rotate(TQuaternion rotation, TVector3f rotationCenter);
+        void flip(EAxis axis, TVector3f flipCenter);
+        
+        int filePosition() const;
+        void setFilePosition(int filePosition);
+        bool selected() const;
+        void setSelected(bool selected);
+        VboBlock* vboBlock() const;
+        void setVboBlock(VboBlock* vboBlock);
     };
-
 }
 
 #endif

@@ -203,7 +203,7 @@ namespace TrenchBroom {
     }
     
     void Face::init() {
-        static int currentId = 0;
+        static int currentId = 1;
         m_faceId = currentId++;
         m_brush = NULL;
         m_texture = NULL;

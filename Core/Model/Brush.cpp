@@ -23,7 +23,7 @@ along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace TrenchBroom {
     void Brush::init() {
-        static int currentId = 0;
+        static int currentId = 1;
         m_brushId = currentId++;
         m_entity = NULL;
         m_onGrid = false;
@@ -125,7 +125,7 @@ namespace TrenchBroom {
             Face* face = new Face(m_worldBounds, *templateFaces[i]);
             addFace(*face);
         }
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
     
     int Brush::brushId() const {
@@ -350,35 +350,35 @@ namespace TrenchBroom {
         for (int i = 0; i < m_faces.size(); i++)
             m_faces[i]->translate(delta, lockTextures);
         m_geometry->translate(delta);
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
     
     void Brush::rotate90CW(EAxis axis, TVector3f center, bool lockTextures) {
         for (int i = 0; i < m_faces.size(); i++)
             m_faces[i]->rotate90CW(axis, center, lockTextures);
         m_geometry->rotate90CW(axis, center);
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
     
     void Brush::rotate90CCW(EAxis axis, TVector3f center, bool lockTextures) {
         for (int i = 0; i < m_faces.size(); i++)
             m_faces[i]->rotate90CCW(axis, center, lockTextures);
         m_geometry->rotate90CCW(axis, center);
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
 
     void Brush::rotate(TQuaternion rotation, TVector3f center, bool lockTextures) {
         for (int i = 0; i < m_faces.size(); i++)
             m_faces[i]->rotate(rotation, center, lockTextures);
         m_geometry->rotate(rotation, center);
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
 
     void Brush::flip(EAxis axis, TVector3f center, bool lockTextures) {
         for (int i = 0; i < m_faces.size(); i++)
             m_faces[i]->flip(axis, center, lockTextures);
         m_geometry->flip(axis, center);
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
     
     bool Brush::canResize(Face& face, float dist) {
@@ -405,19 +405,19 @@ namespace TrenchBroom {
     void Brush::resize(Face& face, float dist, bool lockTextures) {
         face.move(dist, lockTextures);
         rebuildGeometry();
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
     
     void Brush::enlarge(float delta, bool lockTextures) {
         for (int i = 0; i < m_faces.size(); i++)
             m_faces[i]->move(delta, lockTextures);
         rebuildGeometry();
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
     
     void Brush::snap() {
         m_geometry->snap();
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
     }
     
     MoveResult Brush::moveVertex(int vertexIndex, TVector3f delta) {
@@ -441,7 +441,7 @@ namespace TrenchBroom {
             m_faces.push_back(*newFaceIt);
         }
         
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
         return result;
     }
     
@@ -466,7 +466,7 @@ namespace TrenchBroom {
             m_faces.push_back(*newFaceIt);
         }
         
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
         return result;
     }
     
@@ -491,7 +491,7 @@ namespace TrenchBroom {
             m_faces.push_back(*newFaceIt);
         }
         
-        m_entity->brushChanged(*this);
+        m_entity->brushChanged(this);
         return result;
     }
 

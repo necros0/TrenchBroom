@@ -147,6 +147,7 @@
 		48B325E512E3788D008748E2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B325E412E3788D008748E2 /* AppDelegate.m */; };
 		48B5A18D131EE2DB0043FBD9 /* PrefabNameSheet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48B5A18C131EE2DB0043FBD9 /* PrefabNameSheet.xib */; };
 		48B5A1DB131EEE440043FBD9 /* PrefabNameSheetController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B5A1DA131EEE440043FBD9 /* PrefabNameSheetController.m */; };
+		48B5A37E152208B4002A901D /* EntityDefinition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48B5A37D152208B4002A901D /* EntityDefinition.cpp */; };
 		48BC2E6713EBEF7C003657D6 /* ConsoleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48BC2E6613EBEF7C003657D6 /* ConsoleWindow.xib */; };
 		48BC2E6B13EBF036003657D6 /* ConsoleWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48BC2E6A13EBF036003657D6 /* ConsoleWindowController.m */; };
 		48C3324413087D8600C23607 /* MenuDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C3324313087D8600C23607 /* MenuDelegate.m */; };
@@ -517,6 +518,8 @@
 		48B5A18C131EE2DB0043FBD9 /* PrefabNameSheet.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefabNameSheet.xib; sourceTree = "<group>"; };
 		48B5A1D9131EEE440043FBD9 /* PrefabNameSheetController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefabNameSheetController.h; sourceTree = "<group>"; };
 		48B5A1DA131EEE440043FBD9 /* PrefabNameSheetController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefabNameSheetController.m; sourceTree = "<group>"; };
+		48B5A37B1522088C002A901D /* EntityDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityDefinition.h; path = Model/EntityDefinition.h; sourceTree = "<group>"; };
+		48B5A37D152208B4002A901D /* EntityDefinition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntityDefinition.cpp; path = Model/EntityDefinition.cpp; sourceTree = "<group>"; };
 		48BC2E6613EBEF7C003657D6 /* ConsoleWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConsoleWindow.xib; sourceTree = "<group>"; };
 		48BC2E6913EBF036003657D6 /* ConsoleWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleWindowController.h; sourceTree = "<group>"; };
 		48BC2E6A13EBF036003657D6 /* ConsoleWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConsoleWindowController.m; sourceTree = "<group>"; };
@@ -827,6 +830,8 @@
 				4862298E151A7BB400B54545 /* Brush.cpp */,
 				48622990151A7BD200B54545 /* Entity.h */,
 				48622991151A7BEB00B54545 /* Entity.cpp */,
+				48B5A37B1522088C002A901D /* EntityDefinition.h */,
+				48B5A37D152208B4002A901D /* EntityDefinition.cpp */,
 				48622993151A7C0300B54545 /* Map.h */,
 				48622994151A7C1C00B54545 /* Map.cpp */,
 				48622996151A7C6200B54545 /* Texture.h */,
@@ -1569,6 +1574,7 @@
 				48622995151A7C1C00B54545 /* Map.cpp in Sources */,
 				48622999151A7C8D00B54545 /* Texture.cpp in Sources */,
 				486229A4151CEF4100B54545 /* BrushGeometry.cpp in Sources */,
+				48B5A37E152208B4002A901D /* EntityDefinition.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
