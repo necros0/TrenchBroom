@@ -17,12 +17,9 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Foundation/Foundation.h>
+#ifndef TrenchBroom_SelectionManager_h
+#define TrenchBroom_SelectionManager_h
 
-@class Texture;
 
-@protocol TextureViewTarget <NSObject>
 
-- (void)textureSelected:(Texture *)texture;
-
-@end
+#endif
