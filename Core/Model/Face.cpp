@@ -20,6 +20,7 @@
 #include "Face.h"
 #include <assert.h>
 #include <cmath>
+#include "BrushGeometry.h"
 
 namespace TrenchBroom {
 
@@ -307,6 +308,10 @@ namespace TrenchBroom {
     
     TPlane Face::boundary() const {
         return m_boundary;
+    }
+    
+    TVector3f Face::center() const {
+        return centerOfVertices(vertices());
     }
     
     const TBoundingBox& Face::worldBounds() const {

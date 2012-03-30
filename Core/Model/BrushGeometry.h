@@ -164,8 +164,8 @@ namespace TrenchBroom {
     int indexOf(const vector<Edge*>& edges, TVector3f v1, TVector3f v2);
     int indexOf(const vector<Side*>& sides, const vector<TVector3f>& vertices);
 
-    TVector3f centerOfVertices(vector<Vertex*>& vertices);
-    TBoundingBox boundsOfVertices(vector<Vertex*>& vertices);
+    TVector3f centerOfVertices(const vector<Vertex*>& vertices);
+    TBoundingBox boundsOfVertices(const vector<Vertex*>& vertices);
     EPointStatus vertexStatusFromRay(TVector3f origin, TVector3f direction, const vector<Vertex*>& vertices);
 }
 

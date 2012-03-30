@@ -127,19 +127,27 @@ namespace TrenchBroom {
         rebuildGeometry();
     }
     
-    const TBoundingBox& Entity::bounds() const {
+    TVector3f Entity::center() const {
+        return m_center;
+    }
+    
+    TVector3f Entity::origin() const {
+        return m_origin;
+    }
+    
+    TBoundingBox Entity::bounds() const {
         return m_bounds;
     }
     
-    const TBoundingBox& Entity::maxBounds() const {
+    TBoundingBox Entity::maxBounds() const {
         return m_maxBounds;
     }
 
-    Map* Entity::quakeMap() const {
+    QuakeMap* Entity::quakeMap() const {
         return m_map;
     }
     
-    void Entity::setMap(Map* quakeMap) {
+    void Entity::setMap(QuakeMap* quakeMap) {
         m_map = quakeMap;
     }
     

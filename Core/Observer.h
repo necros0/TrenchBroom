@@ -17,9 +17,31 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TrenchBroom_SelectionManager_h
-#define TrenchBroom_SelectionManager_h
+#ifndef TrenchBroom_Observer_h
+#define TrenchBroom_Observer_h
 
+#include <string>
+#include <vector>
+#include <map>
 
+using namespace std;
+
+namespace TrenchBroom {
+    class Observer {
+    public:
+        virtual void notify(const string& name, const void* data) {};
+    };
+    
+    class Observable {
+    private:
+        multimap<const string, Observer&> m_observers;
+    protected:
+        void postNotification(const string& name, const void* data);
+    public:
+        void addObserver(const string& name, Observer& observer);
+        void removeObserver(const string& name, Observer& observer);
+        void removeObserver(Observer& observer);
+    };
+}
 
 #endif

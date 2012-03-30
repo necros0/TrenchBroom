@@ -84,6 +84,7 @@ namespace TrenchBroom {
         void updatePoints();
         TVector3f normal() const;
         TPlane boundary() const;
+        TVector3f center() const;
         const TBoundingBox& worldBounds() const;
         const vector<Vertex*>& vertices() const;
         const vector<Edge*>& edges() const;

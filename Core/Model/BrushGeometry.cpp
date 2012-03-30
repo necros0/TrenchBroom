@@ -1449,7 +1449,7 @@ namespace TrenchBroom {
         return -1;    
     }
     
-    TVector3f centerOfVertices(vector<Vertex*>& vertices) {
+    TVector3f centerOfVertices(const vector<Vertex*>& vertices) {
         TVector3f center = vertices[0]->position;
         for (int i = 1; i < vertices.size(); i++)
             addV3f(&center, &vertices[0]->position, &center);
@@ -1457,7 +1457,7 @@ namespace TrenchBroom {
         return center;
     }
     
-    TBoundingBox boundsOfVertices(vector<Vertex*>& vertices) {
+    TBoundingBox boundsOfVertices(const vector<Vertex*>& vertices) {
         TBoundingBox bounds;
         bounds.min = vertices[0]->position;
         bounds.max = vertices[0]->position;

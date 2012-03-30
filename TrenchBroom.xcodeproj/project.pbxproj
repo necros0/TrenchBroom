@@ -33,6 +33,10 @@
 		482FFF011340E10E00849BF5 /* ClipTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 482FFF001340E10E00849BF5 /* ClipTool.m */; };
 		482FFF181340E56000849BF5 /* ClipPointFeedbackFigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 482FFF171340E56000849BF5 /* ClipPointFeedbackFigure.m */; };
 		483044A21398B3D3002CA97B /* EntityPropertyTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 483044A11398B3D3002CA97B /* EntityPropertyTableDataSource.m */; };
+		4830EF261523393800ADA2B8 /* Selection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF251523393800ADA2B8 /* Selection.cpp */; };
+		4830EF29152356B500ADA2B8 /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF28152356B500ADA2B8 /* Observer.cpp */; };
+		4830EF2E1525FCB100ADA2B8 /* EntityDefinitionManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF2D1525FCB100ADA2B8 /* EntityDefinitionManager.cpp */; };
+		4830EF31152603D600ADA2B8 /* EntityDefinitionParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF30152603D600ADA2B8 /* EntityDefinitionParser.cpp */; };
 		48325D4713524F7000E703E0 /* CompassFigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 48325D4613524F7000E703E0 /* CompassFigure.m */; };
 		4833C15F131953F600EB1B85 /* PrefabManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4833C15E131953F600EB1B85 /* PrefabManager.m */; };
 		4833C1BD13196CFB00EB1B85 /* MutablePrefab.m in Sources */ = {isa = PBXBuildFile; fileRef = 4833C1BC13196CFB00EB1B85 /* MutablePrefab.m */; };
@@ -66,7 +70,7 @@
 		4862298C151A7B5500B54545 /* Face.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4862298B151A7B5500B54545 /* Face.cpp */; };
 		4862298F151A7BB400B54545 /* Brush.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4862298E151A7BB400B54545 /* Brush.cpp */; };
 		48622992151A7BEB00B54545 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622991151A7BEB00B54545 /* Entity.cpp */; };
-		48622995151A7C1C00B54545 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622994151A7C1C00B54545 /* Map.cpp */; };
+		48622995151A7C1C00B54545 /* QuakeMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622994151A7C1C00B54545 /* QuakeMap.cpp */; };
 		48622999151A7C8D00B54545 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48622998151A7C8D00B54545 /* Texture.cpp */; };
 		486229A4151CEF4100B54545 /* BrushGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 486229A3151CEF4100B54545 /* BrushGeometry.cpp */; };
 		48639BF412EA227100808576 /* QuakePalette.lmp in Resources */ = {isa = PBXBuildFile; fileRef = 48639BF312EA227100808576 /* QuakePalette.lmp */; };
@@ -295,7 +299,14 @@
 		482FFF171340E56000849BF5 /* ClipPointFeedbackFigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipPointFeedbackFigure.m; sourceTree = "<group>"; };
 		483044A01398B3D3002CA97B /* EntityPropertyTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityPropertyTableDataSource.h; sourceTree = "<group>"; };
 		483044A11398B3D3002CA97B /* EntityPropertyTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityPropertyTableDataSource.m; sourceTree = "<group>"; };
-		4830EF231523373D00ADA2B8 /* SelectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SelectionManager.h; path = Model/SelectionManager.h; sourceTree = "<group>"; };
+		4830EF231523373D00ADA2B8 /* Selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Selection.h; path = Model/Selection.h; sourceTree = "<group>"; };
+		4830EF251523393800ADA2B8 /* Selection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Selection.cpp; path = Model/Selection.cpp; sourceTree = "<group>"; };
+		4830EF271523567C00ADA2B8 /* Observer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Observer.h; sourceTree = "<group>"; };
+		4830EF28152356B500ADA2B8 /* Observer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Observer.cpp; sourceTree = "<group>"; };
+		4830EF2A1525FC8700ADA2B8 /* EntityDefinitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityDefinitionManager.h; path = Model/EntityDefinitionManager.h; sourceTree = "<group>"; };
+		4830EF2D1525FCB100ADA2B8 /* EntityDefinitionManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntityDefinitionManager.cpp; path = Model/EntityDefinitionManager.cpp; sourceTree = "<group>"; };
+		4830EF2F1526018000ADA2B8 /* EntityDefinitionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionParser.h; sourceTree = "<group>"; };
+		4830EF30152603D600ADA2B8 /* EntityDefinitionParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EntityDefinitionParser.cpp; sourceTree = "<group>"; };
 		48325D4513524F7000E703E0 /* CompassFigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompassFigure.h; sourceTree = "<group>"; };
 		48325D4613524F7000E703E0 /* CompassFigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompassFigure.m; sourceTree = "<group>"; };
 		4833C15D131953F600EB1B85 /* PrefabManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefabManager.h; sourceTree = "<group>"; };
@@ -363,8 +374,8 @@
 		4862298E151A7BB400B54545 /* Brush.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Brush.cpp; path = Model/Brush.cpp; sourceTree = "<group>"; };
 		48622990151A7BD200B54545 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Entity.h; path = Model/Entity.h; sourceTree = "<group>"; };
 		48622991151A7BEB00B54545 /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Entity.cpp; path = Model/Entity.cpp; sourceTree = "<group>"; };
-		48622993151A7C0300B54545 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Map.h; path = Model/Map.h; sourceTree = "<group>"; };
-		48622994151A7C1C00B54545 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = Model/Map.cpp; sourceTree = "<group>"; };
+		48622993151A7C0300B54545 /* QuakeMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuakeMap.h; path = Model/QuakeMap.h; sourceTree = "<group>"; };
+		48622994151A7C1C00B54545 /* QuakeMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuakeMap.cpp; path = Model/QuakeMap.cpp; sourceTree = "<group>"; };
 		48622996151A7C6200B54545 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = Model/Texture.h; sourceTree = "<group>"; };
 		48622998151A7C8D00B54545 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Texture.cpp; path = Model/Texture.cpp; sourceTree = "<group>"; };
 		4862299A151A839A00B54545 /* BrushGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BrushGeometry.h; path = Model/BrushGeometry.h; sourceTree = "<group>"; };
@@ -833,13 +844,18 @@
 				48622991151A7BEB00B54545 /* Entity.cpp */,
 				48B5A37B1522088C002A901D /* EntityDefinition.h */,
 				48B5A37D152208B4002A901D /* EntityDefinition.cpp */,
-				48622993151A7C0300B54545 /* Map.h */,
-				48622994151A7C1C00B54545 /* Map.cpp */,
+				48622993151A7C0300B54545 /* QuakeMap.h */,
+				48622994151A7C1C00B54545 /* QuakeMap.cpp */,
 				48622996151A7C6200B54545 /* Texture.h */,
 				48622998151A7C8D00B54545 /* Texture.cpp */,
 				4862299A151A839A00B54545 /* BrushGeometry.h */,
 				486229A3151CEF4100B54545 /* BrushGeometry.cpp */,
-				4830EF231523373D00ADA2B8 /* SelectionManager.h */,
+				4830EF271523567C00ADA2B8 /* Observer.h */,
+				4830EF231523373D00ADA2B8 /* Selection.h */,
+				4830EF251523393800ADA2B8 /* Selection.cpp */,
+				4830EF28152356B500ADA2B8 /* Observer.cpp */,
+				4830EF2A1525FC8700ADA2B8 /* EntityDefinitionManager.h */,
+				4830EF2D1525FCB100ADA2B8 /* EntityDefinitionManager.cpp */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -962,6 +978,8 @@
 				48EDC8BF151529B2008D3D80 /* Pak.cpp */,
 				48EDC8CB1515B84B008D3D80 /* substream.h */,
 				48EDC8CC1515B858008D3D80 /* substream.cpp */,
+				4830EF2F1526018000ADA2B8 /* EntityDefinitionParser.h */,
+				4830EF30152603D600ADA2B8 /* EntityDefinitionParser.cpp */,
 			);
 			path = IO;
 			sourceTree = "<group>";
@@ -1573,10 +1591,14 @@
 				4862298C151A7B5500B54545 /* Face.cpp in Sources */,
 				4862298F151A7BB400B54545 /* Brush.cpp in Sources */,
 				48622992151A7BEB00B54545 /* Entity.cpp in Sources */,
-				48622995151A7C1C00B54545 /* Map.cpp in Sources */,
+				48622995151A7C1C00B54545 /* QuakeMap.cpp in Sources */,
 				48622999151A7C8D00B54545 /* Texture.cpp in Sources */,
 				486229A4151CEF4100B54545 /* BrushGeometry.cpp in Sources */,
 				48B5A37E152208B4002A901D /* EntityDefinition.cpp in Sources */,
+				4830EF261523393800ADA2B8 /* Selection.cpp in Sources */,
+				4830EF29152356B500ADA2B8 /* Observer.cpp in Sources */,
+				4830EF2E1525FCB100ADA2B8 /* EntityDefinitionManager.cpp in Sources */,
+				4830EF31152603D600ADA2B8 /* EntityDefinitionParser.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

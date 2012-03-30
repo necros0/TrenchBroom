@@ -137,6 +137,7 @@ extern TVector3f const YAxisNeg;
 extern TVector3f const ZAxisPos;
 extern TVector3f const ZAxisNeg;
 extern TVector3f const NullVector;
+extern TVector3f const NanVector;
 extern TMatrix2f const IdentityM2f;
 extern TMatrix3f const IdentityM3f;
 extern TMatrix4f const IdentityM4f;

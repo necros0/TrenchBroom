@@ -17,4 +17,4 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Map.h"
+#include "QuakeMap.h"

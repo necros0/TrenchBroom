@@ -152,6 +152,10 @@ namespace TrenchBroom {
         return m_worldBounds;
     }
 
+    TVector3f Brush::center() {
+        return centerOfVertices(vertices());
+    }
+
     const vector<Vertex*>& Brush::vertices() const {
         return m_geometry->vertices;
     }

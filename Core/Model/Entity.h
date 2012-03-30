@@ -26,7 +26,7 @@
 #include <map>
 #include "Math.h"
 #include "Vbo.h"
-#include "Map.h"
+#include "QuakeMap.h"
 #include "EntityDefinition.h"
 
 using namespace std;
@@ -43,6 +43,7 @@ namespace TrenchBroom {
     static string const MessageKey = "message";
     static string const ModsKey = "__tb_mods";
 
+    class QuakeMap;
     class Brush;
     class Entity {
     private:
@@ -54,7 +55,7 @@ namespace TrenchBroom {
         TBoundingBox m_bounds;
         TBoundingBox m_maxBounds;
         
-        Map* m_map;
+        QuakeMap* m_map;
         vector<Brush*> m_brushes;
         
         map<string, string> m_properties;
@@ -70,13 +71,13 @@ namespace TrenchBroom {
         int entityId() const;
         const EntityDefinition* entityDefinition() const;
         void setEntityDefinition(EntityDefinition* entityDefinition);
-        const TVector3f& center() const;
-        const TVector3f& origin() const;
-        const TBoundingBox& bounds() const;
-        const TBoundingBox& maxBounds() const;
+        TVector3f center() const;
+        TVector3f origin() const;
+        TBoundingBox bounds() const;
+        TBoundingBox maxBounds() const;
         
-        Map* quakeMap() const;
-        void setMap(Map* quakeMap);
+        QuakeMap* quakeMap() const;
+        void setMap(QuakeMap* quakeMap);
         const vector<Brush*>& brushes() const;
         
         const map<string, string> properties() const;

@@ -17,12 +17,18 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TrenchBroom_Map_h
-#define TrenchBroom_Map_h
+#ifndef TrenchBroom_QuakeMap_h
+#define TrenchBroom_QuakeMap_h
+
+#include "Observer.h"
+#include "Selection.h"
 
 namespace TrenchBroom {
     
-    class Map {
+    class Selection;
+    class QuakeMap : Observable {
+    private:
+        Selection selection;
     };
 
 }

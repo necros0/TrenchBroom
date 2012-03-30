@@ -66,6 +66,7 @@ namespace TrenchBroom {
         const vector<Face*>& faces() const;
         const TBoundingBox& bounds() const;
         const TBoundingBox& worldBounds() const;
+        TVector3f center();
         const vector<Vertex*>& vertices() const;
         const vector<Edge*>& edges() const;
         
