@@ -18,6 +18,7 @@
  */
 
 #include "EntityDefinitionManager.h"
+#include "EntityDefinitionParser.h"
 
 namespace TrenchBroom {
     bool sortByName(const EntityDefinition* def1, const EntityDefinition* def2) {
@@ -29,8 +30,21 @@ namespace TrenchBroom {
     
 
     EntityDefinitionManager::EntityDefinitionManager(const string& path) {
+        
+        EntityDefinitionParser parser(path);
+        EntityDefinition* definition = NULL;
+        while ((definition = parser.nextDefinition()) != NULL) {
+            m_definitions[definition->name] = definition;
+            m_definitionsByName.push_back(definition);
+        }
+        
+        sort(m_definitionsByName.begin(), m_definitionsByName.end(), sortByName);
     }
     
+    EntityDefinitionManager::~EntityDefinitionManager() {
+        while(!m_definitionsByName.empty()) delete m_definitionsByName.back(), m_definitionsByName.pop_back();
+    }
+
     const EntityDefinition* EntityDefinitionManager::definition(const string& name) const {
         map<const string, const EntityDefinition*>::const_iterator it = m_definitions.find(name);
         if (it == m_definitions.end())

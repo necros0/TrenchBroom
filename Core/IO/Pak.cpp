@@ -97,8 +97,9 @@ namespace TrenchBroom {
     
     PakManager::~PakManager() {
         map<string, vector<Pak*> >::iterator it;
-        for (it = paks.begin(); it != paks.end(); it++)
-            it->second.erase(it->second.begin(), it->second.end());
+        for (it = paks.begin(); it != paks.end(); it++) {
+            while(!it->second.empty()) delete it->second.back(), it->second.pop_back();
+        }
     }
 
     int comparePaks(const Pak* pak1, const Pak* pak2) {

@@ -21,6 +21,7 @@
 #define TrenchBroom_EntityDefinition_h
 
 #include <string>
+#include <vector>
 #include <map>
 #include "Math.h"
 
@@ -34,16 +35,77 @@ namespace TrenchBroom {
         EDT_BASE
     } EEntityDefinitionType;
     
+    typedef enum {
+        EDP_CHOICE,
+        EDP_MODEL,
+        EDP_DEFAULT,
+        EDP_BASE
+    } EPropertyType;
+
+    class Property {
+    public:
+        EPropertyType type;
+        Property(EPropertyType type) : type(type) {};
+    };
+    
+    class BaseProperty : public Property {
+    public:
+        string baseName;
+        BaseProperty(string& baseName) : Property(EDP_BASE), baseName(baseName) {};
+    };
+    
+    class DefaultProperty : public Property {
+    public:
+        string name;
+        string value;
+        DefaultProperty(string& name, string& value) : Property(EDP_DEFAULT), name(name), value(value) {};
+    };
+    
+    class ModelProperty : public Property {
+    public:
+        string flagName;
+        string modelPath;
+        int skinIndex;
+        ModelProperty(string& flagName, string& modelPath, int skinIndex) : Property(EDP_MODEL), flagName(flagName), modelPath(modelPath), skinIndex(skinIndex) {};
+        ModelProperty(string& modelPath, int skinIndex) : Property(EDP_MODEL), flagName(""), modelPath(modelPath), skinIndex(skinIndex) {};
+    };
+    
+    class ChoiceArgument {
+    public:
+        int key;
+        string value;
+        ChoiceArgument(int key, string& value) : key(key), value(value) {};
+    };
+    
+    class ChoiceProperty : public Property {
+    public:
+        string name;
+        vector<ChoiceArgument> arguments;
+        ChoiceProperty(string& name, vector<ChoiceArgument>& arguments) : Property(EDP_CHOICE), name(name), arguments(arguments) {};
+    };
+    
+    class SpawnFlag {
+    public:
+        string name;
+        int flag;
+        SpawnFlag() {};
+        SpawnFlag(string& name, int flag) : name(name), flag(flag) {};
+    };
+    
     class EntityDefinition {
     public:
+        static EntityDefinition* baseDefinition(string& name, map<string, SpawnFlag>& flags, vector<Property*>& properties);
+        static EntityDefinition* pointDefinition(string& name, TVector4f& color, TBoundingBox& bounds, map<string, SpawnFlag>& flags, vector<Property*>& properties, string& description);
+        static EntityDefinition* brushDefinition(string& name, TVector4f& color, map<string, SpawnFlag>& flags, vector<Property*> properties, string& description);
+        ~EntityDefinition();
         EEntityDefinitionType type;
         string name;
         TVector4f color;
         TVector3f center;
         TBoundingBox bounds;
         TBoundingBox maxBounds;
-        map<string, string> flags;
-        vector<string> properties;
+        map<string, SpawnFlag> flags;
+        vector<Property*> properties;
         string description;
         int usageCount;
     };

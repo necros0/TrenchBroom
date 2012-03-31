@@ -39,6 +39,7 @@ namespace TrenchBroom {
         vector<const EntityDefinition*> m_definitionsByName;
     public:
         EntityDefinitionManager(const string& path);
+        ~EntityDefinitionManager();
         const EntityDefinition* definition(const string& name) const;
         const vector<const EntityDefinition*> definitions() const;
         const vector<const EntityDefinition*> definitions(EEntityDefinitionType type) const;

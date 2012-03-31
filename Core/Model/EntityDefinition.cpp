@@ -17,5 +17,42 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "EntityDefinition.h"
+
 namespace TrenchBroom {
+    EntityDefinition* EntityDefinition::baseDefinition(string& name, map<string, SpawnFlag>& flags, vector<Property*>& properties) {
+        EntityDefinition* definition = new EntityDefinition();
+        definition->type = EDT_BASE;
+        definition->name = name;
+        definition->flags = flags;
+        definition->properties = properties;
+        return definition;
+    }
+    
+    EntityDefinition* EntityDefinition::pointDefinition(string& name, TVector4f& color, TBoundingBox& bounds, map<string, SpawnFlag>& flags, vector<Property*>& properties, string& description) {
+        EntityDefinition* definition = new EntityDefinition();
+        definition->type = EDT_POINT;
+        definition->name = name;
+        definition->color = color;
+        definition->bounds = bounds;
+        definition->flags = flags;
+        definition->properties = properties;
+        definition->description = description;
+        return definition;
+    }
+    
+    EntityDefinition* EntityDefinition::brushDefinition(string& name, TVector4f& color, map<string, SpawnFlag>& flags, vector<Property*> properties, string& description) {
+        EntityDefinition* definition = new EntityDefinition();
+        definition->type = EDT_BRUSH;
+        definition->name = name;
+        definition->color = color;
+        definition->flags = flags;
+        definition->properties = properties;
+        definition->description = description;
+        return definition;
+    }
+
+    EntityDefinition::~EntityDefinition() {
+        while(!properties.empty()) delete properties.back(), properties.pop_back();
+    }
 }

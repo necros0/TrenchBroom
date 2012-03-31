@@ -19,16 +19,9 @@
 
 #include "EntityDefinitionParser.h"
 #include <assert.h>
+#include "Math.h"
 
 namespace TrenchBroom {
-    
-    int EntityDefinitionToken::asInt() {
-        return atoi(data.c_str());
-    }
-    
-    float EntityDefinitionToken::asFloat() {
-        return atof(data.c_str());
-    }
     
     bool EntityDefinitionTokenizer::nextChar() {
         if (m_state == TS_EOF)
@@ -277,5 +270,230 @@ namespace TrenchBroom {
             buffer += next()->data;
         pushChar();
         return buffer;
+    }
+
+    void EntityDefinitionParser::expect(int expectedType, const EntityDefinitionToken* actualToken) const {
+        assert(actualToken != NULL);
+        assert((actualToken->type & expectedType) != 0);
+    }
+
+    EntityDefinitionToken* EntityDefinitionParser::nextTokenIgnoringNewlines() {
+        EntityDefinitionToken* token = m_tokenizer->next();
+        while (token->type == TT_NL)
+            token = m_tokenizer->next();
+        return token;
+    }
+
+    TVector4f EntityDefinitionParser::parseColor() {
+        TVector4f color;
+        EntityDefinitionToken* token = NULL;
+        
+        expect(TT_B_O, token = m_tokenizer->next());
+        expect(TT_FRAC, token = m_tokenizer->next());
+        color.x = atof(token->data.c_str());
+        expect(TT_FRAC, token = m_tokenizer->next());
+        color.y = atof(token->data.c_str());
+        expect(TT_FRAC, token = m_tokenizer->next());
+        color.z = atof(token->data.c_str());
+        expect(TT_B_C, token = m_tokenizer->next());
+        color.w = 1;
+        return color;
+    }
+    
+    TBoundingBox EntityDefinitionParser::parseBounds() {
+        TBoundingBox bounds;
+        EntityDefinitionToken* token = NULL;
+
+        expect(TT_B_O, token = m_tokenizer->next());
+        expect(TT_DEC, token = m_tokenizer->next());
+        bounds.min.x = atoi(token->data.c_str());
+        expect(TT_DEC, token = m_tokenizer->next());
+        bounds.min.y = atoi(token->data.c_str());
+        expect(TT_DEC, token = m_tokenizer->next());
+        bounds.min.z = atoi(token->data.c_str());
+        expect(TT_B_C, token = m_tokenizer->next());
+        expect(TT_B_O, token = m_tokenizer->next());
+        expect(TT_DEC, token = m_tokenizer->next());
+        bounds.max.x = atoi(token->data.c_str());
+        expect(TT_DEC, token = m_tokenizer->next());
+        bounds.max.y = atoi(token->data.c_str());
+        expect(TT_DEC, token = m_tokenizer->next());
+        bounds.max.z = atoi(token->data.c_str());
+        expect(TT_B_C, token = m_tokenizer->next());
+        return bounds;
+    }
+    
+    map<string, SpawnFlag> EntityDefinitionParser::parseFlags() {
+        map<string, SpawnFlag> flags;
+        EntityDefinitionToken* token = m_tokenizer->next();
+
+        while (token->type == TT_WORD) {
+            string name = token->data;
+            int value = 1 << flags.size();
+            SpawnFlag flag(name, value);
+            flags[name] = flag;
+            token = m_tokenizer->next();
+        }
+        
+        return flags;
+    }
+    
+    vector<Property*> EntityDefinitionParser::parseProperties() {
+        vector<Property*> properties;
+        EntityDefinitionToken* token = m_tokenizer->peek();
+        if (token->type == TT_CB_O) {
+            token = m_tokenizer->next();
+            Property* property;
+            while ((property = parseProperty()) != NULL)
+                   properties.push_back(property);
+            expect(TT_CB_C, token);
+        }
+        return properties;
+    }
+    
+    Property* EntityDefinitionParser::parseProperty() {
+        EntityDefinitionToken* token = nextTokenIgnoringNewlines();
+        if (token->type != TT_WORD)
+            return NULL;
+        
+        Property* property = NULL;
+        string type = token->data;
+        if (type == "choice") {
+            expect(TT_STR, token = m_tokenizer->next());
+            string name = token->data;
+            
+            vector<ChoiceArgument> arguments;
+            expect(TT_B_O, token = m_tokenizer->next());
+            token = nextTokenIgnoringNewlines();
+            while (token->type == TT_B_O) {
+                expect(TT_DEC, token = nextTokenIgnoringNewlines());
+                int key = atoi(token->data.c_str());
+                expect(TT_C, token = nextTokenIgnoringNewlines());
+                expect(TT_STR, token = nextTokenIgnoringNewlines());
+                string value = token->data;
+                
+                ChoiceArgument argument(key, value);
+                arguments.push_back(argument);
+                
+                expect(TT_B_C, token = nextTokenIgnoringNewlines());
+                token = nextTokenIgnoringNewlines();
+            }
+            expect(TT_B_C, token);
+            property = new ChoiceProperty(name, arguments);
+        } else if (type == "model") {
+            expect(TT_B_O, token = nextTokenIgnoringNewlines());
+            expect(TT_STR, nextTokenIgnoringNewlines());
+            string modelPath = token->data;
+            int skinIndex = 0;
+            int lastColon = modelPath.find_last_of(':');
+            if (lastColon > 0 && lastColon != string::npos) {
+                skinIndex = atoi(modelPath.c_str() + lastColon + 1);
+                modelPath = modelPath.substr(1, lastColon - 2);
+            }
+            
+            expect(TT_C | TT_B_C, token = nextTokenIgnoringNewlines());
+            if (token->type == TT_C) {
+                expect(TT_STR, token = nextTokenIgnoringNewlines());
+                string flagName = token->data;
+                property = new ModelProperty(flagName, modelPath, skinIndex);
+                expect(TT_B_C, token = nextTokenIgnoringNewlines());
+            } else {
+                property = new ModelProperty(modelPath, skinIndex);
+            }
+        } else if (type == "default") {
+            expect(TT_B_O, token = nextTokenIgnoringNewlines());
+            expect(TT_STR, token = nextTokenIgnoringNewlines());
+            string name = token->data;
+            expect(TT_C, token = nextTokenIgnoringNewlines());
+            expect(TT_STR, token = nextTokenIgnoringNewlines());
+            string value = token->data;
+            property = new DefaultProperty(name, value);
+            expect(TT_B_C, token = nextTokenIgnoringNewlines());
+        } else if (type == "base") {
+            expect(TT_B_O, token = nextTokenIgnoringNewlines());
+            expect(TT_STR, token = nextTokenIgnoringNewlines());
+            string baseName = token->data;
+            property = new BaseProperty(baseName);
+            expect(TT_B_C, token = nextTokenIgnoringNewlines());
+        }
+        
+        expect(TT_SC, token = nextTokenIgnoringNewlines());
+        return property;
+    }
+    
+    string EntityDefinitionParser::parseDescription() {
+        EntityDefinitionToken* token = m_tokenizer->peek();
+        if (token->type == TT_ED_C)
+            return "";
+        return m_tokenizer->remainder();
+    }
+
+    EntityDefinitionParser::EntityDefinitionParser(string path) {
+        m_stream.open(path.c_str());
+        m_tokenizer = new EntityDefinitionTokenizer(m_stream);
+    }
+    
+    EntityDefinitionParser::~EntityDefinitionParser() {
+        if (m_stream.is_open())
+            m_stream.close();
+        if (m_tokenizer != NULL)
+            delete m_tokenizer;
+    }
+    
+    EntityDefinition* EntityDefinitionParser::nextDefinition() {
+        EntityDefinitionToken* token = m_tokenizer->next();
+        if (token == NULL)
+            return NULL;
+        
+        expect(TT_ED_O, token);
+        string name;
+        bool hasColor = false;
+        bool hasBounds = false;
+        bool hasFlags = false;
+        TVector4f color;
+        TBoundingBox bounds;
+        map<string, SpawnFlag> flags;
+        vector<Property*> properties;
+        string description;
+        
+        token = m_tokenizer->next();
+        expect(TT_WORD, token);
+        name = token->data;
+        
+        token = m_tokenizer->peek();
+        expect(TT_B_O | TT_NL, token);
+        if (token->type == TT_B_O) {
+            hasColor = true;
+            color = parseColor();
+            
+            token = m_tokenizer->peek();
+            expect(TT_B_O | TT_QM, token);
+            if (token->type == TT_B_O) {
+                hasBounds = true;
+                bounds = parseBounds();
+            } else {
+                m_tokenizer->next();
+            }
+
+            token = m_tokenizer->peek();
+            if (token->type == TT_WORD) {
+                hasFlags = true;
+                flags = parseFlags();
+            }
+        }
+        
+        expect(TT_NL, token = m_tokenizer->next());
+        properties = parseProperties();
+        description = parseDescription();
+        expect(TT_ED_C, token = m_tokenizer->next());
+        
+        EntityDefinition* definition = NULL;
+        if (!hasColor)
+            definition = EntityDefinition::baseDefinition(name, flags, properties);
+        else if (hasBounds)
+            definition = EntityDefinition::pointDefinition(name, color, bounds, flags, properties, description);
+        else
+            definition = EntityDefinition::brushDefinition(name, color, flags, properties, description);
+        return definition;
     }
 }

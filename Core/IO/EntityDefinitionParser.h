@@ -20,7 +20,8 @@
 #ifndef TrenchBroom_EntityDefinitionParser_h
 #define TrenchBroom_EntityDefinitionParser_h
 
-#include <istream>
+#include <fstream>
+#include "EntityDefinition.h"
 
 using namespace std;
 
@@ -61,8 +62,6 @@ namespace TrenchBroom {
         int line;
         int column;
         int charsRead;
-        int asInt();
-        float asFloat();
     };
     
     class EntityDefinitionTokenizer {
@@ -85,7 +84,21 @@ namespace TrenchBroom {
     };
     
     class EntityDefinitionParser {
-        
+    private:
+        ifstream m_stream;
+        EntityDefinitionTokenizer* m_tokenizer;
+        void expect(int expectedType, const EntityDefinitionToken* actualToken) const;
+        EntityDefinitionToken* nextTokenIgnoringNewlines();
+        TVector4f parseColor();
+        TBoundingBox parseBounds();
+        map<string, SpawnFlag> parseFlags();
+        vector<Property*> parseProperties();
+        Property* parseProperty();
+        string parseDescription();
+    public:
+        EntityDefinitionParser(string path);
+        ~EntityDefinitionParser();
+        EntityDefinition* nextDefinition();
     };
 }
 
