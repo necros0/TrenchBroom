@@ -55,7 +55,7 @@ namespace TrenchBroom {
         void rebuildGeometry();
     public:
         Brush(const TBoundingBox& worldBounds, const Brush& brushTemplate);
-        Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture* texture);
+        Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture& texture);
         ~Brush();
         
         void restore(const Brush& brushTemplate);

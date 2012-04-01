@@ -33,15 +33,16 @@ using namespace std;
 
 namespace TrenchBroom {
 
-    static string const ClassnameKey = "classname";
-    static string const SpawnFlagsKey = "spawnflags";
+    static string const ClassnameKey        = "classname";
+    static string const SpawnFlagsKey       = "spawnflags";
     static string const WorldspawnClassname = "worldspawn";
-    static string const GroupClassname = "func_group";
-    static string const GroupVisibilityKey = "__tb_group_visible";
-    static string const OriginKey = "origin";
-    static string const AngleKey = "angle";
-    static string const MessageKey = "message";
-    static string const ModsKey = "__tb_mods";
+    static string const GroupClassname      = "func_group";
+    static string const GroupNameKey        = "__tb_group_name";
+    static string const GroupVisibilityKey  = "__tb_group_visible";
+    static string const OriginKey           = "origin";
+    static string const AngleKey            = "angle";
+    static string const MessageKey          = "message";
+    static string const ModsKey             = "__tb_mods";
 
     class QuakeMap;
     class Brush;
@@ -68,6 +69,10 @@ namespace TrenchBroom {
         void rebuildGeometry();
         void rotate90(EAxis axis, TVector3f rotationCenter, bool clockwise);
     public:
+        Entity();
+        Entity(const map<string, string> properties);
+        ~Entity();
+
         int entityId() const;
         const EntityDefinition* entityDefinition() const;
         void setEntityDefinition(EntityDefinition* entityDefinition);
@@ -93,14 +98,14 @@ namespace TrenchBroom {
         
         const string* classname() const;
         const int angle() const;
-        bool worldSpawn() const;
+        bool worldspawn() const;
         bool group() const;
         
         void addBrush(Brush* brush);
-        void addBrushes(vector<Brush*>& brushes);
+        void addBrushes(const vector<Brush*>& brushes);
         void brushChanged(Brush* brush);
-        void deleteBrush(Brush* brush);
-        void deleteBrushes(vector<Brush*>& brushes);
+        void removeBrush(Brush* brush);
+        void removeBrushes(vector<Brush*>& brushes);
         
         void translate(TVector3f delta);
         void rotate90CW(EAxis axis, TVector3f rotationCenter);

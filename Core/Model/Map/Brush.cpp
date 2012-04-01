@@ -36,7 +36,7 @@ namespace TrenchBroom {
         restore(brushTemplate);
     }
     
-    Brush::Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture* texture) : m_worldBounds(worldBounds) {
+    Brush::Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture& texture) : m_worldBounds(worldBounds) {
         init();
         m_geometry = new BrushGeometry(m_worldBounds);
         
@@ -48,7 +48,7 @@ namespace TrenchBroom {
         p3 = p1;
         p3.x = brushBounds.max.x;
         Face* front = new Face(m_worldBounds, p1, p2, p3);
-        front->setTexture(texture);
+        front->setTexture(&texture);
         addFace(*front);
         
         p2 = p1;
@@ -56,7 +56,7 @@ namespace TrenchBroom {
         p3 = p1;
         p3.z = brushBounds.max.z;
         Face* left = new Face(m_worldBounds, p1, p2, p3);
-        left->setTexture(texture);
+        left->setTexture(&texture);
         addFace(*left);
         
         p2 = p1;
@@ -64,7 +64,7 @@ namespace TrenchBroom {
         p3 = p1;
         p3.y = brushBounds.max.y;
         Face* bottom = new Face(m_worldBounds, p1, p2, p3);
-        bottom->setTexture(texture);
+        bottom->setTexture(&texture);
         addFace(*bottom);
 
         p1 = brushBounds.max;
@@ -73,7 +73,7 @@ namespace TrenchBroom {
         p3 = p1;
         p3.z = brushBounds.min.z;
         Face* back = new Face(m_worldBounds, p1, p2, p3);
-        back->setTexture(texture);
+        back->setTexture(&texture);
         addFace(*back);
         
         p2 = p1;
@@ -81,7 +81,7 @@ namespace TrenchBroom {
         p3 = p1;
         p3.y = brushBounds.min.y;
         Face* right = new Face(m_worldBounds, p1, p2, p3);
-        right->setTexture(texture);
+        right->setTexture(&texture);
         addFace(*right);
         
         p2 = p1;
@@ -89,7 +89,7 @@ namespace TrenchBroom {
         p3 = p1;
         p3.x = brushBounds.min.x;
         Face* top = new Face(m_worldBounds, p1, p2, p3);
-        top->setTexture(texture);
+        top->setTexture(&texture);
         addFace(*top);
     }
     

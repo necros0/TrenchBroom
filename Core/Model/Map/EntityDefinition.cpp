@@ -18,6 +18,7 @@
  */
 
 #include "EntityDefinition.h"
+#include "EntityDefinitionParser.h"
 
 namespace TrenchBroom {
     EntityDefinition* EntityDefinition::baseDefinition(string& name, map<string, SpawnFlag>& flags, vector<Property*>& properties) {
@@ -54,5 +55,54 @@ namespace TrenchBroom {
 
     EntityDefinition::~EntityDefinition() {
         while(!properties.empty()) delete properties.back(), properties.pop_back();
+    }
+
+    bool sortByName(const EntityDefinition* def1, const EntityDefinition* def2) {
+        return def1->name <= def2->name;
+    }
+    bool sortByUsage(const EntityDefinition* def1, const EntityDefinition* def2) {
+        return def1->usageCount <= def2->usageCount;
+    }
+    
+    
+    EntityDefinitionManager::EntityDefinitionManager(const string& path) {
+        
+        EntityDefinitionParser parser(path);
+        EntityDefinition* definition = NULL;
+        while ((definition = parser.nextDefinition()) != NULL) {
+            m_definitions[definition->name] = definition;
+            m_definitionsByName.push_back(definition);
+        }
+        
+        sort(m_definitionsByName.begin(), m_definitionsByName.end(), sortByName);
+    }
+    
+    EntityDefinitionManager::~EntityDefinitionManager() {
+        while(!m_definitionsByName.empty()) delete m_definitionsByName.back(), m_definitionsByName.pop_back();
+    }
+    
+    EntityDefinition* EntityDefinitionManager::definition(const string& name) const {
+        map<const string, EntityDefinition*>::const_iterator it = m_definitions.find(name);
+        if (it == m_definitions.end())
+            return NULL;
+        return it->second;
+    }
+    
+    const vector<EntityDefinition*> EntityDefinitionManager::definitions() const {
+        return m_definitionsByName;
+    }
+    
+    const vector<EntityDefinition*> EntityDefinitionManager::definitions(EEntityDefinitionType type) const {
+        return definitions(type, ES_NAME);
+    }
+    
+    const vector<EntityDefinition*>EntityDefinitionManager::definitions(EEntityDefinitionType type, EEntityDefinitionSortCriterion criterion) const {
+        vector<EntityDefinition*> definitionsOfType;
+        for (int i = 0; i < m_definitionsByName.size(); i++)
+            if (m_definitionsByName[i]->type == type)
+                definitionsOfType.push_back(m_definitionsByName[i]);
+        if (criterion == ES_USAGE)
+            sort(definitionsOfType.begin(), definitionsOfType.end(), sortByUsage);
+        return definitionsOfType;
     }
 }

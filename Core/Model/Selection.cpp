@@ -23,7 +23,7 @@
 
 namespace TrenchBroom {
     
-    Selection::Selection() : m_mode(SM_NONE) {}
+    Selection::Selection() : Observable(), m_mode(SM_NONE) {}
 
     ESelectionMode Selection::mode() const {
         return m_mode;

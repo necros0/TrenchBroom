@@ -109,6 +109,24 @@ namespace TrenchBroom {
         string description;
         int usageCount;
     };
+
+    typedef enum {
+        ES_NAME,
+        ES_USAGE
+    } EEntityDefinitionSortCriterion;
+    
+    class EntityDefinitionManager {
+    private:
+        map<const string, EntityDefinition*> m_definitions;
+        vector<EntityDefinition*> m_definitionsByName;
+    public:
+        EntityDefinitionManager(const string& path);
+        ~EntityDefinitionManager();
+        EntityDefinition* definition(const string& name) const;
+        const vector<EntityDefinition*> definitions() const;
+        const vector<EntityDefinition*> definitions(EEntityDefinitionType type) const;
+        const vector<EntityDefinition*>definitions(EEntityDefinitionType type, EEntityDefinitionSortCriterion criterion) const;
+    };
 }
 
 #endif

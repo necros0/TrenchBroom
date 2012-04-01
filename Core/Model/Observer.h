@@ -17,35 +17,37 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TrenchBroom_EntityDefinitionManager_h
-#define TrenchBroom_EntityDefinitionManager_h
+#ifndef TrenchBroom_Observer_h
+#define TrenchBroom_Observer_h
 
+#include <string>
 #include <vector>
 #include <map>
-#include "EntityDefinition.h"
 
 using namespace std;
 
 namespace TrenchBroom {
-    
-    typedef enum {
-        ES_NAME,
-        ES_USAGE
-    } EEntityDefinitionSortCriterion;
-
-    class EntityDefinitionManager {
-    private:
-        map<const string, const EntityDefinition*> m_definitions;
-        vector<const EntityDefinition*> m_definitionsByName;
-    public:
-        EntityDefinitionManager(const string& path);
-        ~EntityDefinitionManager();
-        const EntityDefinition* definition(const string& name) const;
-        const vector<const EntityDefinition*> definitions() const;
-        const vector<const EntityDefinition*> definitions(EEntityDefinitionType type) const;
-        const vector<const EntityDefinition*>definitions(EEntityDefinitionType type, EEntityDefinitionSortCriterion criterion) const;
+    class Observable;
+    class Observer {
+    protected:
+        virtual void notify(const string& name, const void* data) {};
+        friend class Observable;
     };
     
+    class Observable {
+    private:
+        bool m_postNotifications;
+        multimap<const string, Observer&> m_observers;
+    protected:
+        void postNotification(const string& name, const void* data);
+    public:
+        Observable() : m_postNotifications(true) {};
+        void addObserver(const string& name, Observer& observer);
+        void removeObserver(const string& name, Observer& observer);
+        void removeObserver(Observer& observer);
+        void setPostNotifications(bool postNotifications);
+        bool postNotifications();
+    };
 }
 
 #endif

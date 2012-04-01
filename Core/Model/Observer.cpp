@@ -48,12 +48,22 @@ namespace TrenchBroom {
     }
     
     void Observable::postNotification(const string& name, const void* data) {
-        multimap<const string, Observer&>::iterator start, end;
-        start = m_observers.lower_bound(name);
-        end = m_observers.upper_bound(name);
-        while (start != end) {
-            start->second.notify(name, data);
-            start++;
+        if (m_postNotifications) {
+            multimap<const string, Observer&>::iterator start, end;
+            start = m_observers.lower_bound(name);
+            end = m_observers.upper_bound(name);
+            while (start != end) {
+                start->second.notify(name, data);
+                start++;
+            }
         }
+    }
+
+    void Observable::setPostNotifications(bool postNotifications) {
+        m_postNotifications = postNotifications;
+    }
+    
+    bool Observable::postNotifications() {
+        return m_postNotifications;
     }
 }

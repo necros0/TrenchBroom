@@ -65,6 +65,26 @@ namespace TrenchBroom {
         addV3f(&m_center, &diff, &m_maxBounds.max);
     }
     
+    Entity::Entity() {
+        init();
+    }
+    
+    Entity::Entity(const map<string, string> properties) {
+        init();
+        m_properties = properties;
+        map<string, string>::iterator it;
+        if ((it = m_properties.find(AngleKey)) != m_properties.end())
+            m_angle = atof(it->second.c_str());
+        if ((it = m_properties.find(OriginKey)) != m_properties.end())
+            parseV3f(it->second.c_str(), 0, it->second.length(), &m_origin);
+        rebuildGeometry();
+    }
+    
+    Entity::~Entity() {
+        while (!m_brushes.empty()) delete m_brushes.back(), m_brushes.pop_back();
+        
+    }
+
     void Entity::rotate90(EAxis axis, TVector3f rotationCenter, bool clockwise) {
         if (m_entityDefinition != NULL && m_entityDefinition->type != EDT_BRUSH)
             return;
@@ -247,7 +267,7 @@ namespace TrenchBroom {
         return roundf(m_angle);
     }
     
-    bool Entity::worldSpawn() const {
+    bool Entity::worldspawn() const {
         return *classname() == WorldspawnClassname;
     }
     
@@ -264,7 +284,7 @@ namespace TrenchBroom {
         rebuildGeometry();
     }
     
-    void Entity::addBrushes(vector<Brush*>& brushes) {
+    void Entity::addBrushes(const vector<Brush*>& brushes) {
         if (m_entityDefinition != NULL && m_entityDefinition->type != EDT_BRUSH)
             return;
 
@@ -279,7 +299,7 @@ namespace TrenchBroom {
         rebuildGeometry();
     }
     
-    void Entity::deleteBrush(Brush* brush) {
+    void Entity::removeBrush(Brush* brush) {
         if (m_entityDefinition != NULL && m_entityDefinition->type != EDT_BRUSH)
             return;
         
@@ -288,7 +308,7 @@ namespace TrenchBroom {
         rebuildGeometry();
     }
 
-    void Entity::deleteBrushes(vector<Brush*>& brushes) {
+    void Entity::removeBrushes(vector<Brush*>& brushes) {
         if (m_entityDefinition != NULL && m_entityDefinition->type != EDT_BRUSH)
             return;
         

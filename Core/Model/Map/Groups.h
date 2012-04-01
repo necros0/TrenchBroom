@@ -17,20 +17,36 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TrenchBroom_QuakeMap_h
-#define TrenchBroom_QuakeMap_h
+#ifndef TrenchBroom_Groups_h
+#define TrenchBroom_Groups_h
 
+#include <vector>
 #include "Observer.h"
-#include "Selection.h"
+
+using namespace std;
 
 namespace TrenchBroom {
     
-    class Selection;
-    class QuakeMap : Observable {
+    static const string GroupsChanged = "GroupsChanged";
+    
+    class Entity;
+    class QuakeMap;
+    class GroupManager : protected Observer, public Observable {
     private:
-        Selection selection;
+        QuakeMap& m_map;
+        vector<Entity*> m_groups;
+        int m_visibleGroupCount;
+    protected:
+        void notify(const string &name, const void *data);
+    public:
+        GroupManager(QuakeMap& map);
+        ~GroupManager();
+        const vector<Entity*>& groups() const;
+        void setGroupName(Entity& group, const string& name);
+        void setGroupVisibility(Entity& group, bool visibility);
+        bool visible(const Entity& group) const;
+        bool allGroupsVisible() const;
     };
-
 }
 
 #endif

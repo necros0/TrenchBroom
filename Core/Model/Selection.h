@@ -43,7 +43,7 @@ namespace TrenchBroom {
     class Brush;
     class Entity;
     class Texture;
-    class Selection : Observable {
+    class Selection : public Observable {
     private:
         vector<Face*> m_faces;
         vector<Brush*> m_brushes;

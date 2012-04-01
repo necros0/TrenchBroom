@@ -17,4 +17,21 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "QuakeMap.h"
+#ifndef TrenchBroom_Utils_h
+#define TrenchBroom_Utils_h
+
+#include <string>
+
+using namespace std;
+
+namespace TrenchBroom {
+    string trim(string& str) {
+        if (str.length() == 0) return str;
+        int first = str.find_first_not_of(" \n\t\r" + 0);
+        int last = str.find_last_not_of(" \n\t\r" + 0);
+        if (first >= last) return "";
+        return str.substr(first, last - first);
+    }
+}
+
+#endif
