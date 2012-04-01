@@ -17,14 +17,14 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "QuakeMap.h"
+#include "Map.h"
 #include <algorithm>
 #include <fstream>
 #include <assert.h>
 #include "Utils.h"
 
 namespace TrenchBroom {
-    QuakeMap::QuakeMap(const string& entityDefinitionFilePath) : Observable() {
+    Map::Map(const string& entityDefinitionFilePath) : Observable() {
         m_worldBounds.min.x = -0x1000;
         m_worldBounds.min.y = -0x1000;
         m_worldBounds.min.z = -0x1000;
@@ -37,7 +37,7 @@ namespace TrenchBroom {
         m_groupManager = new GroupManager(*this);
     }
     
-    QuakeMap::~QuakeMap() {
+    Map::~Map() {
         setPostNotifications(false);
         clear();
         delete m_selection;
@@ -45,7 +45,7 @@ namespace TrenchBroom {
         delete m_groupManager;
     }
 
-    void QuakeMap::clear() {
+    void Map::clear() {
         m_selection->removeAll();
         unloadPointFile();
         while(!m_entities.empty()) delete m_entities.back(), m_entities.pop_back();
@@ -55,7 +55,7 @@ namespace TrenchBroom {
     
     # pragma mark Point File Support
 
-    void QuakeMap::loadPointFile(const string& path) {
+    void Map::loadPointFile(const string& path) {
         if (!m_leakPoints.empty()) unloadPointFile();
         
         string line;
@@ -75,22 +75,22 @@ namespace TrenchBroom {
         postNotification(PointFileLoaded, NULL);
     }
     
-    void QuakeMap::unloadPointFile() {
+    void Map::unloadPointFile() {
         m_leakPoints.clear();
         postNotification(PointFileUnloaded, NULL);
         
     }
     
-    const vector<TVector3f>& QuakeMap::leakPoints() const {
+    const vector<TVector3f>& Map::leakPoints() const {
         return m_leakPoints;
     }
 
     # pragma mark Entity related functions
-    vector<Entity*>& QuakeMap::entities() {
+    vector<Entity*>& Map::entities() {
         return m_entities;
     }
     
-    Entity* QuakeMap::worldspawn(bool create) {
+    Entity* Map::worldspawn(bool create) {
         if (m_worldspawn != NULL)
             return m_worldspawn;
         for (int i = 0; i < m_entities.size(); i++) {
@@ -106,7 +106,7 @@ namespace TrenchBroom {
         return m_worldspawn;
     }
 
-    Entity* QuakeMap::createEntity(const string& classname) {
+    Entity* Map::createEntity(const string& classname) {
         EntityDefinition* entityDefinition = m_entityDefinitionManager->definition(classname);
         if (entityDefinition == NULL) {
             fprintf(stdout, "Warning: No entity definition found for class name '%s'", classname.c_str());
@@ -120,7 +120,7 @@ namespace TrenchBroom {
         return entity;
     }
     
-    Entity* QuakeMap::createEntity(const map<string, string> properties) {
+    Entity* Map::createEntity(const map<string, string> properties) {
         map<string, string>::const_iterator it = properties.find(ClassnameKey);
         assert(it != properties.end());
 
@@ -137,7 +137,7 @@ namespace TrenchBroom {
         return entity;
     }
     
-    void QuakeMap::setEntityDefinition(Entity* entity) {
+    void Map::setEntityDefinition(Entity* entity) {
         const string* classname = entity->classname();
         if (classname != NULL) {
             EntityDefinition* entityDefinition = m_entityDefinitionManager->definition(*classname);
@@ -150,7 +150,7 @@ namespace TrenchBroom {
         }
     }
     
-    void QuakeMap::setEntityProperty(const string& key, const string* value) {
+    void Map::setEntityProperty(const string& key, const string* value) {
         const vector<Entity*>& entities = m_selection->entities();
         if (entities.empty()) return;
         
@@ -173,7 +173,7 @@ namespace TrenchBroom {
 
     # pragma mark Brush related functions
 
-    void QuakeMap::addBrushesToEntity(Entity& entity) {
+    void Map::addBrushesToEntity(Entity& entity) {
         const vector<Brush*>& brushes = m_selection->brushes();
         if (brushes.empty()) return;
 
@@ -181,7 +181,7 @@ namespace TrenchBroom {
         postNotification(BrushesAdded, &brushes);
     }
     
-    void QuakeMap::moveBrushesToEntity(Entity& entity) {
+    void Map::moveBrushesToEntity(Entity& entity) {
         const vector<Brush*> brushes = m_selection->brushes();
         if (brushes.empty()) return;
 
@@ -190,7 +190,7 @@ namespace TrenchBroom {
         postNotification(BrushesDidChange, &brushes);
     }
     
-    Brush* QuakeMap::createBrush(Entity& entity, const Brush& brushTemplate) {
+    Brush* Map::createBrush(Entity& entity, const Brush& brushTemplate) {
         TBoundingBox templateBounds = brushTemplate.bounds();
         if (!boundsContainBounds(&m_worldBounds, &templateBounds)) return NULL;
         
@@ -201,7 +201,7 @@ namespace TrenchBroom {
         return brush;
     }
     
-    Brush* QuakeMap::createBrush(Entity& entity, TBoundingBox bounds, Texture& texture) {
+    Brush* Map::createBrush(Entity& entity, TBoundingBox bounds, Texture& texture) {
         if (!boundsContainBounds(&m_worldBounds, &bounds)) return NULL;
         
         Brush* brush = new Brush(m_worldBounds, bounds, texture);
@@ -211,7 +211,7 @@ namespace TrenchBroom {
         return brush;
     }
     
-    void QuakeMap::snapBrushes() {
+    void Map::snapBrushes() {
         const vector<Brush*>& brushes = m_selection->brushes();
         if (brushes.empty()) return;
         
@@ -221,7 +221,7 @@ namespace TrenchBroom {
         postNotification(BrushesDidChange, &brushes);
     }
     
-    bool QuakeMap::resizeBrushes(vector<Face*>& faces, float delta, bool lockTextures) {
+    bool Map::resizeBrushes(vector<Face*>& faces, float delta, bool lockTextures) {
         if (faces.empty()) return false;
         if (delta == 0) return false;
         
@@ -249,7 +249,7 @@ namespace TrenchBroom {
 
     # pragma mark Common functions
     
-    void QuakeMap::duplicateObjects(vector<Entity*>& newEntities, vector<Brush*>& newBrushes) {
+    void Map::duplicateObjects(vector<Entity*>& newEntities, vector<Brush*>& newBrushes) {
         const vector<Entity*>& entities = m_selection->entities();
         const vector<Brush*>& brushes = m_selection->brushes();
 
@@ -287,7 +287,7 @@ namespace TrenchBroom {
             postNotification(BrushesAdded, &newBrushes);
     }
     
-    void QuakeMap::translateObjects(TVector3f delta, bool lockTextures) {
+    void Map::translateObjects(TVector3f delta, bool lockTextures) {
         const vector<Entity*>& entities = m_selection->entities();
         const vector<Brush*>& brushes = m_selection->brushes();
         
@@ -306,7 +306,7 @@ namespace TrenchBroom {
         }
     }
     
-    void QuakeMap::rotateObjects90CW(EAxis axis, TVector3f center, bool lockTextures) {
+    void Map::rotateObjects90CW(EAxis axis, TVector3f center, bool lockTextures) {
         const vector<Entity*>& entities = m_selection->entities();
         const vector<Brush*>& brushes = m_selection->brushes();
         
@@ -325,7 +325,7 @@ namespace TrenchBroom {
         }
     }
     
-    void QuakeMap::rotateObjects90CCW(EAxis axis, TVector3f center, bool lockTextures) {
+    void Map::rotateObjects90CCW(EAxis axis, TVector3f center, bool lockTextures) {
         const vector<Entity*>& entities = m_selection->entities();
         const vector<Brush*>& brushes = m_selection->brushes();
         
@@ -344,7 +344,7 @@ namespace TrenchBroom {
         }
     }
     
-    void QuakeMap::rotateObjects(TQuaternion rotation, TVector3f center, bool lockTextures) {
+    void Map::rotateObjects(TQuaternion rotation, TVector3f center, bool lockTextures) {
         const vector<Entity*>& entities = m_selection->entities();
         const vector<Brush*>& brushes = m_selection->brushes();
         
@@ -363,7 +363,7 @@ namespace TrenchBroom {
         }
     }
     
-    void QuakeMap::flipObjects(EAxis axis, TVector3f center, bool lockTextures) {
+    void Map::flipObjects(EAxis axis, TVector3f center, bool lockTextures) {
         const vector<Entity*>& entities = m_selection->entities();
         const vector<Brush*>& brushes = m_selection->brushes();
         
@@ -382,7 +382,7 @@ namespace TrenchBroom {
         }
     }
     
-    void QuakeMap::deleteObjects() {
+    void Map::deleteObjects() {
         const vector<Entity*>& entities = m_selection->entities();
         const vector<Brush*>& brushes = m_selection->brushes();
         
@@ -422,7 +422,7 @@ namespace TrenchBroom {
     }
 
     # pragma mark Face related functoins
-    void QuakeMap::setXOffset(int xOffset) {
+    void Map::setXOffset(int xOffset) {
         const vector<Face*>& faces = m_selection->faces();
         if (faces.empty()) return;
 
@@ -432,7 +432,7 @@ namespace TrenchBroom {
         postNotification(FacesDidChange, &faces);
     }
     
-    void QuakeMap::setYOffset(int yOffset) {
+    void Map::setYOffset(int yOffset) {
         const vector<Face*>& faces = m_selection->faces();
         if (faces.empty()) return;
         
@@ -442,7 +442,7 @@ namespace TrenchBroom {
         postNotification(FacesDidChange, &faces);
     }
     
-    void QuakeMap::translateFaces(float delta, TVector3f dir) {
+    void Map::translateFaces(float delta, TVector3f dir) {
         const vector<Face*>& faces = m_selection->faces();
         if (faces.empty()) return;
         
@@ -452,7 +452,7 @@ namespace TrenchBroom {
         postNotification(FacesDidChange, &faces);
     }
     
-    void QuakeMap::setRotation(float rotation) {
+    void Map::setRotation(float rotation) {
         const vector<Face*>& faces = m_selection->faces();
         if (faces.empty()) return;
         
@@ -462,7 +462,7 @@ namespace TrenchBroom {
         postNotification(FacesDidChange, &faces);
     }
     
-    void QuakeMap::rotateFaces(float angle) {
+    void Map::rotateFaces(float angle) {
         const vector<Face*>& faces = m_selection->faces();
         if (faces.empty()) return;
         
@@ -472,7 +472,7 @@ namespace TrenchBroom {
         postNotification(FacesDidChange, &faces);
     }
     
-    void QuakeMap::setXScale(float xScale) {
+    void Map::setXScale(float xScale) {
         const vector<Face*>& faces = m_selection->faces();
         if (faces.empty()) return;
         
@@ -482,7 +482,7 @@ namespace TrenchBroom {
         postNotification(FacesDidChange, &faces);
     }
     
-    void QuakeMap::setYScale(float yScale) {
+    void Map::setYScale(float yScale) {
         const vector<Face*>& faces = m_selection->faces();
         if (faces.empty()) return;
         
@@ -492,7 +492,7 @@ namespace TrenchBroom {
         postNotification(FacesDidChange, &faces);
     }
     
-    bool QuakeMap::deleteFaces() {
+    bool Map::deleteFaces() {
         const vector<Face*> faces = m_selection->faces();
         if (faces.empty()) return false;
         
@@ -518,5 +518,52 @@ namespace TrenchBroom {
         }
         
         return del;
+    }
+
+    # pragma mark Vertex related functions
+    MoveResult Map::moveVertex(Brush& brush, int vertexIndex, TVector3f delta) {
+        if (find(m_selection->brushes().begin(), m_selection->brushes().end(), &brush) == m_selection->brushes().end())
+            m_selection->addBrush(brush);
+        vector<Brush*> brushArray;
+        brushArray.push_back(&brush);
+        postNotification(BrushesWillChange, &brushArray);
+        MoveResult result = brush.moveVertex(vertexIndex, delta);
+        postNotification(BrushesDidChange, &brushArray);
+        return result;
+    }
+    
+    MoveResult Map::moveEdge(Brush& brush, int edgeIndex, TVector3f delta) {
+        if (find(m_selection->brushes().begin(), m_selection->brushes().end(), &brush) == m_selection->brushes().end())
+            m_selection->addBrush(brush);
+        vector<Brush*> brushArray;
+        brushArray.push_back(&brush);
+        postNotification(BrushesWillChange, &brushArray);
+        MoveResult result = brush.moveEdge(edgeIndex, delta);
+        postNotification(BrushesDidChange, &brushArray);
+        return result;
+    }
+    
+    MoveResult Map::moveFace(Brush& brush, int faceIndex, TVector3f delta) {
+        if (find(m_selection->brushes().begin(), m_selection->brushes().end(), &brush) == m_selection->brushes().end())
+            m_selection->addBrush(brush);
+        vector<Brush*> brushArray;
+        brushArray.push_back(&brush);
+        postNotification(BrushesWillChange, &brushArray);
+        MoveResult result = brush.moveFace(faceIndex, delta);
+        postNotification(BrushesDidChange, &brushArray);
+        return result;
+    }
+    
+    # pragma mark getters
+    Selection& Map::selection() {
+        return *m_selection;
+    }
+    
+    EntityDefinitionManager& Map::entityDefinitionManager() {
+        return *m_entityDefinitionManager;
+    }
+    
+    GroupManager& Map::groupManager() {
+        return *m_groupManager;
     }
 }

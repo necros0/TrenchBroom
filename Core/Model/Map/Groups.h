@@ -30,16 +30,16 @@ namespace TrenchBroom {
     static const string GroupsChanged = "GroupsChanged";
     
     class Entity;
-    class QuakeMap;
+    class Map;
     class GroupManager : protected Observer, public Observable {
     private:
-        QuakeMap& m_map;
+        Map& m_map;
         vector<Entity*> m_groups;
         int m_visibleGroupCount;
     protected:
         void notify(const string &name, const void *data);
     public:
-        GroupManager(QuakeMap& map);
+        GroupManager(Map& map);
         ~GroupManager();
         const vector<Entity*>& groups() const;
         void setGroupName(Entity& group, const string& name);

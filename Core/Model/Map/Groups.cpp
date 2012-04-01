@@ -18,7 +18,7 @@
  */
 
 #include "Groups.h"
-#include "QuakeMap.h"
+#include "Map.h"
 #include "Entity.h"
 #include <cstdlib>
 
@@ -72,7 +72,7 @@ namespace TrenchBroom {
             postNotification(GroupsChanged, NULL);
     }
     
-    GroupManager::GroupManager(QuakeMap& map) : Observer(), m_map(map), m_visibleGroupCount(0) {
+    GroupManager::GroupManager(Map& map) : Observer(), m_map(map), m_visibleGroupCount(0) {
         m_map.addObserver(EntitiesAdded, *this);
         m_map.addObserver(EntitiesWillBeRemoved, *this);
         m_map.addObserver(BrushesDidChange, *this);

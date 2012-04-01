@@ -40,7 +40,7 @@
 		4830EF431527EC0F00ADA2B8 /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF371527EC0F00ADA2B8 /* Entity.cpp */; };
 		4830EF441527EC0F00ADA2B8 /* EntityDefinition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF391527EC0F00ADA2B8 /* EntityDefinition.cpp */; };
 		4830EF461527EC0F00ADA2B8 /* Face.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF3D1527EC0F00ADA2B8 /* Face.cpp */; };
-		4830EF471527EC0F00ADA2B8 /* QuakeMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF3F1527EC0F00ADA2B8 /* QuakeMap.cpp */; };
+		4830EF471527EC0F00ADA2B8 /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF3F1527EC0F00ADA2B8 /* Map.cpp */; };
 		4830EF4B1527EC8600ADA2B8 /* Observer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF491527EC8600ADA2B8 /* Observer.cpp */; };
 		4830EF531527EC9F00ADA2B8 /* Alias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF4C1527EC9F00ADA2B8 /* Alias.cpp */; };
 		4830EF541527EC9F00ADA2B8 /* Bsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4830EF4F1527EC9F00ADA2B8 /* Bsp.cpp */; };
@@ -313,8 +313,8 @@
 		4830EF3A1527EC0F00ADA2B8 /* EntityDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EntityDefinition.h; path = Model/Map/EntityDefinition.h; sourceTree = "<group>"; };
 		4830EF3D1527EC0F00ADA2B8 /* Face.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Face.cpp; path = Model/Map/Face.cpp; sourceTree = "<group>"; };
 		4830EF3E1527EC0F00ADA2B8 /* Face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Face.h; path = Model/Map/Face.h; sourceTree = "<group>"; };
-		4830EF3F1527EC0F00ADA2B8 /* QuakeMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QuakeMap.cpp; path = Model/Map/QuakeMap.cpp; sourceTree = "<group>"; };
-		4830EF401527EC0F00ADA2B8 /* QuakeMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QuakeMap.h; path = Model/Map/QuakeMap.h; sourceTree = "<group>"; };
+		4830EF3F1527EC0F00ADA2B8 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = Model/Map/Map.cpp; sourceTree = "<group>"; };
+		4830EF401527EC0F00ADA2B8 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; name = Map.h; path = Model/Map/Map.h; sourceTree = "<group>"; };
 		4830EF491527EC8600ADA2B8 /* Observer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Observer.cpp; path = Model/Observer.cpp; sourceTree = "<group>"; };
 		4830EF4A1527EC8600ADA2B8 /* Observer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Observer.h; path = Model/Observer.h; sourceTree = "<group>"; };
 		4830EF4C1527EC9F00ADA2B8 /* Alias.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Alias.cpp; path = Model/Assets/Alias.cpp; sourceTree = "<group>"; };
@@ -806,8 +806,8 @@
 				4830EF3E1527EC0F00ADA2B8 /* Face.h */,
 				4830EF561527ECBF00ADA2B8 /* Groups.h */,
 				4830EF591527ECF800ADA2B8 /* Groups.cpp */,
-				4830EF3F1527EC0F00ADA2B8 /* QuakeMap.cpp */,
-				4830EF401527EC0F00ADA2B8 /* QuakeMap.h */,
+				4830EF3F1527EC0F00ADA2B8 /* Map.cpp */,
+				4830EF401527EC0F00ADA2B8 /* Map.h */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -1611,7 +1611,7 @@
 				4830EF431527EC0F00ADA2B8 /* Entity.cpp in Sources */,
 				4830EF441527EC0F00ADA2B8 /* EntityDefinition.cpp in Sources */,
 				4830EF461527EC0F00ADA2B8 /* Face.cpp in Sources */,
-				4830EF471527EC0F00ADA2B8 /* QuakeMap.cpp in Sources */,
+				4830EF471527EC0F00ADA2B8 /* Map.cpp in Sources */,
 				4830EF4B1527EC8600ADA2B8 /* Observer.cpp in Sources */,
 				4830EF531527EC9F00ADA2B8 /* Alias.cpp in Sources */,
 				4830EF541527EC9F00ADA2B8 /* Bsp.cpp in Sources */,

@@ -51,7 +51,8 @@ namespace TrenchBroom {
     static const string MapLoaded = "MapLoaded";
     
     class Selection;
-    class QuakeMap : public Observable {
+    class MoveResult;
+    class Map : public Observable {
     private:
         Selection* m_selection;
         EntityDefinitionManager* m_entityDefinitionManager;
@@ -63,8 +64,8 @@ namespace TrenchBroom {
         
         vector<TVector3f> m_leakPoints;
     public:
-        QuakeMap(const string& entityDefinitionFilePath);
-        ~QuakeMap();
+        Map(const string& entityDefinitionFilePath);
+        ~Map();
         void clear();
         
 # pragma mark Point File Support
@@ -108,9 +109,9 @@ namespace TrenchBroom {
         bool deleteFaces();
         
 # pragma mark Vertex related functions
-        void moveVertex(Brush& brush, int theVertexIndex, TVector3f delta);
-        void moveEdge(Brush& brush, int theEdgeIndex, TVector3f delta);
-        void moveFace(Brush& brush, int theFaceIndex, TVector3f delta);
+        MoveResult moveVertex(Brush& brush, int vertexIndex, TVector3f delta);
+        MoveResult moveEdge(Brush& brush, int edgeIndex, TVector3f delta);
+        MoveResult moveFace(Brush& brush, int faceIndex, TVector3f delta);
         
 # pragma mark getters
         Selection& selection();

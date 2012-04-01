@@ -163,11 +163,11 @@ namespace TrenchBroom {
         return m_maxBounds;
     }
 
-    QuakeMap* Entity::quakeMap() const {
+    Map* Entity::quakeMap() const {
         return m_map;
     }
     
-    void Entity::setMap(QuakeMap* quakeMap) {
+    void Entity::setMap(Map* quakeMap) {
         m_map = quakeMap;
     }
     
