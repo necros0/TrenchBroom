@@ -420,4 +420,103 @@ namespace TrenchBroom {
             }
         }
     }
+
+    # pragma mark Face related functoins
+    void QuakeMap::setXOffset(int xOffset) {
+        const vector<Face*>& faces = m_selection->faces();
+        if (faces.empty()) return;
+
+        postNotification(FacesWillChange, &faces);
+        for (int i = 0; i < faces.size(); i++)
+            faces[i]->setXOffset(xOffset);
+        postNotification(FacesDidChange, &faces);
+    }
+    
+    void QuakeMap::setYOffset(int yOffset) {
+        const vector<Face*>& faces = m_selection->faces();
+        if (faces.empty()) return;
+        
+        postNotification(FacesWillChange, &faces);
+        for (int i = 0; i < faces.size(); i++)
+            faces[i]->setYOffset(yOffset);
+        postNotification(FacesDidChange, &faces);
+    }
+    
+    void QuakeMap::translateFaces(float delta, TVector3f dir) {
+        const vector<Face*>& faces = m_selection->faces();
+        if (faces.empty()) return;
+        
+        postNotification(FacesWillChange, &faces);
+        for (int i = 0; i < faces.size(); i++)
+            faces[i]->translateOffsets(delta, dir);
+        postNotification(FacesDidChange, &faces);
+    }
+    
+    void QuakeMap::setRotation(float rotation) {
+        const vector<Face*>& faces = m_selection->faces();
+        if (faces.empty()) return;
+        
+        postNotification(FacesWillChange, &faces);
+        for (int i = 0; i < faces.size(); i++)
+            faces[i]->setRotation(rotation);
+        postNotification(FacesDidChange, &faces);
+    }
+    
+    void QuakeMap::rotateFaces(float angle) {
+        const vector<Face*>& faces = m_selection->faces();
+        if (faces.empty()) return;
+        
+        postNotification(FacesWillChange, &faces);
+        for (int i = 0; i < faces.size(); i++)
+            faces[i]->rotateTexture(angle);
+        postNotification(FacesDidChange, &faces);
+    }
+    
+    void QuakeMap::setXScale(float xScale) {
+        const vector<Face*>& faces = m_selection->faces();
+        if (faces.empty()) return;
+        
+        postNotification(FacesWillChange, &faces);
+        for (int i = 0; i < faces.size(); i++)
+            faces[i]->setXScale(xScale);
+        postNotification(FacesDidChange, &faces);
+    }
+    
+    void QuakeMap::setYScale(float yScale) {
+        const vector<Face*>& faces = m_selection->faces();
+        if (faces.empty()) return;
+        
+        postNotification(FacesWillChange, &faces);
+        for (int i = 0; i < faces.size(); i++)
+            faces[i]->setYScale(yScale);
+        postNotification(FacesDidChange, &faces);
+    }
+    
+    bool QuakeMap::deleteFaces() {
+        const vector<Face*> faces = m_selection->faces();
+        if (faces.empty()) return false;
+        
+        vector<Brush*> changedBrushes;
+        bool del = true;
+        for (int i = 0; i < faces.size() && del; i++) {
+            Face* face = faces[i];
+            Brush* brush = face->brush();
+            del &= brush->canDeleteFace(*face);
+            changedBrushes.push_back(brush);
+        }
+        
+        if (del) {
+            m_selection->removeAll();
+            m_selection->addBrushes(changedBrushes);
+            postNotification(BrushesWillChange, &changedBrushes);
+            for (int i = 0; i < faces.size() && del; i++) {
+                Face* face = faces[i];
+                Brush* brush = face->brush();
+                brush->deleteFace(*face);
+            }
+            postNotification(BrushesDidChange, &changedBrushes);
+        }
+        
+        return del;
+    }
 }

@@ -105,7 +105,7 @@ namespace TrenchBroom {
         void rotateFaces(float angle);
         void setXScale(float xScale);
         void setYScale(float yScale);
-        void deleteFaces();
+        bool deleteFaces();
         
 # pragma mark Vertex related functions
         void moveVertex(Brush& brush, int theVertexIndex, TVector3f delta);
