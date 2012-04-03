@@ -6,3 +6,5 @@ build/**/*
 /TrenchBroom.xcodeproj/kristian.mode1v3
 /TrenchBroom.xcodeproj/kristian.pbxuser
 /TrenchBroom.xcodeproj/kristian.perspectivev3
+
+.DS_Store

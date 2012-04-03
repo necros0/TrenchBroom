@@ -20,16 +20,84 @@
 #ifndef TrenchBroom_Texture_h
 #define TrenchBroom_Texture_h
 
+#include <string>
+#include <vector>
+#include <map>
+#include <OpenGL/gl.h>
+#include "Math.h"
+#include "Wad.h"
+#include "Palette.h"
+#include "Alias.h"
+#include "Bsp.h"
+#include "Observer.h"
+
+using namespace std;
+
 namespace TrenchBroom {
     
+    static const string TextureManagerChanged = "TextureManagerChanged";
+
+    typedef enum {
+        TS_NAME,
+        TS_USAGE
+    } ETextureSortCriterion;
+    
     class Texture {
+    private:
+        GLuint m_textureId;
+        unsigned char* m_textureBuffer;
+        
+        void init(const string& name, const unsigned char* image, int width, int height, const Palette* palette);
     public:
+        string name;
+        int uniqueId;
         bool dummy;
         int usageCount;
         int width;
         int height;
+        TVector4f averageColor;
+
+        Texture(const string& name, const unsigned char* image, int width, int height, const Palette& palette);
+        Texture(const Mip& mip, const Palette& palette);
+        Texture(const string& name, const AliasSkin& skin, int skinIndex, const Palette& palette);
+        Texture(const string& name, const BspTexture& texture, const Palette& palette);
+        Texture(const string& name);
+        ~Texture();
+        
+        void activate();
+        void deactivate();
     };
 
+    class TextureCollection {
+    public:
+        vector<Texture*> textures;
+        string name;
+        TextureCollection(const string& name, Wad& wad, const Palette& palette);
+        ~TextureCollection();
+    };
+    
+    class TextureManager : public Observable {
+    private:
+        vector<TextureCollection*> m_collections;
+        map<string, Texture*> m_textures;
+        map<string, Texture*> m_dummies;
+        void reloadTextures();
+    public:
+        ~TextureManager();
+        
+        void addCollection(TextureCollection* collection, int index);
+        void removeCollection(int index);
+        void clear();
+        
+        const vector<TextureCollection*> collections();
+        const vector<Texture*> textures(ETextureSortCriterion criterion);
+        Texture* texture(const string& name);
+        
+        void activateTexture(const string& name);
+        void deactivateTexture();
+        
+        string wadPropertyString();
+    };
 }
 
 #endif

@@ -183,6 +183,8 @@
 		48EDC8C0151529B2008D3D80 /* Pak.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48EDC8BF151529B2008D3D80 /* Pak.cpp */; };
 		48EDC8CD1515B858008D3D80 /* substream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48EDC8CC1515B858008D3D80 /* substream.cpp */; };
 		48F0EC52131A9CCD0088FA02 /* PrefabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F0EC51131A9CCD0088FA02 /* PrefabView.m */; };
+		48F2F0E21529A79D0097E98B /* MapParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0E11529A79D0097E98B /* MapParser.cpp */; };
+		48F2F0E51529ABA60097E98B /* Palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0E41529ABA60097E98B /* Palette.cpp */; };
 		48F56F5213E9CDEC008DF954 /* MapBrowserDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F56F5113E9CDEC008DF954 /* MapBrowserDataSource.m */; };
 		48F5C3DB13E1578A00B1A720 /* ControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C3DA13E1578A00B1A720 /* ControllerUtils.m */; };
 		48FE96091363279D009B31FD /* quake.def in Resources */ = {isa = PBXBuildFile; fileRef = 48FE96081363279D009B31FD /* quake.def */; };
@@ -314,7 +316,7 @@
 		4830EF3D1527EC0F00ADA2B8 /* Face.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Face.cpp; path = Model/Map/Face.cpp; sourceTree = "<group>"; };
 		4830EF3E1527EC0F00ADA2B8 /* Face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Face.h; path = Model/Map/Face.h; sourceTree = "<group>"; };
 		4830EF3F1527EC0F00ADA2B8 /* Map.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Map.cpp; path = Model/Map/Map.cpp; sourceTree = "<group>"; };
-		4830EF401527EC0F00ADA2B8 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; name = Map.h; path = Model/Map/Map.h; sourceTree = "<group>"; };
+		4830EF401527EC0F00ADA2B8 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Map.h; path = Model/Map/Map.h; sourceTree = "<group>"; };
 		4830EF491527EC8600ADA2B8 /* Observer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Observer.cpp; path = Model/Observer.cpp; sourceTree = "<group>"; };
 		4830EF4A1527EC8600ADA2B8 /* Observer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Observer.h; path = Model/Observer.h; sourceTree = "<group>"; };
 		4830EF4C1527EC9F00ADA2B8 /* Alias.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Alias.cpp; path = Model/Assets/Alias.cpp; sourceTree = "<group>"; };
@@ -595,6 +597,10 @@
 		48EEE9041153D816001A4D7C /* Test-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Test-Info.plist"; sourceTree = "<group>"; };
 		48F0EC50131A9CCD0088FA02 /* PrefabView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefabView.h; sourceTree = "<group>"; };
 		48F0EC51131A9CCD0088FA02 /* PrefabView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefabView.m; sourceTree = "<group>"; };
+		48F2F0DF1529A6EF0097E98B /* MapParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapParser.h; sourceTree = "<group>"; };
+		48F2F0E11529A79D0097E98B /* MapParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapParser.cpp; sourceTree = "<group>"; };
+		48F2F0E31529A8B50097E98B /* Palette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Palette.h; path = Model/Assets/Palette.h; sourceTree = "<group>"; };
+		48F2F0E41529ABA60097E98B /* Palette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Palette.cpp; path = Model/Assets/Palette.cpp; sourceTree = "<group>"; };
 		48F56F5013E9CDEC008DF954 /* MapBrowserDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBrowserDataSource.h; sourceTree = "<group>"; };
 		48F56F5113E9CDEC008DF954 /* MapBrowserDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBrowserDataSource.m; sourceTree = "<group>"; };
 		48F5C3D913E1578A00B1A720 /* ControllerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControllerUtils.h; sourceTree = "<group>"; };
@@ -822,6 +828,8 @@
 				4830EF501527EC9F00ADA2B8 /* Bsp.h */,
 				4830EF511527EC9F00ADA2B8 /* Texture.cpp */,
 				4830EF521527EC9F00ADA2B8 /* Texture.h */,
+				48F2F0E31529A8B50097E98B /* Palette.h */,
+				48F2F0E41529ABA60097E98B /* Palette.cpp */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -998,6 +1006,8 @@
 				48EDC8CC1515B858008D3D80 /* substream.cpp */,
 				4830EF2F1526018000ADA2B8 /* EntityDefinitionParser.h */,
 				4830EF30152603D600ADA2B8 /* EntityDefinitionParser.cpp */,
+				48F2F0DF1529A6EF0097E98B /* MapParser.h */,
+				48F2F0E11529A79D0097E98B /* MapParser.cpp */,
 			);
 			path = IO;
 			sourceTree = "<group>";
@@ -1617,6 +1627,8 @@
 				4830EF541527EC9F00ADA2B8 /* Bsp.cpp in Sources */,
 				4830EF551527EC9F00ADA2B8 /* Texture.cpp in Sources */,
 				4830EF5A1527ECF800ADA2B8 /* Groups.cpp in Sources */,
+				48F2F0E21529A79D0097E98B /* MapParser.cpp in Sources */,
+				48F2F0E51529ABA60097E98B /* Palette.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

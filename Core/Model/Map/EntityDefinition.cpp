@@ -21,6 +21,14 @@
 #include "EntityDefinitionParser.h"
 
 namespace TrenchBroom {
+    bool compareByName(const EntityDefinition* def1, const EntityDefinition* def2) {
+        return def1->name <= def2->name;
+    }
+    
+    bool compareByUsage(const EntityDefinition* def1, const EntityDefinition* def2) {
+        return def1->usageCount <= def2->usageCount;
+    }
+
     EntityDefinition* EntityDefinition::baseDefinition(string& name, map<string, SpawnFlag>& flags, vector<Property*>& properties) {
         EntityDefinition* definition = new EntityDefinition();
         definition->type = EDT_BASE;
@@ -57,16 +65,7 @@ namespace TrenchBroom {
         while(!properties.empty()) delete properties.back(), properties.pop_back();
     }
 
-    bool sortByName(const EntityDefinition* def1, const EntityDefinition* def2) {
-        return def1->name <= def2->name;
-    }
-    bool sortByUsage(const EntityDefinition* def1, const EntityDefinition* def2) {
-        return def1->usageCount <= def2->usageCount;
-    }
-    
-    
     EntityDefinitionManager::EntityDefinitionManager(const string& path) {
-        
         EntityDefinitionParser parser(path);
         EntityDefinition* definition = NULL;
         while ((definition = parser.nextDefinition()) != NULL) {
@@ -74,7 +73,7 @@ namespace TrenchBroom {
             m_definitionsByName.push_back(definition);
         }
         
-        sort(m_definitionsByName.begin(), m_definitionsByName.end(), sortByName);
+        sort(m_definitionsByName.begin(), m_definitionsByName.end(), compareByName);
     }
     
     EntityDefinitionManager::~EntityDefinitionManager() {
@@ -102,7 +101,7 @@ namespace TrenchBroom {
             if (m_definitionsByName[i]->type == type)
                 definitionsOfType.push_back(m_definitionsByName[i]);
         if (criterion == ES_USAGE)
-            sort(definitionsOfType.begin(), definitionsOfType.end(), sortByUsage);
+            sort(definitionsOfType.begin(), definitionsOfType.end(), compareByUsage);
         return definitionsOfType;
     }
 }

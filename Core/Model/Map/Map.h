@@ -31,24 +31,24 @@
 
 namespace TrenchBroom {
     
-    static const string FacesWillChange = "FacesWillChange";
-    static const string FacesDidChange = "FacesDidChange";
+    static const string FacesWillChange         = "FacesWillChange";
+    static const string FacesDidChange          = "FacesDidChange";
 
-    static const string BrushesAdded = "BrushesAdded";
-    static const string BrushesWillBeRemoved = "BrushesWillBeRemoved";
-    static const string BrushesWillChange = "BrushesWillChange";
-    static const string BrushesDidChange = "BrushesDidChange";
+    static const string BrushesAdded            = "BrushesAdded";
+    static const string BrushesWillBeRemoved    = "BrushesWillBeRemoved";
+    static const string BrushesWillChange       = "BrushesWillChange";
+    static const string BrushesDidChange        = "BrushesDidChange";
     
-    static const string EntitiesAdded = "EntitiesAdded";
-    static const string EntitiesWillBeRemoved = "EntitiesWillBeRemoved";
-    static const string PropertiesWillChange = "PropertiesWillChange";
-    static const string PropertiesDidChange = "PropertiesDidChange";
+    static const string EntitiesAdded           = "EntitiesAdded";
+    static const string EntitiesWillBeRemoved   = "EntitiesWillBeRemoved";
+    static const string PropertiesWillChange    = "PropertiesWillChange";
+    static const string PropertiesDidChange     = "PropertiesDidChange";
 
-    static const string PointFileLoaded = "PointFileLoaded";
-    static const string PointFileUnloaded = "PointFileUnloaded";
+    static const string PointFileLoaded         = "PointFileLoaded";
+    static const string PointFileUnloaded       = "PointFileUnloaded";
 
-    static const string MapCleared = "MapCleared";
-    static const string MapLoaded = "MapLoaded";
+    static const string MapCleared              = "MapCleared";
+    static const string MapLoaded               = "MapLoaded";
     
     class Selection;
     class MoveResult;
@@ -68,12 +68,12 @@ namespace TrenchBroom {
         ~Map();
         void clear();
         
-# pragma mark Point File Support
+        # pragma mark Point File Support
         void loadPointFile(const string& path);
         void unloadPointFile();
         const vector<TVector3f>& leakPoints() const;
         
-# pragma mark Entity related functions
+        # pragma mark Entity related functions
         vector<Entity*>& entities();
         Entity* worldspawn(bool create);
         Entity* createEntity(const string& classname);
@@ -81,7 +81,7 @@ namespace TrenchBroom {
         void setEntityDefinition(Entity* entity);
         void setEntityProperty(const string& key, const string* value);
 
-# pragma mark Brush related functions
+        # pragma mark Brush related functions
         void addBrushesToEntity(Entity& entity);
         void moveBrushesToEntity(Entity& entity);
         Brush* createBrush(Entity& entity, const Brush& brushTemplate);
@@ -89,7 +89,7 @@ namespace TrenchBroom {
         void snapBrushes();
         bool resizeBrushes(vector<Face*>& faces, float delta, bool lockTextures);
         
-# pragma mark Common functions
+        # pragma mark Common functions
         void duplicateObjects(vector<Entity*>& newEntities, vector<Brush*>& newBrushes);
         void translateObjects(TVector3f delta, bool lockTextures);
         void rotateObjects90CW(EAxis axis, TVector3f center, bool lockTextures);
@@ -98,7 +98,7 @@ namespace TrenchBroom {
         void flipObjects(EAxis axis, TVector3f center, bool lockTextures);
         void deleteObjects();
         
-# pragma mark Face related functoins
+        # pragma mark Face related functoins
         void setXOffset(int xOffset);
         void setYOffset(int yOffset);
         void translateFaces(float delta, TVector3f dir);
@@ -108,12 +108,12 @@ namespace TrenchBroom {
         void setYScale(float yScale);
         bool deleteFaces();
         
-# pragma mark Vertex related functions
+        # pragma mark Vertex related functions
         MoveResult moveVertex(Brush& brush, int vertexIndex, TVector3f delta);
         MoveResult moveEdge(Brush& brush, int edgeIndex, TVector3f delta);
         MoveResult moveFace(Brush& brush, int faceIndex, TVector3f delta);
         
-# pragma mark getters
+        # pragma mark Getters
         Selection& selection();
         EntityDefinitionManager& entityDefinitionManager();
         GroupManager& groupManager();
