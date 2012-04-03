@@ -80,6 +80,17 @@ namespace TrenchBroom {
         while(!m_definitionsByName.empty()) delete m_definitionsByName.back(), m_definitionsByName.pop_back();
     }
     
+    EntityDefinitionManager* EntityDefinitionManager::sharedManager(const string& path) {
+        static map<string, EntityDefinitionManager*> instances;
+        map<string, EntityDefinitionManager*>::iterator it = instances.find(path);
+        if (it != instances.end())
+            return it->second;
+        
+        EntityDefinitionManager* instance = new EntityDefinitionManager(path);
+        instances[path] = instance;
+        return instance;
+    }
+
     EntityDefinition* EntityDefinitionManager::definition(const string& name) const {
         map<const string, EntityDefinition*>::const_iterator it = m_definitions.find(name);
         if (it == m_definitions.end())

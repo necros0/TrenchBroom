@@ -54,6 +54,7 @@ namespace TrenchBroom {
         void init();
         void rebuildGeometry();
     public:
+        Brush(const TBoundingBox& worldBounds);
         Brush(const TBoundingBox& worldBounds, const Brush& brushTemplate);
         Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture& texture);
         ~Brush();
@@ -76,7 +77,7 @@ namespace TrenchBroom {
         bool intersectsEntity(const Entity& entity);
         bool containsEntity(const Entity& entity);
         
-        bool addFace(Face& face);
+        bool addFace(Face* face);
         bool canDeleteFace(Face& face);
         void deleteFace(Face& face);
         

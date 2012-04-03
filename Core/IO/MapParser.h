@@ -22,16 +22,96 @@
 
 #include <string>
 #include <istream>
+#include "Map.h"
+#include "Entity.h"
+#include "Brush.h"
+#include "Face.h"
+#include "Texture.h"
 
 using namespace std;
 
 namespace TrenchBroom {
     
+    typedef enum {
+        TT_FRAC = 1 << 0, // fractional number
+        TT_DEC  = 1 << 1, // decimal number
+        TT_STR  = 1 << 2, // string
+        TT_B_O  = 1 << 3, // opening parenthesis
+        TT_B_C  = 1 << 4, // closing parenthesis
+        TT_CB_O = 1 << 5, // opening curly bracket
+        TT_CB_C = 1 << 6, // closing curly bracket
+        TT_SB_O = 1 << 7, // opening square bracket
+        TT_SB_C = 1 << 8, // closing square bracket
+        TT_COM  = 1 << 9 // comment
+    } ETokenType;
+    
+    typedef enum {
+        TS_DEF, // default state
+        TS_DEC, // current token is a decimal number
+        TS_FRAC, // current token is a fractional number
+        TS_STR, // current token is a string
+        TS_Q_STR, // current token is a quoted string
+        TS_COM,
+        TS_EOF // parsing is complete
+    } ETokenizerState;
+    
+    typedef enum {
+        PS_DEF, // default state
+        PS_ENT, // currently parsing an entity
+        PS_BRUSH, // currently parsing a brush
+    } EParserState;
+    
+    typedef enum {
+        MF_STANDARD,
+        MF_VALVE,
+        MF_UNDEFINED
+    } EMapFormat;
+    
+    class MapToken {
+    public:
+        ETokenType type;
+        string data;
+        int line;
+        int column;
+        int charsRead;
+    };
+    
+    class MapTokenizer {
+        istream& m_stream;
+        ETokenizerState m_state;
+        int m_line;
+        int m_column;
+        int m_startLine;
+        int m_startColumn;
+        string m_buffer;
+        MapToken m_token;
+        char nextChar();
+        char peekChar();
+        MapToken* token(ETokenType type, string* data, int line, int column);
+    public:
+        MapTokenizer(istream& stream);
+        MapToken* next();
+    };
+    
     class MapParser {
     private:
-        istream& stream;
+        const TBoundingBox& m_worldBounds;
+        TextureManager& m_textureManager;
+        int m_size;
+        EMapFormat m_format;
+        MapTokenizer* m_tokenizer;
+        vector<MapToken*> m_tokenStack;
+        
+        void expect(int expectedType, const MapToken* actualToken) const;
+        MapToken* nextToken();
+        void pushToken(MapToken* token);
     public:
-        MapParser(istream& stream);
+        MapParser(istream& stream, const TBoundingBox& worldBounds, TextureManager& textureManager);
+        ~MapParser();
+        Map* parseMap(const string& entityDefinitionFilePath);
+        Entity* parseEntity();
+        Brush* parseBrush();
+        Face* parseFace();
     };
 }
 

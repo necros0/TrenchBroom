@@ -95,8 +95,6 @@ namespace TrenchBroom {
         
         void activateTexture(const string& name);
         void deactivateTexture();
-        
-        string wadPropertyString();
     };
 }
 

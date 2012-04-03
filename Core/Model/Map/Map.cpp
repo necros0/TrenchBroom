@@ -24,16 +24,9 @@
 #include "Utils.h"
 
 namespace TrenchBroom {
-    Map::Map(const string& entityDefinitionFilePath) : Observable() {
-        m_worldBounds.min.x = -0x1000;
-        m_worldBounds.min.y = -0x1000;
-        m_worldBounds.min.z = -0x1000;
-        m_worldBounds.max.x = +0x1000;
-        m_worldBounds.max.y = +0x1000;
-        m_worldBounds.max.z = +0x1000;
-        
+    Map::Map(const TBoundingBox& worldBounds, const string& entityDefinitionFilePath) : Observable(), m_worldBounds(worldBounds) {
         m_selection = new Selection();
-        m_entityDefinitionManager = new EntityDefinitionManager(entityDefinitionFilePath);
+        m_entityDefinitionManager = EntityDefinitionManager::sharedManager(entityDefinitionFilePath);
         m_groupManager = new GroupManager(*this);
     }
     
@@ -41,7 +34,6 @@ namespace TrenchBroom {
         setPostNotifications(false);
         clear();
         delete m_selection;
-        delete m_entityDefinitionManager;
         delete m_groupManager;
     }
 
@@ -106,6 +98,18 @@ namespace TrenchBroom {
         return m_worldspawn;
     }
 
+    void Map::addEntity(Entity* entity) {
+        assert(entity != NULL);
+        if (!entity->worldspawn() || worldspawn(false) == NULL) {
+            m_entities.push_back(entity);
+            entity->setMap(this);
+        }
+        
+        vector <Entity*> entities;
+        entities.push_back(entity);
+        postNotification(EntitiesAdded, &entities);
+    }
+
     Entity* Map::createEntity(const string& classname) {
         EntityDefinition* entityDefinition = m_entityDefinitionManager->definition(classname);
         if (entityDefinition == NULL) {
@@ -116,7 +120,7 @@ namespace TrenchBroom {
         Entity* entity = new Entity();
         entity->setProperty(ClassnameKey, classname);
         entity->setEntityDefinition(entityDefinition);
-        m_entities.push_back(entity);
+        addEntity(entity);
         return entity;
     }
     
@@ -133,7 +137,7 @@ namespace TrenchBroom {
         
         Entity* entity = new Entity(properties);
         entity->setEntityDefinition(entityDefinition);
-        m_entities.push_back(entity);
+        addEntity(entity);
         return entity;
     }
     
@@ -555,6 +559,10 @@ namespace TrenchBroom {
     }
     
     # pragma mark getters
+    TBoundingBox Map::worldBounds() {
+        return m_worldBounds;
+    }
+    
     Selection& Map::selection() {
         return *m_selection;
     }

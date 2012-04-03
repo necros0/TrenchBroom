@@ -64,7 +64,7 @@ namespace TrenchBroom {
         
         vector<TVector3f> m_leakPoints;
     public:
-        Map(const string& entityDefinitionFilePath);
+        Map(const TBoundingBox& worldBounds, const string& entityDefinitionFilePath);
         ~Map();
         void clear();
         
@@ -76,6 +76,7 @@ namespace TrenchBroom {
         # pragma mark Entity related functions
         vector<Entity*>& entities();
         Entity* worldspawn(bool create);
+        void addEntity(Entity* entity);
         Entity* createEntity(const string& classname);
         Entity* createEntity(const map<string, string> properties);
         void setEntityDefinition(Entity* entity);
@@ -114,6 +115,7 @@ namespace TrenchBroom {
         MoveResult moveFace(Brush& brush, int faceIndex, TVector3f delta);
         
         # pragma mark Getters
+        TBoundingBox worldBounds();
         Selection& selection();
         EntityDefinitionManager& entityDefinitionManager();
         GroupManager& groupManager();

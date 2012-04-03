@@ -31,6 +31,10 @@ namespace TrenchBroom {
         m_selected = false;
     }
     
+    Brush::Brush(const TBoundingBox& worldBounds) : m_worldBounds(worldBounds) {
+        init();
+    }
+    
     Brush::Brush(const TBoundingBox& worldBounds, const Brush& brushTemplate) : m_worldBounds(worldBounds) {
         init();
         restore(brushTemplate);
@@ -49,7 +53,7 @@ namespace TrenchBroom {
         p3.x = brushBounds.max.x;
         Face* front = new Face(m_worldBounds, p1, p2, p3);
         front->setTexture(&texture);
-        addFace(*front);
+        addFace(front);
         
         p2 = p1;
         p2.y = brushBounds.max.y;
@@ -57,7 +61,7 @@ namespace TrenchBroom {
         p3.z = brushBounds.max.z;
         Face* left = new Face(m_worldBounds, p1, p2, p3);
         left->setTexture(&texture);
-        addFace(*left);
+        addFace(left);
         
         p2 = p1;
         p2.x = brushBounds.max.x;
@@ -65,7 +69,7 @@ namespace TrenchBroom {
         p3.y = brushBounds.max.y;
         Face* bottom = new Face(m_worldBounds, p1, p2, p3);
         bottom->setTexture(&texture);
-        addFace(*bottom);
+        addFace(bottom);
 
         p1 = brushBounds.max;
         p2 = p1;
@@ -74,7 +78,7 @@ namespace TrenchBroom {
         p3.z = brushBounds.min.z;
         Face* back = new Face(m_worldBounds, p1, p2, p3);
         back->setTexture(&texture);
-        addFace(*back);
+        addFace(back);
         
         p2 = p1;
         p2.z = brushBounds.min.z;
@@ -82,7 +86,7 @@ namespace TrenchBroom {
         p3.y = brushBounds.min.y;
         Face* right = new Face(m_worldBounds, p1, p2, p3);
         right->setTexture(&texture);
-        addFace(*right);
+        addFace(right);
         
         p2 = p1;
         p2.y = brushBounds.min.y;
@@ -90,7 +94,7 @@ namespace TrenchBroom {
         p3.x = brushBounds.min.x;
         Face* top = new Face(m_worldBounds, p1, p2, p3);
         top->setTexture(&texture);
-        addFace(*top);
+        addFace(top);
     }
     
     Brush::~Brush() {
@@ -123,7 +127,7 @@ namespace TrenchBroom {
         vector<Face* > templateFaces = brushTemplate.faces();
         for (int i = 0; i < templateFaces.size(); i++) {
             Face* face = new Face(m_worldBounds, *templateFaces[i]);
-            addFace(*face);
+            addFace(face);
         }
         m_entity->brushChanged(this);
     }
@@ -312,9 +316,9 @@ namespace TrenchBroom {
         return true;
     }
 
-    bool Brush::addFace(Face& face) {
+    bool Brush::addFace(Face* face) {
         vector<Face*> droppedFaces;
-        ECutResult result = m_geometry->addFace(face, droppedFaces);
+        ECutResult result = m_geometry->addFace(*face, droppedFaces);
         if (result == CR_REDUNDANT) return true;
         if (result == CR_NULL) return false;
 
@@ -324,8 +328,8 @@ namespace TrenchBroom {
             delete *it;
             m_faces.erase(it);
         }
-        face.setBrush(this);
-        m_faces.push_back(&face);
+        face->setBrush(this);
+        m_faces.push_back(face);
         return true;
     }
     

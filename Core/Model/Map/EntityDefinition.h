@@ -122,6 +122,8 @@ namespace TrenchBroom {
     public:
         EntityDefinitionManager(const string& path);
         ~EntityDefinitionManager();
+        static EntityDefinitionManager* sharedManager(const string& path);
+        
         EntityDefinition* definition(const string& name) const;
         const vector<EntityDefinition*> definitions() const;
         const vector<EntityDefinition*> definitions(EEntityDefinitionType type) const;
