@@ -23,24 +23,22 @@
 
 namespace TrenchBroom {
     void Brush::init() {
-        static int currentId = 1;
-        m_brushId = currentId++;
         m_entity = NULL;
         m_onGrid = false;
         m_filePosition = -1;
         m_selected = false;
     }
     
-    Brush::Brush(const TBoundingBox& worldBounds) : m_worldBounds(worldBounds) {
+    Brush::Brush(const TBoundingBox& worldBounds) : MapObject(), m_worldBounds(worldBounds) {
         init();
     }
     
-    Brush::Brush(const TBoundingBox& worldBounds, const Brush& brushTemplate) : m_worldBounds(worldBounds) {
+    Brush::Brush(const TBoundingBox& worldBounds, const Brush& brushTemplate) : MapObject(), m_worldBounds(worldBounds) {
         init();
         restore(brushTemplate);
     }
     
-    Brush::Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture& texture) : m_worldBounds(worldBounds) {
+    Brush::Brush(const TBoundingBox& worldBounds, const TBoundingBox& brushBounds, Texture& texture) : MapObject(), m_worldBounds(worldBounds) {
         init();
         m_geometry = new BrushGeometry(m_worldBounds);
         
@@ -117,7 +115,7 @@ namespace TrenchBroom {
     }
 
     void Brush::restore(const Brush& brushTemplate) {
-        assert(m_brushId == brushTemplate.brushId());
+        assert(uniqueId() == brushTemplate.uniqueId());
         
         while(!m_faces.empty()) delete m_faces.back(), m_faces.pop_back();
         if (m_geometry != NULL)
@@ -132,10 +130,6 @@ namespace TrenchBroom {
         m_entity->brushChanged(this);
     }
     
-    int Brush::brushId() const {
-        return m_brushId;
-    }
-    
     Entity* Brush::entity() const {
         return m_entity;
     }
@@ -148,7 +142,7 @@ namespace TrenchBroom {
         return m_faces;
     }
     
-    const TBoundingBox& Brush::bounds() const {
+    TBoundingBox Brush::bounds() const {
         return m_geometry->bounds;
     }
     

@@ -27,9 +27,7 @@ using namespace std;
 namespace TrenchBroom {
 
     void Entity::init() {
-        static int currentId = 1;
         m_entityDefinition = NULL;
-        m_entityId = currentId++;
         m_map = NULL;
         m_filePosition = -1;
         m_selected = false;
@@ -65,11 +63,11 @@ namespace TrenchBroom {
         addV3f(&m_center, &diff, &m_maxBounds.max);
     }
     
-    Entity::Entity() {
+    Entity::Entity() : MapObject() {
         init();
     }
     
-    Entity::Entity(const map<string, string> properties) {
+    Entity::Entity(const map<string, string> properties) : MapObject() {
         init();
         m_properties = properties;
         map<string, string>::iterator it;
@@ -130,10 +128,6 @@ namespace TrenchBroom {
         }
     }
 
-    int Entity::entityId() const {
-        return m_entityId;
-    }
-    
     const EntityDefinition* Entity::entityDefinition() const {
         return m_entityDefinition;
     }

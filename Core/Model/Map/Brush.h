@@ -21,6 +21,7 @@
 #define TrenchBroom_Brush_h
 
 #include <vector>
+#include "MapObject.h"
 #include "Entity.h"
 #include "Face.h"
 #include "Texture.h"
@@ -37,9 +38,8 @@ namespace TrenchBroom {
     class BrushGeometry;
     class MoveResult;
     
-    class Brush {
+    class Brush : public MapObject {
     protected:
-        int m_brushId;
         Entity* m_entity;
         vector<Face*> m_faces;
         
@@ -61,11 +61,10 @@ namespace TrenchBroom {
         
         void restore(const Brush& brushTemplate);
         
-        int brushId() const;
         Entity* entity() const;
         void setEntity(Entity* entity);
         const vector<Face*>& faces() const;
-        const TBoundingBox& bounds() const;
+        TBoundingBox bounds() const;
         const TBoundingBox& worldBounds() const;
         TVector3f center();
         const vector<Vertex*>& vertices() const;

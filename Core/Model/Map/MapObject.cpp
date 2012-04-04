@@ -17,22 +17,16 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Cocoa/Cocoa.h>
-#import "Math.h"
+#include "MapObject.h"
 
-@class MapDocument;
-@class Octree;
-@class PickingHitList;
-@protocol Filter;
-
-@interface Picker : NSObject {
-    @private
-    Octree* octree;
+namespace TrenchBroom {
+    
+    MapObject::MapObject() {
+        static int currentId = 0;
+        m_uniqueId = currentId++;
+    }
+    
+    int MapObject::uniqueId() {
+        return m_uniqueId;
+    }
 }
-
-- (id)initWithMap:(MapDocument *)theMap;
-- (PickingHitList *)pickObjects:(const TRay *)ray filter:(id <Filter>)filter;
-- (void)pickCloseFaces:(const TRay *)theRay brushes:(NSArray *)theBrushes maxDistance:(float)theMaxDistance hitList:(PickingHitList *)theHitList;
-- (void)pickVertices:(const TRay *)theRay brushes:(NSArray *)theBrushes handleRadius:(float)theHandleRadius hitList:(PickingHitList *)theHitList filter:(id <Filter>)filter;
-
-@end

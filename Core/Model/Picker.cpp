@@ -18,3 +18,29 @@
  */
 
 #include "Picker.h"
+
+namespace TrenchBroom {
+    Picker::Picker(Map* map) : m_map(map) {}
+    
+    PickingHitList* Picker::pick(TRay ray, Filter* filter) {
+        PickingHitList* hits = new PickingHitList();
+        Octree& octree = m_map->octree();
+        vector<MapObject&> objects = octree.intersect(ray);
+        for (int i = 0; i < objects.size(); i++) {
+            MapObject& object = objects[i];
+            Brush* brush = dynamic_cast<Brush*>(&object);
+            if (brush != NULL) {
+            } else {
+                Entity* entity = dynamic_cast<Entity*>(&object);
+                if (entity != NULL) {
+                }
+            }
+        }
+    }
+    
+    void Picker::pickCloseFaces(TRay ray, const vector<Brush*>& brushes, float maxDistance, PickingHitList& hits, Filter* filter) {
+    }
+    
+    void Picker::pickVertices(TRay ray, const vector<Brush*>& brushes, float handleRadius, PickingHitList& hits, Filter* filter) {
+    }
+}

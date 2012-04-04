@@ -11,9 +11,7 @@
 		1DDD582D0DA1D0D100B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD582A0DA1D0D100B32029 /* MainMenu.xib */; };
 		4802373E1427776900F16751 /* NSUndoManager+DebugCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 4802373D1427776900F16751 /* NSUndoManager+DebugCategory.m */; };
 		4809A10F13E2A2E300AF6557 /* InspectorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4809A10E13E2A2E300AF6557 /* InspectorView.xib */; };
-		480D23201334A3A800D3B57B /* PickingHitList.m in Sources */ = {isa = PBXBuildFile; fileRef = 480D231F1334A3A800D3B57B /* PickingHitList.m */; };
 		480EBEA5142DFA34005DD8D6 /* GroupTableDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 480EBEA4142DFA33005DD8D6 /* GroupTableDataSource.m */; };
-		480EBEAC142E2962005DD8D6 /* GroupManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 480EBEAB142E2962005DD8D6 /* GroupManager.m */; };
 		480F2F65132562CA00651FED /* Grid.m in Sources */ = {isa = PBXBuildFile; fileRef = 480F2F64132562CA00651FED /* Grid.m */; };
 		4814A02312F73F1E0082E05F /* ProgressWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4814A02212F73F1E0082E05F /* ProgressWindow.xib */; };
 		4814A02712F740580082E05F /* ProgressWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4814A02612F740580082E05F /* ProgressWindowController.m */; };
@@ -53,57 +51,37 @@
 		483AB7A71410C4E400B5F44E /* PointFileFeedbackFigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 483AB7A61410C4E400B5F44E /* PointFileFeedbackFigure.m */; };
 		483B1129122441060072EAFB /* Math.c in Sources */ = {isa = PBXBuildFile; fileRef = 483B1128122441060072EAFB /* Math.c */; };
 		484184DB1507CAF4009532B9 /* EdgeTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 484184DA1507CAF4009532B9 /* EdgeTree.m */; };
-		484524A61323CCBD003B2855 /* MapWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 484524A51323CCBD003B2855 /* MapWriter.m */; };
 		484524D713240049003B2855 /* NSFileManager+AppSupportCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 484524D613240049003B2855 /* NSFileManager+AppSupportCategory.m */; };
-		48455A4B13800A520096FEA5 /* IO.m in Sources */ = {isa = PBXBuildFile; fileRef = 48455A4A13800A520096FEA5 /* IO.m */; };
 		4846A7B713E35D870088E122 /* Light in Copy Compiler Binaries */ = {isa = PBXBuildFile; fileRef = 483C515013E3284E0082C296 /* Light */; };
 		4846A7B813E35D870088E122 /* QBSP in Copy Compiler Binaries */ = {isa = PBXBuildFile; fileRef = 483C515113E3284E0082C296 /* QBSP */; };
 		4846A7B913E35D870088E122 /* Vis in Copy Compiler Binaries */ = {isa = PBXBuildFile; fileRef = 483C515213E3284E0082C296 /* Vis */; };
-		484B9A4413620327003030D7 /* EntityDefinitionTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 484B9A4313620327003030D7 /* EntityDefinitionTokenizer.m */; };
-		484B9A47136203F8003030D7 /* EntityDefinitionToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 484B9A46136203F8003030D7 /* EntityDefinitionToken.m */; };
-		484B9A5813621004003030D7 /* EntityDefinitionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 484B9A5713621004003030D7 /* EntityDefinitionParser.m */; };
 		484C28FC115023A2004DD957 /* Vbo.c in Sources */ = {isa = PBXBuildFile; fileRef = 484C28FB115023A2004DD957 /* Vbo.c */; };
-		48527F3811148D5C00CD6043 /* MutableFace.m in Sources */ = {isa = PBXBuildFile; fileRef = 48527F3711148D5C00CD6043 /* MutableFace.m */; };
-		48527F3E11148EAA00CD6043 /* MutableBrush.m in Sources */ = {isa = PBXBuildFile; fileRef = 48527F3D11148EAA00CD6043 /* MutableBrush.m */; };
 		485582131357874F005F8B2C /* CameraTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 485582121357874F005F8B2C /* CameraTool.m */; };
 		4855821D135788B5005F8B2C /* SelectionTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 4855821C135788B5005F8B2C /* SelectionTool.m */; };
 		4855B29A1465C4A00062078C /* CameraOrbitAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4855B2991465C4A00062078C /* CameraOrbitAnimation.m */; };
 		4855B29E1465C7A40062078C /* CameraAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4855B29D1465C7A40062078C /* CameraAnimation.m */; };
 		4856F98013E482D8004CFABE /* BJMHLight in Copy Compiler Binaries */ = {isa = PBXBuildFile; fileRef = 4856F97D13E482C6004CFABE /* BJMHLight */; };
 		485720E214E71BED009B0959 /* TxQBSP in Copy Compiler Binaries */ = {isa = PBXBuildFile; fileRef = 485720DF14E71BE7009B0959 /* TxQBSP */; };
-		485AE8A712F4B9BA00CDBD6A /* Picker.m in Sources */ = {isa = PBXBuildFile; fileRef = 485AE8A612F4B9BA00CDBD6A /* Picker.m */; };
-		485AE8D712F4C5BD00CDBD6A /* PickingHit.m in Sources */ = {isa = PBXBuildFile; fileRef = 485AE8D612F4C5BD00CDBD6A /* PickingHit.m */; };
 		485D2EAF1308624900CF73D8 /* Options.m in Sources */ = {isa = PBXBuildFile; fileRef = 485D2EAE1308624900CF73D8 /* Options.m */; };
 		48639BF412EA227100808576 /* QuakePalette.lmp in Resources */ = {isa = PBXBuildFile; fileRef = 48639BF312EA227100808576 /* QuakePalette.lmp */; };
 		4864E2BD140D1840000DE923 /* CompilerProfileCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864E2BC140D1840000DE923 /* CompilerProfileCommand.m */; };
 		4864E2C1140E2682000DE923 /* CompilerProfileRunner.m in Sources */ = {isa = PBXBuildFile; fileRef = 4864E2C0140E2682000DE923 /* CompilerProfileRunner.m */; };
-		486526C5134F0BC20045A4B6 /* TextureCollection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 486526C4134F0BC20045A4B6 /* TextureCollection.mm */; };
 		4866F3B112EAC9FA009B345C /* TextureViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 4866F3B012EAC9FA009B345C /* TextureViewLayout.m */; };
 		4866F3BE12EACD2B009B345C /* TextureViewLayoutRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4866F3BD12EACD2B009B345C /* TextureViewLayoutRow.m */; };
 		4866F3C412EACE73009B345C /* TextureViewLayoutCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4866F3C312EACE73009B345C /* TextureViewLayoutCell.m */; };
 		4867430513577855009E7ABF /* Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 4867430413577855009E7ABF /* Tool.m */; };
 		486928EC133F282100A0F098 /* FaceTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 486928EB133F282100A0F098 /* FaceTool.m */; };
-		486A9C1C12F41FCA003D26FE /* Octree.m in Sources */ = {isa = PBXBuildFile; fileRef = 486A9C1B12F41FCA003D26FE /* Octree.m */; };
-		486A9C1F12F41FD1003D26FE /* OctreeNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 486A9C1E12F41FD1003D26FE /* OctreeNode.m */; };
 		486E08AF13B5EAE300E751A6 /* RotateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 486E08AE13B5EAE300E751A6 /* RotateTool.m */; };
 		486E08B313B5EF2C00E751A6 /* RotateFeedbackFigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 486E08B213B5EF2C00E751A6 /* RotateFeedbackFigure.m */; };
 		48706C411436F41D006E0B1C /* DragPlane.m in Sources */ = {isa = PBXBuildFile; fileRef = 48706C401436F41D006E0B1C /* DragPlane.m */; };
 		487436A6135B5FD900F787E1 /* DefaultFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 487436A5135B5FD900F787E1 /* DefaultFilter.m */; };
-		4874387013601A5700F787E1 /* EntityDefinitionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4874386F13601A5700F787E1 /* EntityDefinitionManager.m */; };
-		4874387313601A6000F787E1 /* EntityDefinition.m in Sources */ = {isa = PBXBuildFile; fileRef = 4874387213601A6000F787E1 /* EntityDefinition.m */; };
-		48770FF312E5BE66009B440B /* MapTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 48770FF212E5BE66009B440B /* MapTokenizer.m */; };
-		48770FF612E5BF28009B440B /* MapToken.m in Sources */ = {isa = PBXBuildFile; fileRef = 48770FF512E5BF28009B440B /* MapToken.m */; };
-		4877106E12E5DA55009B440B /* MapParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 4877106D12E5DA55009B440B /* MapParser.m */; };
 		487799C613F308ED001F9335 /* QuickBarWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 487799C513F308ED001F9335 /* QuickBarWindow.xib */; };
 		487799CA13F30990001F9335 /* QuickBarWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 487799C913F30990001F9335 /* QuickBarWindowController.m */; };
 		487A645812EA397C00A43289 /* TextureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 487A645712EA397C00A43289 /* TextureView.m */; };
-		487A646C12EA3A7E00A43289 /* Texture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 487A646B12EA3A7E00A43289 /* Texture.mm */; };
 		487A7E651300801A00434806 /* Renderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 487A7E641300801A00434806 /* Renderer.m */; };
 		487D2A5D1401327100F2673B /* 128.map in Copy Prefabs (Cubes) */ = {isa = PBXBuildFile; fileRef = 487D2A571401324500F2673B /* 128.map */; };
 		487D2A5E1401327100F2673B /* 32.map in Copy Prefabs (Cubes) */ = {isa = PBXBuildFile; fileRef = 487D2A581401324500F2673B /* 32.map */; };
 		487D2A5F1401327100F2673B /* 64.map in Copy Prefabs (Cubes) */ = {isa = PBXBuildFile; fileRef = 487D2A591401324500F2673B /* 64.map */; };
-		487E1E9412E495060001C150 /* IdGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 487E1E9312E495060001C150 /* IdGenerator.m */; };
-		4881C74212E9C8BE006BF922 /* TextureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4881C74112E9C8BE006BF922 /* TextureManager.m */; };
 		488514D3150AB396000A58CD /* BoundsRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 488514D2150AB396000A58CD /* BoundsRenderer.m */; };
 		488514E9150EA729000A58CD /* 12.map in Copy Prefabs (Cylinders) */ = {isa = PBXBuildFile; fileRef = 488514E4150EA6E5000A58CD /* 12.map */; };
 		488514EA150EA729000A58CD /* 24.map in Copy Prefabs (Cylinders) */ = {isa = PBXBuildFile; fileRef = 488514E5150EA6E5000A58CD /* 24.map */; };
@@ -114,14 +92,12 @@
 		488D527E13DEDF91006FE818 /* EntityDefinitionNameFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D527D13DEDF91006FE818 /* EntityDefinitionNameFilter.m */; };
 		488D528113DEE181006FE818 /* EntityDefinitionUsageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 488D528013DEE181006FE818 /* EntityDefinitionUsageFilter.m */; };
 		488F853C13F51FAE00DA0403 /* RenderChangeSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 488F853B13F51FAE00DA0403 /* RenderChangeSet.m */; };
-		488F854013F583B900DA0403 /* VertexData.m in Sources */ = {isa = PBXBuildFile; fileRef = 488F853F13F583B900DA0403 /* VertexData.m */; };
 		488FEAF1131F9D1800010A04 /* MutablePrefabGroup.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FEAF0131F9D1800010A04 /* MutablePrefabGroup.m */; };
 		488FEB5C131FC49A00010A04 /* PrefabLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FEB5B131FC49A00010A04 /* PrefabLayout.m */; };
 		488FEB64131FCBA700010A04 /* PrefabLayoutGroupRow.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FEB63131FCBA700010A04 /* PrefabLayoutGroupRow.m */; };
 		488FEB67131FD49C00010A04 /* PrefabLayoutPrefabCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 488FEB66131FD49C00010A04 /* PrefabLayoutPrefabCell.m */; };
 		4893347613F2DA3D00AB179F /* CompassView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4893347513F2DA3D00AB179F /* CompassView.m */; };
 		48958209132E52EF00BB7D8F /* CameraAbsoluteAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 48958208132E52EF00BB7D8F /* CameraAbsoluteAnimation.m */; };
-		48973E2A13C368900067E10D /* SpawnFlag.m in Sources */ = {isa = PBXBuildFile; fileRef = 48973E2913C3688F0067E10D /* SpawnFlag.m */; };
 		48976C7313E2BA63005AB1EA /* InspectorWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48976C7213E2BA63005AB1EA /* InspectorWindow.xib */; };
 		48976C8013E2BF15005AB1EA /* InspectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48976C7E13E2BF15005AB1EA /* InspectorViewController.m */; };
 		48976C8413E2BFC5005AB1EA /* InspectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48976C8313E2BFC5005AB1EA /* InspectorWindowController.m */; };
@@ -137,8 +113,6 @@
 		48A68EB8114E96C00064732A /* MapWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A68EB7114E96C00064732A /* MapWindowController.m */; };
 		48A68ECF114E9B0D0064732A /* MapView3D.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A68ECE114E9B0D0064732A /* MapView3D.m */; };
 		48A68F0F114EA0420064732A /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A68F0E114EA0420064732A /* OpenGL.framework */; };
-		48A68F27114EDF360064732A /* MutableEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A68F26114EDF360064732A /* MutableEntity.m */; };
-		48A68F70114EE6DC0064732A /* MapDocument.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48A68F6F114EE6DC0064732A /* MapDocument.mm */; };
 		48AC3E6313E3D00C008F4BF8 /* PreferencesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AC3E6213E3D00C008F4BF8 /* PreferencesManager.m */; };
 		48AC3E6C13E3FA99008F4BF8 /* TreeQBSP in Copy Compiler Binaries */ = {isa = PBXBuildFile; fileRef = 48AC3E6A13E3FA8D008F4BF8 /* TreeQBSP */; };
 		48AC3E6F13E418AC008F4BF8 /* MapCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = 48AC3E6E13E418AC008F4BF8 /* MapCompiler.m */; };
@@ -166,7 +140,7 @@
 		48DB957812F0699600FB5483 /* InputController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DB957712F0699600FB5483 /* InputController.m */; };
 		48DBE7451341CCD200C0FDE7 /* ClipBrushFeedbackFigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBE7441341CCD200C0FDE7 /* ClipBrushFeedbackFigure.m */; };
 		48DBE74F1341CD8B00C0FDE7 /* ClipPlane.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DBE74E1341CD8B00C0FDE7 /* ClipPlane.m */; };
-		48DD414C1503BBC10074C1F4 /* DragFaceToolFeedbackFigure.m in Sources */ = {isa = PBXBuildFile; fileRef = 48DD414A1503BB830074C1F4 /* DragFaceToolFeedbackFigure.m */; };
+		48DD414C1503BBC10074C1F4 /* DragFaceToolFeedbackFigure.mm in Sources */ = {isa = PBXBuildFile; fileRef = 48DD414A1503BB830074C1F4 /* DragFaceToolFeedbackFigure.mm */; };
 		48E1806512F5F07D007995FE /* SelectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E1806412F5F07D007995FE /* SelectionManager.m */; };
 		48E4006D13159E7E004642CD /* TextureNameFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E4006C13159E7E004642CD /* TextureNameFilter.m */; };
 		48E400AF1315A7DA004642CD /* TextureUsageFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 48E400AE1315A7DA004642CD /* TextureUsageFilter.m */; };
@@ -188,14 +162,10 @@
 		48F2F0ED152C43DA0097E98B /* Octree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0EC152C43D90097E98B /* Octree.cpp */; };
 		48F2F0EF152C43EF0097E98B /* Picker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0EE152C43EF0097E98B /* Picker.cpp */; };
 		48F2F0F2152C64680097E98B /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0F1152C64670097E98B /* Filter.cpp */; };
+		48F2F0F5152C79AD0097E98B /* MapObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0F4152C79AD0097E98B /* MapObject.cpp */; };
 		48F56F5213E9CDEC008DF954 /* MapBrowserDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F56F5113E9CDEC008DF954 /* MapBrowserDataSource.m */; };
 		48F5C3DB13E1578A00B1A720 /* ControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C3DA13E1578A00B1A720 /* ControllerUtils.m */; };
 		48FE96091363279D009B31FD /* quake.def in Resources */ = {isa = PBXBuildFile; fileRef = 48FE96081363279D009B31FD /* quake.def */; };
-		48FE96FD13636059009B31FD /* ChoiceProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE96FC13636059009B31FD /* ChoiceProperty.m */; };
-		48FE9701136360C8009B31FD /* ChoiceArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE9700136360C8009B31FD /* ChoiceArgument.m */; };
-		48FE9795136368D5009B31FD /* ModelProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE9794136368D5009B31FD /* ModelProperty.m */; };
-		48FE97BA13636AF8009B31FD /* DefaultProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE97B913636AF8009B31FD /* DefaultProperty.m */; };
-		48FE97BD13636B9A009B31FD /* BaseProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE97BC13636B9A009B31FD /* BaseProperty.m */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -260,12 +230,8 @@
 		4802373C1427776800F16751 /* NSUndoManager+DebugCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUndoManager+DebugCategory.h"; sourceTree = "<group>"; };
 		4802373D1427776900F16751 /* NSUndoManager+DebugCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUndoManager+DebugCategory.m"; sourceTree = "<group>"; };
 		4809A10E13E2A2E300AF6557 /* InspectorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorView.xib; sourceTree = "<group>"; };
-		480D231E1334A3A800D3B57B /* PickingHitList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickingHitList.h; sourceTree = "<group>"; };
-		480D231F1334A3A800D3B57B /* PickingHitList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickingHitList.m; sourceTree = "<group>"; };
 		480EBEA3142DFA33005DD8D6 /* GroupTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupTableDataSource.h; sourceTree = "<group>"; };
 		480EBEA4142DFA33005DD8D6 /* GroupTableDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupTableDataSource.m; sourceTree = "<group>"; };
-		480EBEAA142E2961005DD8D6 /* GroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupManager.h; sourceTree = "<group>"; };
-		480EBEAB142E2962005DD8D6 /* GroupManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupManager.m; sourceTree = "<group>"; };
 		480F2F63132562CA00651FED /* Grid.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Grid.h; sourceTree = "<group>"; };
 		480F2F64132562CA00651FED /* Grid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Grid.m; sourceTree = "<group>"; };
 		4814A02212F73F1E0082E05F /* ProgressWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProgressWindow.xib; sourceTree = "<group>"; };
@@ -336,12 +302,8 @@
 		48325D4613524F7000E703E0 /* CompassFigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompassFigure.m; sourceTree = "<group>"; };
 		4833C15D131953F600EB1B85 /* PrefabManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefabManager.h; sourceTree = "<group>"; };
 		4833C15E131953F600EB1B85 /* PrefabManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefabManager.m; sourceTree = "<group>"; };
-		4833C174131964FF00EB1B85 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 		4833C1BB13196CFB00EB1B85 /* MutablePrefab.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutablePrefab.h; sourceTree = "<group>"; };
 		4833C1BC13196CFB00EB1B85 /* MutablePrefab.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutablePrefab.m; sourceTree = "<group>"; };
-		48379C6A131B940400F53DFA /* Face.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Face.h; sourceTree = "<group>"; };
-		48379C6B131B949A00F53DFA /* Brush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Brush.h; sourceTree = "<group>"; };
-		48379C6C131B956B00F53DFA /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		483A65A913D48CEE009EB9E7 /* DndTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DndTool.h; sourceTree = "<group>"; };
 		483A65AA13D48D95009EB9E7 /* EntityDefinitionDndTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionDndTool.h; sourceTree = "<group>"; };
 		483A65AB13D48D95009EB9E7 /* EntityDefinitionDndTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityDefinitionDndTool.m; sourceTree = "<group>"; };
@@ -354,24 +316,10 @@
 		483C515213E3284E0082C296 /* Vis */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = Vis; sourceTree = "<group>"; };
 		484184D91507CAF3009532B9 /* EdgeTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeTree.h; sourceTree = "<group>"; };
 		484184DA1507CAF4009532B9 /* EdgeTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EdgeTree.m; sourceTree = "<group>"; };
-		484524A41323CCBD003B2855 /* MapWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapWriter.h; sourceTree = "<group>"; };
-		484524A51323CCBD003B2855 /* MapWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapWriter.m; sourceTree = "<group>"; };
 		484524D513240049003B2855 /* NSFileManager+AppSupportCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+AppSupportCategory.h"; sourceTree = "<group>"; };
 		484524D613240049003B2855 /* NSFileManager+AppSupportCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+AppSupportCategory.m"; sourceTree = "<group>"; };
-		48455A4913800A520096FEA5 /* IO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IO.h; sourceTree = "<group>"; };
-		48455A4A13800A520096FEA5 /* IO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IO.m; sourceTree = "<group>"; };
-		484B9A4213620327003030D7 /* EntityDefinitionTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionTokenizer.h; sourceTree = "<group>"; };
-		484B9A4313620327003030D7 /* EntityDefinitionTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityDefinitionTokenizer.m; sourceTree = "<group>"; };
-		484B9A45136203F8003030D7 /* EntityDefinitionToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionToken.h; sourceTree = "<group>"; };
-		484B9A46136203F8003030D7 /* EntityDefinitionToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityDefinitionToken.m; sourceTree = "<group>"; };
-		484B9A5613621004003030D7 /* EntityDefinitionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionParser.h; sourceTree = "<group>"; };
-		484B9A5713621004003030D7 /* EntityDefinitionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityDefinitionParser.m; sourceTree = "<group>"; };
 		484C28FA115023A2004DD957 /* Vbo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vbo.h; sourceTree = "<group>"; };
 		484C28FB115023A2004DD957 /* Vbo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Vbo.c; sourceTree = "<group>"; };
-		48527F3611148D5C00CD6043 /* MutableFace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutableFace.h; sourceTree = "<group>"; };
-		48527F3711148D5C00CD6043 /* MutableFace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutableFace.m; sourceTree = "<group>"; };
-		48527F3C11148EAA00CD6043 /* MutableBrush.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutableBrush.h; sourceTree = "<group>"; };
-		48527F3D11148EAA00CD6043 /* MutableBrush.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutableBrush.m; sourceTree = "<group>"; };
 		485582111357874F005F8B2C /* CameraTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraTool.h; sourceTree = "<group>"; };
 		485582121357874F005F8B2C /* CameraTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraTool.m; sourceTree = "<group>"; };
 		4855821B135788B5005F8B2C /* SelectionTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionTool.h; sourceTree = "<group>"; };
@@ -382,10 +330,6 @@
 		4855B29D1465C7A40062078C /* CameraAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAnimation.m; sourceTree = "<group>"; };
 		4856F97D13E482C6004CFABE /* BJMHLight */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = BJMHLight; sourceTree = "<group>"; };
 		485720DF14E71BE7009B0959 /* TxQBSP */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = TxQBSP; sourceTree = "<group>"; };
-		485AE8A512F4B9BA00CDBD6A /* Picker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Picker.h; sourceTree = "<group>"; };
-		485AE8A612F4B9BA00CDBD6A /* Picker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Picker.m; sourceTree = "<group>"; };
-		485AE8D512F4C5BD00CDBD6A /* PickingHit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PickingHit.h; sourceTree = "<group>"; };
-		485AE8D612F4C5BD00CDBD6A /* PickingHit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PickingHit.m; sourceTree = "<group>"; };
 		485D2EAD1308624900CF73D8 /* Options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Options.h; sourceTree = "<group>"; };
 		485D2EAE1308624900CF73D8 /* Options.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Options.m; sourceTree = "<group>"; };
 		48639BF312EA227100808576 /* QuakePalette.lmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = QuakePalette.lmp; sourceTree = "<group>"; };
@@ -394,8 +338,6 @@
 		4864E2BF140E2681000DE923 /* CompilerProfileRunner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompilerProfileRunner.h; sourceTree = "<group>"; };
 		4864E2C0140E2682000DE923 /* CompilerProfileRunner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompilerProfileRunner.m; sourceTree = "<group>"; };
 		4864F8C3135B564600511696 /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
-		486526C3134F0BC20045A4B6 /* TextureCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureCollection.h; sourceTree = "<group>"; };
-		486526C4134F0BC20045A4B6 /* TextureCollection.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TextureCollection.mm; sourceTree = "<group>"; };
 		4866F3AF12EAC9FA009B345C /* TextureViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureViewLayout.h; sourceTree = "<group>"; };
 		4866F3B012EAC9FA009B345C /* TextureViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureViewLayout.m; sourceTree = "<group>"; };
 		4866F3BC12EACD2B009B345C /* TextureViewLayoutRow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureViewLayoutRow.h; sourceTree = "<group>"; };
@@ -406,10 +348,6 @@
 		4867430413577855009E7ABF /* Tool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tool.m; sourceTree = "<group>"; };
 		486928EA133F282100A0F098 /* FaceTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FaceTool.h; sourceTree = "<group>"; };
 		486928EB133F282100A0F098 /* FaceTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FaceTool.m; sourceTree = "<group>"; };
-		486A9C1A12F41FCA003D26FE /* Octree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Octree.h; sourceTree = "<group>"; };
-		486A9C1B12F41FCA003D26FE /* Octree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Octree.m; sourceTree = "<group>"; };
-		486A9C1D12F41FD1003D26FE /* OctreeNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OctreeNode.h; sourceTree = "<group>"; };
-		486A9C1E12F41FD1003D26FE /* OctreeNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OctreeNode.m; sourceTree = "<group>"; };
 		486E08AD13B5EAE300E751A6 /* RotateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotateTool.h; sourceTree = "<group>"; };
 		486E08AE13B5EAE300E751A6 /* RotateTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RotateTool.m; sourceTree = "<group>"; };
 		486E08B113B5EF2C00E751A6 /* RotateFeedbackFigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotateFeedbackFigure.h; sourceTree = "<group>"; };
@@ -418,23 +356,11 @@
 		48706C401436F41D006E0B1C /* DragPlane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DragPlane.m; sourceTree = "<group>"; };
 		487436A4135B5FD900F787E1 /* DefaultFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultFilter.h; sourceTree = "<group>"; };
 		487436A5135B5FD900F787E1 /* DefaultFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultFilter.m; sourceTree = "<group>"; };
-		4874386E13601A5700F787E1 /* EntityDefinitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionManager.h; sourceTree = "<group>"; };
-		4874386F13601A5700F787E1 /* EntityDefinitionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityDefinitionManager.m; sourceTree = "<group>"; };
-		4874387113601A6000F787E1 /* EntityDefinition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinition.h; sourceTree = "<group>"; };
-		4874387213601A6000F787E1 /* EntityDefinition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityDefinition.m; sourceTree = "<group>"; };
-		48770FF112E5BE66009B440B /* MapTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTokenizer.h; sourceTree = "<group>"; };
-		48770FF212E5BE66009B440B /* MapTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTokenizer.m; sourceTree = "<group>"; };
-		48770FF412E5BF28009B440B /* MapToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapToken.h; sourceTree = "<group>"; };
-		48770FF512E5BF28009B440B /* MapToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapToken.m; sourceTree = "<group>"; };
-		4877106C12E5DA55009B440B /* MapParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapParser.h; sourceTree = "<group>"; };
-		4877106D12E5DA55009B440B /* MapParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapParser.m; sourceTree = "<group>"; };
 		487799C513F308ED001F9335 /* QuickBarWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QuickBarWindow.xib; sourceTree = "<group>"; };
 		487799C813F30990001F9335 /* QuickBarWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuickBarWindowController.h; sourceTree = "<group>"; };
 		487799C913F30990001F9335 /* QuickBarWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuickBarWindowController.m; sourceTree = "<group>"; };
 		487A645612EA397C00A43289 /* TextureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureView.h; sourceTree = "<group>"; };
 		487A645712EA397C00A43289 /* TextureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureView.m; sourceTree = "<group>"; };
-		487A646A12EA3A7E00A43289 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
-		487A646B12EA3A7E00A43289 /* Texture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Texture.mm; sourceTree = "<group>"; };
 		487A77EB13E308A000D44790 /* PrefabViewTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefabViewTarget.h; sourceTree = "<group>"; };
 		487A77EC13E308FE00D44790 /* TextureViewTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureViewTarget.h; sourceTree = "<group>"; };
 		487A77ED13E3095800D44790 /* EntityDefinitionViewTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionViewTarget.h; sourceTree = "<group>"; };
@@ -443,10 +369,6 @@
 		487D2A571401324500F2673B /* 128.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 128.map; sourceTree = "<group>"; };
 		487D2A581401324500F2673B /* 32.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 32.map; sourceTree = "<group>"; };
 		487D2A591401324500F2673B /* 64.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 64.map; sourceTree = "<group>"; };
-		487E1E9212E495060001C150 /* IdGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IdGenerator.h; sourceTree = "<group>"; };
-		487E1E9312E495060001C150 /* IdGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IdGenerator.m; sourceTree = "<group>"; };
-		4881C74012E9C8BE006BF922 /* TextureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureManager.h; sourceTree = "<group>"; };
-		4881C74112E9C8BE006BF922 /* TextureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextureManager.m; sourceTree = "<group>"; };
 		488514D1150AB396000A58CD /* BoundsRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoundsRenderer.h; sourceTree = "<group>"; };
 		488514D2150AB396000A58CD /* BoundsRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BoundsRenderer.m; sourceTree = "<group>"; };
 		488514E4150EA6E5000A58CD /* 12.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 12.map; sourceTree = "<group>"; };
@@ -465,8 +387,6 @@
 		488D528013DEE181006FE818 /* EntityDefinitionUsageFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EntityDefinitionUsageFilter.m; sourceTree = "<group>"; };
 		488F853A13F51FAE00DA0403 /* RenderChangeSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderChangeSet.h; sourceTree = "<group>"; };
 		488F853B13F51FAE00DA0403 /* RenderChangeSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RenderChangeSet.m; sourceTree = "<group>"; };
-		488F853E13F583B900DA0403 /* VertexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexData.h; sourceTree = "<group>"; };
-		488F853F13F583B900DA0403 /* VertexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VertexData.m; sourceTree = "<group>"; };
 		488FEAEF131F9D1800010A04 /* MutablePrefabGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutablePrefabGroup.h; sourceTree = "<group>"; };
 		488FEAF0131F9D1800010A04 /* MutablePrefabGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutablePrefabGroup.m; sourceTree = "<group>"; };
 		488FEAF2131F9D7200010A04 /* PrefabGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefabGroup.h; sourceTree = "<group>"; };
@@ -481,8 +401,6 @@
 		4893347513F2DA3D00AB179F /* CompassView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompassView.m; sourceTree = "<group>"; };
 		48958207132E52EF00BB7D8F /* CameraAbsoluteAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAbsoluteAnimation.h; sourceTree = "<group>"; };
 		48958208132E52EF00BB7D8F /* CameraAbsoluteAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAbsoluteAnimation.m; sourceTree = "<group>"; };
-		48973E2813C3688F0067E10D /* SpawnFlag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpawnFlag.h; sourceTree = "<group>"; };
-		48973E2913C3688F0067E10D /* SpawnFlag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpawnFlag.m; sourceTree = "<group>"; };
 		48976C7213E2BA63005AB1EA /* InspectorWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorWindow.xib; sourceTree = "<group>"; };
 		48976C7D13E2BF15005AB1EA /* InspectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InspectorViewController.h; sourceTree = "<group>"; };
 		48976C7E13E2BF15005AB1EA /* InspectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InspectorViewController.m; sourceTree = "<group>"; };
@@ -512,10 +430,6 @@
 		48A68ECE114E9B0D0064732A /* MapView3D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapView3D.m; sourceTree = "<group>"; };
 		48A68F0E114EA0420064732A /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		48A68F17114EA76E0064732A /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
-		48A68F25114EDF360064732A /* MutableEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MutableEntity.h; sourceTree = "<group>"; };
-		48A68F26114EDF360064732A /* MutableEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MutableEntity.m; sourceTree = "<group>"; };
-		48A68F6E114EE6DC0064732A /* MapDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapDocument.h; sourceTree = "<group>"; };
-		48A68F6F114EE6DC0064732A /* MapDocument.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MapDocument.mm; sourceTree = "<group>"; };
 		48AC3E6113E3D00C008F4BF8 /* PreferencesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesManager.h; sourceTree = "<group>"; };
 		48AC3E6213E3D00C008F4BF8 /* PreferencesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesManager.m; sourceTree = "<group>"; };
 		48AC3E6A13E3FA8D008F4BF8 /* TreeQBSP */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = TreeQBSP; sourceTree = "<group>"; };
@@ -565,7 +479,7 @@
 		48DBE74D1341CD8B00C0FDE7 /* ClipPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClipPlane.h; sourceTree = "<group>"; };
 		48DBE74E1341CD8B00C0FDE7 /* ClipPlane.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClipPlane.m; sourceTree = "<group>"; };
 		48DD41491503BB830074C1F4 /* DragFaceToolFeedbackFigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragFaceToolFeedbackFigure.h; sourceTree = "<group>"; };
-		48DD414A1503BB830074C1F4 /* DragFaceToolFeedbackFigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DragFaceToolFeedbackFigure.m; sourceTree = "<group>"; };
+		48DD414A1503BB830074C1F4 /* DragFaceToolFeedbackFigure.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DragFaceToolFeedbackFigure.mm; sourceTree = "<group>"; };
 		48E1806312F5F07D007995FE /* SelectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionManager.h; sourceTree = "<group>"; };
 		48E1806412F5F07D007995FE /* SelectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectionManager.m; sourceTree = "<group>"; };
 		48E4006013159CE2004642CD /* TextureFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextureFilter.h; sourceTree = "<group>"; };
@@ -610,22 +524,13 @@
 		48F2F0EE152C43EF0097E98B /* Picker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Picker.cpp; path = Model/Picker.cpp; sourceTree = "<group>"; };
 		48F2F0F0152C63910097E98B /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
 		48F2F0F1152C64670097E98B /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
+		48F2F0F3152C78F40097E98B /* MapObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapObject.h; path = Model/Map/MapObject.h; sourceTree = "<group>"; };
+		48F2F0F4152C79AD0097E98B /* MapObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MapObject.cpp; path = Model/Map/MapObject.cpp; sourceTree = "<group>"; };
 		48F56F5013E9CDEC008DF954 /* MapBrowserDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBrowserDataSource.h; sourceTree = "<group>"; };
 		48F56F5113E9CDEC008DF954 /* MapBrowserDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBrowserDataSource.m; sourceTree = "<group>"; };
 		48F5C3D913E1578A00B1A720 /* ControllerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControllerUtils.h; sourceTree = "<group>"; };
 		48F5C3DA13E1578A00B1A720 /* ControllerUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControllerUtils.m; sourceTree = "<group>"; };
 		48FE96081363279D009B31FD /* quake.def */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = quake.def; sourceTree = "<group>"; };
-		48FE96FB13636059009B31FD /* ChoiceProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceProperty.h; sourceTree = "<group>"; };
-		48FE96FC13636059009B31FD /* ChoiceProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceProperty.m; sourceTree = "<group>"; };
-		48FE96FE1363609A009B31FD /* EntityDefinitionProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EntityDefinitionProperty.h; sourceTree = "<group>"; };
-		48FE96FF136360C8009B31FD /* ChoiceArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChoiceArgument.h; sourceTree = "<group>"; };
-		48FE9700136360C8009B31FD /* ChoiceArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChoiceArgument.m; sourceTree = "<group>"; };
-		48FE9793136368D5009B31FD /* ModelProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelProperty.h; sourceTree = "<group>"; };
-		48FE9794136368D5009B31FD /* ModelProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelProperty.m; sourceTree = "<group>"; };
-		48FE97B813636AF8009B31FD /* DefaultProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultProperty.h; sourceTree = "<group>"; };
-		48FE97B913636AF8009B31FD /* DefaultProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultProperty.m; sourceTree = "<group>"; };
-		48FE97BB13636B9A009B31FD /* BaseProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseProperty.h; sourceTree = "<group>"; };
-		48FE97BC13636B9A009B31FD /* BaseProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseProperty.m; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* TrenchBroom-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "TrenchBroom-Info.plist"; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* TrenchBroom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrenchBroom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -762,15 +667,6 @@
 			name = PrimitiveRenderer;
 			sourceTree = "<group>";
 		};
-		480AD8B312ED78E7009B5970 /* VertexData */ = {
-			isa = PBXGroup;
-			children = (
-				488F853E13F583B900DA0403 /* VertexData.h */,
-				488F853F13F583B900DA0403 /* VertexData.m */,
-			);
-			name = VertexData;
-			sourceTree = "<group>";
-		};
 		482BF7BB14F94628000AB8B0 /* Figures */ = {
 			isa = PBXGroup;
 			children = (
@@ -801,7 +697,7 @@
 				48E71E2F1503B78600A965F9 /* DragEdgeToolFeedbackFigure.h */,
 				48E71E301503B78600A965F9 /* DragEdgeToolFeedbackFigure.m */,
 				48DD41491503BB830074C1F4 /* DragFaceToolFeedbackFigure.h */,
-				48DD414A1503BB830074C1F4 /* DragFaceToolFeedbackFigure.m */,
+				48DD414A1503BB830074C1F4 /* DragFaceToolFeedbackFigure.mm */,
 			);
 			name = Figures;
 			sourceTree = "<group>";
@@ -823,6 +719,8 @@
 				4830EF591527ECF800ADA2B8 /* Groups.cpp */,
 				4830EF3F1527EC0F00ADA2B8 /* Map.cpp */,
 				4830EF401527EC0F00ADA2B8 /* Map.h */,
+				48F2F0F3152C78F40097E98B /* MapObject.h */,
+				48F2F0F4152C79AD0097E98B /* MapObject.cpp */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -937,65 +835,10 @@
 			isa = PBXGroup;
 			children = (
 				4899FF4E140A669600E854BE /* Compiler */,
-				487437FE135ED49A00F787E1 /* Entity */,
 				48A68E93114E92730064732A /* Map */,
 				4898D9C113E1989D00B9C8F1 /* Prefab */,
-				487437FD135ED49300F787E1 /* Texture */,
-				48455A4913800A520096FEA5 /* IO.h */,
-				48455A4A13800A520096FEA5 /* IO.m */,
 			);
 			name = Model;
-			sourceTree = "<group>";
-		};
-		487437FD135ED49300F787E1 /* Texture */ = {
-			isa = PBXGroup;
-			children = (
-				487A646A12EA3A7E00A43289 /* Texture.h */,
-				487A646B12EA3A7E00A43289 /* Texture.mm */,
-				486526C3134F0BC20045A4B6 /* TextureCollection.h */,
-				486526C4134F0BC20045A4B6 /* TextureCollection.mm */,
-				4881C74012E9C8BE006BF922 /* TextureManager.h */,
-				4881C74112E9C8BE006BF922 /* TextureManager.m */,
-			);
-			name = Texture;
-			sourceTree = "<group>";
-		};
-		487437FE135ED49A00F787E1 /* Entity */ = {
-			isa = PBXGroup;
-			children = (
-				4874387A13601F7F00F787E1 /* IO */,
-				48FE97BB13636B9A009B31FD /* BaseProperty.h */,
-				48FE97BC13636B9A009B31FD /* BaseProperty.m */,
-				48FE96FF136360C8009B31FD /* ChoiceArgument.h */,
-				48FE9700136360C8009B31FD /* ChoiceArgument.m */,
-				48FE96FB13636059009B31FD /* ChoiceProperty.h */,
-				48FE96FC13636059009B31FD /* ChoiceProperty.m */,
-				48FE97B813636AF8009B31FD /* DefaultProperty.h */,
-				48FE97B913636AF8009B31FD /* DefaultProperty.m */,
-				4874387113601A6000F787E1 /* EntityDefinition.h */,
-				4874387213601A6000F787E1 /* EntityDefinition.m */,
-				4874386E13601A5700F787E1 /* EntityDefinitionManager.h */,
-				4874386F13601A5700F787E1 /* EntityDefinitionManager.m */,
-				48FE96FE1363609A009B31FD /* EntityDefinitionProperty.h */,
-				48FE9793136368D5009B31FD /* ModelProperty.h */,
-				48FE9794136368D5009B31FD /* ModelProperty.m */,
-				48973E2813C3688F0067E10D /* SpawnFlag.h */,
-				48973E2913C3688F0067E10D /* SpawnFlag.m */,
-			);
-			name = Entity;
-			sourceTree = "<group>";
-		};
-		4874387A13601F7F00F787E1 /* IO */ = {
-			isa = PBXGroup;
-			children = (
-				484B9A4213620327003030D7 /* EntityDefinitionTokenizer.h */,
-				484B9A4313620327003030D7 /* EntityDefinitionTokenizer.m */,
-				484B9A45136203F8003030D7 /* EntityDefinitionToken.h */,
-				484B9A46136203F8003030D7 /* EntityDefinitionToken.m */,
-				484B9A5613621004003030D7 /* EntityDefinitionParser.h */,
-				484B9A5713621004003030D7 /* EntityDefinitionParser.m */,
-			);
-			name = IO;
 			sourceTree = "<group>";
 		};
 		4876741715129FF800338143 /* Core */ = {
@@ -1073,38 +916,6 @@
 			);
 			name = Cylinders;
 			path = Prefabs/Cylinders;
-			sourceTree = "<group>";
-		};
-		488C8EB812F69F6900F358E6 /* IO */ = {
-			isa = PBXGroup;
-			children = (
-				48770FF112E5BE66009B440B /* MapTokenizer.h */,
-				48770FF212E5BE66009B440B /* MapTokenizer.m */,
-				48770FF412E5BF28009B440B /* MapToken.h */,
-				48770FF512E5BF28009B440B /* MapToken.m */,
-				4877106C12E5DA55009B440B /* MapParser.h */,
-				4877106D12E5DA55009B440B /* MapParser.m */,
-				484524A41323CCBD003B2855 /* MapWriter.h */,
-				484524A51323CCBD003B2855 /* MapWriter.m */,
-			);
-			name = IO;
-			sourceTree = "<group>";
-		};
-		488C8EBA12F69F9300F358E6 /* Picking */ = {
-			isa = PBXGroup;
-			children = (
-				486A9C1A12F41FCA003D26FE /* Octree.h */,
-				486A9C1B12F41FCA003D26FE /* Octree.m */,
-				486A9C1D12F41FD1003D26FE /* OctreeNode.h */,
-				486A9C1E12F41FD1003D26FE /* OctreeNode.m */,
-				485AE8A512F4B9BA00CDBD6A /* Picker.h */,
-				485AE8A612F4B9BA00CDBD6A /* Picker.m */,
-				485AE8D512F4C5BD00CDBD6A /* PickingHit.h */,
-				485AE8D612F4C5BD00CDBD6A /* PickingHit.m */,
-				480D231E1334A3A800D3B57B /* PickingHitList.h */,
-				480D231F1334A3A800D3B57B /* PickingHitList.m */,
-			);
-			name = Picking;
 			sourceTree = "<group>";
 		};
 		4898D9C113E1989D00B9C8F1 /* Prefab */ = {
@@ -1213,26 +1024,8 @@
 		48A68E93114E92730064732A /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				488C8EB812F69F6900F358E6 /* IO */,
-				480AD8B312ED78E7009B5970 /* VertexData */,
 				48E71E111500258700A965F9 /* Autosaver.h */,
 				48E71E121500258800A965F9 /* Autosaver.m */,
-				48379C6B131B949A00F53DFA /* Brush.h */,
-				48379C6C131B956B00F53DFA /* Entity.h */,
-				48379C6A131B940400F53DFA /* Face.h */,
-				487E1E9212E495060001C150 /* IdGenerator.h */,
-				487E1E9312E495060001C150 /* IdGenerator.m */,
-				4833C174131964FF00EB1B85 /* Map.h */,
-				48A68F6E114EE6DC0064732A /* MapDocument.h */,
-				48A68F6F114EE6DC0064732A /* MapDocument.mm */,
-				48527F3C11148EAA00CD6043 /* MutableBrush.h */,
-				48527F3D11148EAA00CD6043 /* MutableBrush.m */,
-				48A68F25114EDF360064732A /* MutableEntity.h */,
-				48A68F26114EDF360064732A /* MutableEntity.m */,
-				48527F3611148D5C00CD6043 /* MutableFace.h */,
-				48527F3711148D5C00CD6043 /* MutableFace.m */,
-				480EBEAA142E2961005DD8D6 /* GroupManager.h */,
-				480EBEAB142E2962005DD8D6 /* GroupManager.m */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -1244,7 +1037,6 @@
 				483A65A713D48CA8009EB9E7 /* Drag And Drop */,
 				4898D9C413E1993100B9C8F1 /* Inspector */,
 				4898D9C513E1998900B9C8F1 /* MapWindow */,
-				488C8EBA12F69F9300F358E6 /* Picking */,
 				4898D9C913E19B4F00B9C8F1 /* Preferences */,
 				486928E9133F27D900A0F098 /* Tool */,
 				48B325E312E3788D008748E2 /* AppDelegate.h */,
@@ -1485,33 +1277,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48DD414C1503BBC10074C1F4 /* DragFaceToolFeedbackFigure.m in Sources */,
+				48DD414C1503BBC10074C1F4 /* DragFaceToolFeedbackFigure.mm in Sources */,
 				8D15AC320486D014006FF6A4 /* main.m in Sources */,
-				48527F3811148D5C00CD6043 /* MutableFace.m in Sources */,
-				48527F3E11148EAA00CD6043 /* MutableBrush.m in Sources */,
 				48A68EB8114E96C00064732A /* MapWindowController.m in Sources */,
 				48A68ECF114E9B0D0064732A /* MapView3D.m in Sources */,
-				48A68F27114EDF360064732A /* MutableEntity.m in Sources */,
-				48A68F70114EE6DC0064732A /* MapDocument.mm in Sources */,
 				484C28FC115023A2004DD957 /* Vbo.c in Sources */,
 				483B1129122441060072EAFB /* Math.c in Sources */,
 				48B324C112E1F455008748E2 /* Camera.m in Sources */,
 				48B325E512E3788D008748E2 /* AppDelegate.m in Sources */,
-				487E1E9412E495060001C150 /* IdGenerator.m in Sources */,
-				48770FF312E5BE66009B440B /* MapTokenizer.m in Sources */,
-				48770FF612E5BF28009B440B /* MapToken.m in Sources */,
-				4877106E12E5DA55009B440B /* MapParser.m in Sources */,
-				4881C74212E9C8BE006BF922 /* TextureManager.m in Sources */,
 				487A645812EA397C00A43289 /* TextureView.m in Sources */,
-				487A646C12EA3A7E00A43289 /* Texture.mm in Sources */,
 				4866F3B112EAC9FA009B345C /* TextureViewLayout.m in Sources */,
 				4866F3BE12EACD2B009B345C /* TextureViewLayoutRow.m in Sources */,
 				4866F3C412EACE73009B345C /* TextureViewLayoutCell.m in Sources */,
 				48DB957812F0699600FB5483 /* InputController.m in Sources */,
-				486A9C1C12F41FCA003D26FE /* Octree.m in Sources */,
-				486A9C1F12F41FD1003D26FE /* OctreeNode.m in Sources */,
-				485AE8A712F4B9BA00CDBD6A /* Picker.m in Sources */,
-				485AE8D712F4C5BD00CDBD6A /* PickingHit.m in Sources */,
 				48E1806512F5F07D007995FE /* SelectionManager.m in Sources */,
 				488C8EE112F6C3ED00F358E6 /* IntData.m in Sources */,
 				4814A02712F740580082E05F /* ProgressWindowController.m in Sources */,
@@ -1533,12 +1311,10 @@
 				488FEB5C131FC49A00010A04 /* PrefabLayout.m in Sources */,
 				488FEB64131FCBA700010A04 /* PrefabLayoutGroupRow.m in Sources */,
 				488FEB67131FD49C00010A04 /* PrefabLayoutPrefabCell.m in Sources */,
-				484524A61323CCBD003B2855 /* MapWriter.m in Sources */,
 				484524D713240049003B2855 /* NSFileManager+AppSupportCategory.m in Sources */,
 				480F2F65132562CA00651FED /* Grid.m in Sources */,
 				4816144D132BE7C300CD66AF /* MoveTool.m in Sources */,
 				48958209132E52EF00BB7D8F /* CameraAbsoluteAnimation.m in Sources */,
-				480D23201334A3A800D3B57B /* PickingHitList.m in Sources */,
 				486928EC133F282100A0F098 /* FaceTool.m in Sources */,
 				482FFF011340E10E00849BF5 /* ClipTool.m in Sources */,
 				482FFF181340E56000849BF5 /* ClipPointFeedbackFigure.m in Sources */,
@@ -1549,28 +1325,15 @@
 				4888732A13436206005FCE15 /* FloatData.m in Sources */,
 				48CE70AC134741C400886260 /* EditingPlaneFigure.m in Sources */,
 				48D6B903134B8DC90084F82E /* GLStringData.m in Sources */,
-				486526C5134F0BC20045A4B6 /* TextureCollection.mm in Sources */,
 				48325D4713524F7000E703E0 /* CompassFigure.m in Sources */,
 				4867430513577855009E7ABF /* Tool.m in Sources */,
 				485582131357874F005F8B2C /* CameraTool.m in Sources */,
 				4855821D135788B5005F8B2C /* SelectionTool.m in Sources */,
 				487436A6135B5FD900F787E1 /* DefaultFilter.m in Sources */,
-				4874387013601A5700F787E1 /* EntityDefinitionManager.m in Sources */,
-				4874387313601A6000F787E1 /* EntityDefinition.m in Sources */,
-				484B9A4413620327003030D7 /* EntityDefinitionTokenizer.m in Sources */,
-				484B9A47136203F8003030D7 /* EntityDefinitionToken.m in Sources */,
-				484B9A5813621004003030D7 /* EntityDefinitionParser.m in Sources */,
-				48FE96FD13636059009B31FD /* ChoiceProperty.m in Sources */,
-				48FE9701136360C8009B31FD /* ChoiceArgument.m in Sources */,
-				48FE9795136368D5009B31FD /* ModelProperty.m in Sources */,
-				48FE97BA13636AF8009B31FD /* DefaultProperty.m in Sources */,
-				48FE97BD13636B9A009B31FD /* BaseProperty.m in Sources */,
-				48455A4B13800A520096FEA5 /* IO.m in Sources */,
 				483044A21398B3D3002CA97B /* EntityPropertyTableDataSource.m in Sources */,
 				481BF7AC13A4B5220040580B /* AliasRenderer.mm in Sources */,
 				486E08AF13B5EAE300E751A6 /* RotateTool.m in Sources */,
 				486E08B313B5EF2C00E751A6 /* RotateFeedbackFigure.m in Sources */,
-				48973E2A13C368900067E10D /* SpawnFlag.m in Sources */,
 				48A5FD5013C5E9F8009D086C /* BspRenderer.mm in Sources */,
 				489C061913C9EBA400D9D693 /* GLUtils.m in Sources */,
 				48150C9113CDECBD009D16B9 /* TextRenderer.m in Sources */,
@@ -1600,7 +1363,6 @@
 				48E725AD13F3D26900828C0B /* QuickBarWindow.m in Sources */,
 				48E725B313F3D75A00828C0B /* QuickBarContentView.m in Sources */,
 				488F853C13F51FAE00DA0403 /* RenderChangeSet.m in Sources */,
-				488F854013F583B900DA0403 /* VertexData.m in Sources */,
 				4899FF52140A66B100E854BE /* CompilerProfileManager.m in Sources */,
 				4899FF55140A765000E854BE /* CompilerProfile.m in Sources */,
 				4864E2BD140D1840000DE923 /* CompilerProfileCommand.m in Sources */,
@@ -1608,7 +1370,6 @@
 				483AB7A71410C4E400B5F44E /* PointFileFeedbackFigure.m in Sources */,
 				4802373E1427776900F16751 /* NSUndoManager+DebugCategory.m in Sources */,
 				480EBEA5142DFA34005DD8D6 /* GroupTableDataSource.m in Sources */,
-				480EBEAC142E2962005DD8D6 /* GroupManager.m in Sources */,
 				48706C411436F41D006E0B1C /* DragPlane.m in Sources */,
 				4855B29A1465C4A00062078C /* CameraOrbitAnimation.m in Sources */,
 				4855B29E1465C7A40062078C /* CameraAnimation.m in Sources */,
@@ -1647,6 +1408,7 @@
 				48F2F0ED152C43DA0097E98B /* Octree.cpp in Sources */,
 				48F2F0EF152C43EF0097E98B /* Picker.cpp in Sources */,
 				48F2F0F2152C64680097E98B /* Filter.cpp in Sources */,
+				48F2F0F5152C79AD0097E98B /* MapObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

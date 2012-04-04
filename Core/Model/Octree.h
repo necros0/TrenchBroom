@@ -43,15 +43,15 @@ namespace TrenchBroom {
     private:
         int m_minSize;
         TBoundingBox m_bounds;
-        vector<void *> m_objects;
+        vector<MapObject&> m_objects;
         OctreeNode* m_children[8];
-        bool addObject(void* object, TBoundingBox bounds, int childIndex);
+        bool addObject(MapObject& object, int childIndex);
     public:
         OctreeNode(TBoundingBox bounds, int minSize);
         ~OctreeNode();
-        bool addObject(void* object, TBoundingBox bounds);
-        bool removeObject(void* object, TBoundingBox bounds);
-        void intersect(TRay ray, vector<void*>& objects);
+        bool addObject(MapObject& object);
+        bool removeObject(MapObject& object);
+        void intersect(TRay ray, vector<MapObject&>& objects);
     };
     
     class Map;
@@ -65,7 +65,7 @@ namespace TrenchBroom {
     public:
         Octree(Map* map, int minSize);
         ~Octree();
-        vector<void*> intersect(TRay ray);
+        vector<MapObject&> intersect(TRay ray);
     };
 }
 

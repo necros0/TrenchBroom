@@ -32,34 +32,43 @@
 namespace TrenchBroom {
     
     typedef enum {
-        HT_ENTITY           = 1 << 0,
-        HT_FACE             = 1 << 1,
-        HT_CLOSE_FACE       = 1 << 2,
-        HT_VERTEX_HANDLE    = 1 << 3,
-        HT_EDGE_HANDLE      = 1 << 4,
-        HT_FACE_HANDLE      = 1 << 5
-    } EHitType;
+        HT_VERTEX_HANDLE    = 1 << 0,
+        HT_EDGE_HANDLE      = 1 << 1,
+        HT_FACE_HANDLE      = 1 << 2
+    } EHandleType;
     
     class PickingHit {
     public:
-        void* object;
-        EHitType type;
         TVector3f hitPoint;
-        int index;
         float distance;
-        
-        PickingHit(Entity* entity, TVector3f hitPoint, float distance);
-        PickingHit(Face* face, TVector3f hitPoint, float distance);
-        PickingHit(Brush* brush, EHitType type, int index, TVector3f hitPoint, float distance);
-        
+        virtual ~PickingHit();
     };
+    
+    class EntityHit {
+    public:
+        Entity* entity;
+        EntityHit(Entity* entity, TVector3f hitPoint, float distance);
+    };
+    
+    class FaceHit {
+        Face* face;
+        bool direct;
+        BrushHit(Face* face, bool direct, TVector3f hitPoint, float distance);
+    }
+    
+    class VertexHit {
+        Brush* brush;
+        int index;
+        EHandleType type;
+        VertexHit(Brush* brush, int index, EHandleType type, TVector3f hitPoint, float distance);
+    }
     
     class PickingHitList {
     private:
         vector<PickingHit*> m_hits;
         bool m_sorted;
     public:
-        void addHit(PickingHit& hit);
+        void addHit(PickingHit* hit);
         PickingHit* first(EHitType typeMask, bool ignoreOccluders);
         vector<PickingHit*> hits(EHitType typeMask);
         vector<PickingHit*> allHits();

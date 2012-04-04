@@ -17,41 +17,22 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import "SpawnFlag.h"
+#ifndef TrenchBroom_MapObject_h
+#define TrenchBroom_MapObject_h
 
+#include "Math.h"
 
-@implementation SpawnFlag
-
-- (id)initWithName:(NSString *)theName flag:(int)theFlag {
-    NSAssert(theName != nil, @"name must not be nil");
-    NSAssert(theFlag > 0, @"flag must be a positive integer");
+namespace TrenchBroom {
     
-    if ((self = [self init])) {
-        name = [theName retain];
-        flag = theFlag;
-    }
+    class MapObject {
+    protected:
+        int m_uniqueId;
+    public:
+        MapObject();
+        int uniqueId() const;
+        virtual TBoundingBox bounds() const;
+    };
     
-    return self;
 }
 
-- (void)dealloc {
-    [name release];
-    [super dealloc];
-}
-
-- (NSString *)name {
-    return name;
-}
-
-- (int)flag {
-    return flag;
-}
-
-- (NSComparisonResult)compareByFlag:(SpawnFlag *)otherFlag {
-    if (flag > [otherFlag flag])
-        return NSOrderedAscending;
-    if (flag < [otherFlag flag])
-        return NSOrderedDescending;
-    return NSOrderedSame;
-}
-@end
+#endif

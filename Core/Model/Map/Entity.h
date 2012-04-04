@@ -20,10 +20,11 @@
 #ifndef TrenchBroom_Entity_h
 #define TrenchBroom_Entity_h
 
-#include "Brush.h"
 #include <string>
 #include <vector>
 #include <map>
+#include "MapObject.h"
+#include "Brush.h"
 #include "Math.h"
 #include "Vbo.h"
 #include "Map.h"
@@ -46,9 +47,8 @@ namespace TrenchBroom {
 
     class Map;
     class Brush;
-    class Entity {
+    class Entity : public MapObject {
     private:
-        int m_entityId;
         EntityDefinition* m_entityDefinition;
         TVector3f m_center;
         TVector3f m_origin;
@@ -73,7 +73,6 @@ namespace TrenchBroom {
         Entity(const map<string, string> properties);
         ~Entity();
 
-        int entityId() const;
         const EntityDefinition* entityDefinition() const;
         void setEntityDefinition(EntityDefinition* entityDefinition);
         TVector3f center() const;

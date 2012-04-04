@@ -28,7 +28,7 @@
 
 namespace TrenchBroom {
     
-    bool OctreeNode::addObject(void* object, TBoundingBox bounds, int childIndex) {
+    bool OctreeNode::addObject(MapObject& object, int childIndex) {
         if (m_children[childIndex] == NULL) {
             TBoundingBox childBounds;
             switch (childIndex) {
@@ -91,7 +91,7 @@ namespace TrenchBroom {
             }
             m_children[childIndex] = new OctreeNode(childBounds, m_minSize);
         }
-        return m_children[childIndex]->addObject(object, bounds);
+        return m_children[childIndex]->addObject(object);
     }
 
     OctreeNode::OctreeNode(TBoundingBox bounds, int minSize) : m_bounds(bounds), m_minSize(minSize) {}
@@ -100,25 +100,27 @@ namespace TrenchBroom {
         for (int i = 0; i < 8; i++) if (m_children != NULL) delete m_children[i];
     }
     
-    bool OctreeNode::addObject(void* object, TBoundingBox bounds) {
-        if (!boundsContainBounds(&m_bounds, &bounds)) return false;
+    bool OctreeNode::addObject(MapObject& object) {
+        TBoundingBox objectBounds = object.bounds();
+        if (!boundsContainBounds(&m_bounds, &objectBounds)) return false;
         if (m_bounds.max.x - m_bounds.min.x > m_minSize)
             for (int i = 0; i < 8; i++)
-                if (addObject(object, bounds, i)) return true;
+                if (addObject(object, i)) return true;
         m_objects.push_back(object);
         return true;
     }
     
     bool OctreeNode::removeObject(void* object, TBoundingBox bounds) {
-        if (!boundsContainBounds(&m_bounds, &bounds)) return false;
+        TBoundingBox objectBounds = object.bounds();
+        if (!boundsContainBounds(&m_bounds, &objectBounds)) return false;
         for (int i = 0; i < 8; i++)
-            if (m_children[i] != NULL && m_children[i]->removeObject(object, bounds)) return true;
+            if (m_children[i] != NULL && m_children[i]->removeObject(object)) return true;
         vector<void*>::iterator it = find(m_objects.begin(), m_objects.end(), object);
         if (it != m_objects.end()) m_objects.erase(it);
         return true;
     }
     
-    void OctreeNode::intersect(TRay ray, vector<void*>& objects) {
+    void OctreeNode::intersect(TRay ray, vector<MapObject&>& objects) {
         bool hit = gtef(ray.origin.x, m_bounds.min.x)
         && gtef(ray.origin.y, m_bounds.min.y)
         && gtef(ray.origin.z, m_bounds.min.z)
@@ -139,26 +141,26 @@ namespace TrenchBroom {
             for (int i = 0; i < entities->size(); i++) {
                 Entity* entity = (*entities)[i];
                 if (entity->entityDefinition() != NULL && entity->entityDefinition()->type == EDT_POINT)
-                    m_root->addObject(entity, entity->bounds());
+                    m_root->addObject(*entity);
             }
         } else if (name == EntitiesWillBeRemoved || name == PropertiesDidChange) {
             const vector<Entity*>* entities = (const vector<Entity*>*)data;
             for (int i = 0; i < entities->size(); i++) {
                 Entity* entity = (*entities)[i];
                 if (entity->entityDefinition() != NULL && entity->entityDefinition()->type == EDT_POINT)
-                    assert(m_root->removeObject(entity, entity->bounds()));
+                    assert(m_root->removeObject(*entity));
             }
         } else if (name == BrushesAdded || name == BrushesDidChange) {
             const vector<Brush*>* brushes = (const vector<Brush*>*)data;
             for (int i = 0; i < brushes->size(); i++) {
                 Brush* brush = (*brushes)[i];
-                m_root->addObject(brush, brush->bounds());
+                m_root->addObject(*brush);
             }
         } else if (name == BrushesWillBeRemoved || name == BrushesWillChange) {
             const vector<Brush*>* brushes = (const vector<Brush*>*)data;
             for (int i = 0; i < brushes->size(); i++) {
                 Brush* brush = (*brushes)[i];
-                assert(m_root->removeObject(brush, brush->bounds()));
+                assert(m_root->removeObject(*brush));
             }
         } else if (name == MapLoaded) {
             const vector<Entity*>& entities = m_map->entities();
@@ -169,7 +171,7 @@ namespace TrenchBroom {
                 const vector<Brush*>& brushes = entity->brushes();
                 for (int j = 0; j < brushes.size(); j++) {
                     Brush* brush = brushes[j];
-                    m_root->addObject(brush, brush->bounds());
+                    m_root->addObject(*brush);
                 }
             }
         } else if (name == MapCleared) {
@@ -196,8 +198,8 @@ namespace TrenchBroom {
         delete m_root;
     }
     
-    vector<void*> Octree::intersect(TRay ray) {
-        vector<void*> result;
+    vector<MapObject&> Octree::intersect(TRay ray) {
+        vector<MapObject&> result;
         m_root->intersect(ray, result);
         return result;
     }
