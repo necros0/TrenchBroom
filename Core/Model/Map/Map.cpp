@@ -25,6 +25,7 @@
 
 namespace TrenchBroom {
     Map::Map(const TBoundingBox& worldBounds, const string& entityDefinitionFilePath) : Observable(), m_worldBounds(worldBounds) {
+        m_octree = new Octree(this, 256);
         m_selection = new Selection();
         m_entityDefinitionManager = EntityDefinitionManager::sharedManager(entityDefinitionFilePath);
         m_groupManager = new GroupManager(*this);
@@ -33,6 +34,7 @@ namespace TrenchBroom {
     Map::~Map() {
         setPostNotifications(false);
         clear();
+        delete m_octree;
         delete m_selection;
         delete m_groupManager;
     }
@@ -561,6 +563,10 @@ namespace TrenchBroom {
     # pragma mark getters
     TBoundingBox Map::worldBounds() {
         return m_worldBounds;
+    }
+    
+    Octree& Map::octree() {
+        return *m_octree;
     }
     
     Selection& Map::selection() {

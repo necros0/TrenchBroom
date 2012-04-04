@@ -185,7 +185,9 @@
 		48F0EC52131A9CCD0088FA02 /* PrefabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F0EC51131A9CCD0088FA02 /* PrefabView.m */; };
 		48F2F0E21529A79D0097E98B /* MapParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0E11529A79D0097E98B /* MapParser.cpp */; };
 		48F2F0E51529ABA60097E98B /* Palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0E41529ABA60097E98B /* Palette.cpp */; };
-		48F2F0EA152B7C4F0097E98B /* Picker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0E9152B7C4E0097E98B /* Picker.cpp */; };
+		48F2F0ED152C43DA0097E98B /* Octree.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0EC152C43D90097E98B /* Octree.cpp */; };
+		48F2F0EF152C43EF0097E98B /* Picker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0EE152C43EF0097E98B /* Picker.cpp */; };
+		48F2F0F2152C64680097E98B /* Filter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 48F2F0F1152C64670097E98B /* Filter.cpp */; };
 		48F56F5213E9CDEC008DF954 /* MapBrowserDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F56F5113E9CDEC008DF954 /* MapBrowserDataSource.m */; };
 		48F5C3DB13E1578A00B1A720 /* ControllerUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 48F5C3DA13E1578A00B1A720 /* ControllerUtils.m */; };
 		48FE96091363279D009B31FD /* quake.def in Resources */ = {isa = PBXBuildFile; fileRef = 48FE96081363279D009B31FD /* quake.def */; };
@@ -603,7 +605,11 @@
 		48F2F0E31529A8B50097E98B /* Palette.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Palette.h; path = Model/Assets/Palette.h; sourceTree = "<group>"; };
 		48F2F0E41529ABA60097E98B /* Palette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Palette.cpp; path = Model/Assets/Palette.cpp; sourceTree = "<group>"; };
 		48F2F0E8152B7C3D0097E98B /* Picker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Picker.h; path = Model/Picker.h; sourceTree = "<group>"; };
-		48F2F0E9152B7C4E0097E98B /* Picker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Picker.cpp; sourceTree = "<group>"; };
+		48F2F0EB152C43CB0097E98B /* Octree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Octree.h; path = Model/Octree.h; sourceTree = "<group>"; };
+		48F2F0EC152C43D90097E98B /* Octree.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Octree.cpp; path = Model/Octree.cpp; sourceTree = "<group>"; };
+		48F2F0EE152C43EF0097E98B /* Picker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Picker.cpp; path = Model/Picker.cpp; sourceTree = "<group>"; };
+		48F2F0F0152C63910097E98B /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Filter.h; sourceTree = "<group>"; };
+		48F2F0F1152C64670097E98B /* Filter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Filter.cpp; sourceTree = "<group>"; };
 		48F56F5013E9CDEC008DF954 /* MapBrowserDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBrowserDataSource.h; sourceTree = "<group>"; };
 		48F56F5113E9CDEC008DF954 /* MapBrowserDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBrowserDataSource.m; sourceTree = "<group>"; };
 		48F5C3D913E1578A00B1A720 /* ControllerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControllerUtils.h; sourceTree = "<group>"; };
@@ -885,7 +891,9 @@
 				4830EF231523373D00ADA2B8 /* Selection.h */,
 				4830EF251523393800ADA2B8 /* Selection.cpp */,
 				48F2F0E8152B7C3D0097E98B /* Picker.h */,
-				48F2F0E9152B7C4E0097E98B /* Picker.cpp */,
+				48F2F0EE152C43EF0097E98B /* Picker.cpp */,
+				48F2F0EB152C43CB0097E98B /* Octree.h */,
+				48F2F0EC152C43D90097E98B /* Octree.cpp */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -993,9 +1001,11 @@
 		4876741715129FF800338143 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				486229771517ADCB00B54545 /* Model */,
 				4876741815129FF800338143 /* IO */,
+				486229771517ADCB00B54545 /* Model */,
 				4830EF5B1528211200ADA2B8 /* Utils.h */,
+				48F2F0F0152C63910097E98B /* Filter.h */,
+				48F2F0F1152C64670097E98B /* Filter.cpp */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1634,7 +1644,9 @@
 				4830EF5A1527ECF800ADA2B8 /* Groups.cpp in Sources */,
 				48F2F0E21529A79D0097E98B /* MapParser.cpp in Sources */,
 				48F2F0E51529ABA60097E98B /* Palette.cpp in Sources */,
-				48F2F0EA152B7C4F0097E98B /* Picker.cpp in Sources */,
+				48F2F0ED152C43DA0097E98B /* Octree.cpp in Sources */,
+				48F2F0EF152C43EF0097E98B /* Picker.cpp in Sources */,
+				48F2F0F2152C64680097E98B /* Filter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

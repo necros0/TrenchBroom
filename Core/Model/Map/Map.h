@@ -22,6 +22,7 @@
 
 #include <vector>
 #include "Observer.h"
+#include "Octree.h"
 #include "Selection.h"
 #include "Groups.h"
 #include "EntityDefinition.h"
@@ -50,10 +51,12 @@ namespace TrenchBroom {
     static const string MapCleared              = "MapCleared";
     static const string MapLoaded               = "MapLoaded";
     
+    class Octree;
     class Selection;
     class MoveResult;
     class Map : public Observable {
     private:
+        Octree* m_octree;
         Selection* m_selection;
         EntityDefinitionManager* m_entityDefinitionManager;
         GroupManager* m_groupManager;
@@ -116,6 +119,7 @@ namespace TrenchBroom {
         
         # pragma mark Getters
         TBoundingBox worldBounds();
+        Octree& octree();
         Selection& selection();
         EntityDefinitionManager& entityDefinitionManager();
         GroupManager& groupManager();

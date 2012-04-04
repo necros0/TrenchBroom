@@ -17,34 +17,26 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Cocoa/Cocoa.h>
-#import "Math.h"
+#ifndef TrenchBroom_Filter_h
+#define TrenchBroom_Filter_h
 
-typedef enum {
-    CP_WSB = 0,
-    CP_WST = 1,
-    CP_WNB = 2,
-    CP_WNT = 3,
-    CP_ESB = 4,
-    CP_EST = 5,
-    CP_ENB = 6,
-    CP_ENT = 7
-} EChildPosition;
+#include "Entity.h"
+#include "Brush.h"
+#include "Groups.h"
+#include "Selection.h"
 
-@interface OctreeNode : NSObject {
-    @private
-    int minSize;
-    TVector3f min;
-    TVector3f max;
-    NSMutableArray* objects;
-    OctreeNode* children[8];
+namespace TrenchBroom {
+    
+    class Filter {
+    private:
+    public:
+        bool brushVisible(Brush& brush) { return true; }
+        bool entityVisible(Entity& entity) { return true; }
+        bool brushPickable(Brush& brush) { return true; }
+        bool brushVerticesPickable(Brush& brush) { return true; }
+        bool entityPickable(Entity& entity) { return true; }
+    };
+    
 }
 
-- (id)initWithMin:(const TVector3f *)theMin max:(const TVector3f *)theMax minSize:(int)theMinSize;
-
-- (BOOL)addObject:(id)theObject bounds:(const TBoundingBox *)theBounds;
-- (BOOL)removeObject:(id)theObject bounds:(const TBoundingBox *)theBounds;
-
-- (void)addObjectsForRay:(const TRay *)ray to:(NSMutableArray *)list;
-
-@end
+#endif

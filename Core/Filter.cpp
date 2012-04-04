@@ -17,34 +17,8 @@
  along with TrenchBroom.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#import <Cocoa/Cocoa.h>
-#import "Math.h"
+#include "Filter.h"
 
-typedef enum {
-    CP_WSB = 0,
-    CP_WST = 1,
-    CP_WNB = 2,
-    CP_WNT = 3,
-    CP_ESB = 4,
-    CP_EST = 5,
-    CP_ENB = 6,
-    CP_ENT = 7
-} EChildPosition;
-
-@interface OctreeNode : NSObject {
-    @private
-    int minSize;
-    TVector3f min;
-    TVector3f max;
-    NSMutableArray* objects;
-    OctreeNode* children[8];
+namespace TrenchBroom {
+    
 }
-
-- (id)initWithMin:(const TVector3f *)theMin max:(const TVector3f *)theMax minSize:(int)theMinSize;
-
-- (BOOL)addObject:(id)theObject bounds:(const TBoundingBox *)theBounds;
-- (BOOL)removeObject:(id)theObject bounds:(const TBoundingBox *)theBounds;
-
-- (void)addObjectsForRay:(const TRay *)ray to:(NSMutableArray *)list;
-
-@end
