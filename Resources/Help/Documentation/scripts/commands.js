@@ -12,6 +12,7 @@
 // Backspace:    &#x232B;
 // Return:       &#x21A9;
 // Tab:          &#x21E5;
+// Escape: 		 &#x238B;
 
 var menu_commands = new Object();
 menu_commands["Mac"] = new Object();
@@ -35,16 +36,18 @@ menu_commands["Mac"]["edit_paste_at_original_pos"]		= "Edit &raquo; Paste At Ori
 menu_commands["Mac"]["edit_select_all"]					= "Edit &raquo; Select All - &#8984;A";
 menu_commands["Mac"]["edit_select_siblings"]			= "Edit &raquo; Select Siblings - &#x2325;&#8984;A";
 menu_commands["Mac"]["edit_select_touching"]			= "Edit &raquo; Select Touching - &#8984;T";
-menu_commands["Mac"]["edit_select_by_file_position"]	= "Edit &raquo; Select by Line Numbers...";
+menu_commands["Mac"]["edit_select_by_file_position"]	= "Edit &raquo; Select by Line Number";
 menu_commands["Mac"]["edit_select_none"]				= "Edit &raquo; Select None - &#8679;&#8984;A";
 menu_commands["Mac"]["edit_rotate_tool"]				= "Edit &raquo; Tools &raquo; Rotate Objects Tool - R";
 menu_commands["Mac"]["edit_clip_tool"]					= "Edit &raquo; Tools &raquo; Clip Tool - C";
-menu_commands["Mac"]["edit_clip_side"]					= "Edit &raquo; Tools &raquo; Toggle Clip Side - &#x21E5;";
+menu_commands["Mac"]["edit_clip_side"]					= "Edit &raquo; Tools &raquo; Toggle Clip Side - &#8984;&#x21A9;";
 menu_commands["Mac"]["edit_perform_clip"]				= "Edit &raquo; Tools &raquo; Perform Clip - &#x21A9;";
 menu_commands["Mac"]["edit_flip_horizontally"]			= "Edit &raquo; Actions &raquo; Flip Horizontally - &#8984;F";
 menu_commands["Mac"]["edit_flip_vertically"]			= "Edit &raquo; Actions &raquo; Flip Vertically - &#x2325;&#8984;F";
 menu_commands["Mac"]["edit_duplicate_selection"]		= "Edit &raquo; Actions &raquo; Duplicate - &#8984;D";
 menu_commands["Mac"]["edit_map_properties"]				= "Edit &raquo; Map Properties...";
+menu_commands["Mac"]["edit_print_file_position"]		= "Edit &raquo; Actions &raquo; Print Line Numbers"
+menu_commands["Mac"]["edit_navigate_up"]				= "Edit &raquo; Navigate Up - &#x238B;"
 
 menu_commands["Mac"]["edit_undo"]						= "Edit &raquo; Undo - &#8984;Z";
 menu_commands["Mac"]["edit_redo"]						= "Edit &raquo; Redo - &#8984;Y";
@@ -59,11 +62,10 @@ menu_commands["Mac"]["edit_unlock_all"]					= "Edit &raquo; Unlock All - &#8984;
 menu_commands["Mac"]["edit_actions_correct_verts"]		= "Edit &raquo; Actions &raquo; Correct Vertices";
 menu_commands["Mac"]["edit_actions_snap_verts"]			= "Edit &raquo; Actions &raquo; Snap Vertices";
 
-menu_commands["Mac"]["view_center_on_selection"]		= "View &raquo; Camera &raquo; Center on Selection - &#x2325;C";
-
+menu_commands["Mac"]["view_center_on_selection"]		= "View &raquo; Camera &raquo; Center on Selection - &#8679;&#8984;C";
 menu_commands["Mac"]["view_camera_move_to_next_pt"]		= "View &raquo; Camera &raquo; Move Camera to Next Point - &#x2325;+)";
 menu_commands["Mac"]["view_camera_move_to_prev_pt"]		= "View &raquo; Camera &raquo; Move Camera to Previous Point - &#x2325;-)";
-
+menu_commands["Mac"]["view_snap_to_grid"]				= "View &raquo; Grid &raquo; Snap to Grid - &#8984;&#8679;G";
 
 
 menu_commands["Windows"]["preferences"] 				= "View &raquo; Preferences";
@@ -83,16 +85,17 @@ menu_commands["Windows"]["edit_paste_at_original_pos"]	= "Edit &raquo; Paste At 
 menu_commands["Windows"]["edit_select_all"]				= "Edit &raquo; Select All - Ctrl+A";
 menu_commands["Windows"]["edit_select_siblings"]		= "Edit &raquo; Select Siblings - Ctrl+Alt+A";
 menu_commands["Windows"]["edit_select_touching"]		= "Edit &raquo; Select Touching - Ctrl+T";
-menu_commands["Windows"]["edit_select_by_file_position"]= "Edit &raquo; Select by Line Numbers...";
+menu_commands["Windows"]["edit_select_by_file_position"]= "Edit &raquo; Select by Line Number";
 menu_commands["Windows"]["edit_select_none"]			= "Edit &raquo; Select None - Ctrl+Shift+A";
 menu_commands["Windows"]["edit_rotate_tool"]			= "Edit &raquo; Tools &raquo; Rotate Objects Tool - R";
 menu_commands["Windows"]["edit_clip_tool"]				= "Edit &raquo; Tools &raquo; Clip Tool - C";
-menu_commands["Windows"]["edit_clip_side"]				= "Edit &raquo; Tools &raquo; Toggle Clip Side - Tab";
+menu_commands["Windows"]["edit_clip_side"]				= "Edit &raquo; Tools &raquo; Toggle Clip Side - Ctrl+Enter";
 menu_commands["Windows"]["edit_perform_clip"]			= "Edit &raquo; Tools &raquo; Perform Clip - Enter";
 menu_commands["Windows"]["edit_flip_horizontally"]		= "Edit &raquo; Actions &raquo; Flip Horizontally - Ctrl+F";
 menu_commands["Windows"]["edit_flip_vertically"]		= "Edit &raquo; Actions &raquo; Flip Vertically - Ctrl+Alt+F";
 menu_commands["Windows"]["edit_duplicate_selection"]	= "Edit &raquo; Actions &raquo; Duplicate - Ctrl+D";
 menu_commands["Windows"]["edit_map_properties"]			= "Edit &raquo; Map Properties...";
+menu_commands["Windows"]["edit_print_file_position"]	= "Edit &raquo; Actions &raquo; Print Line Numbers"
 
 menu_commands["Windows"]["edit_undo"]					= "Edit &raquo; Undo - Ctrl+Z";
 menu_commands["Windows"]["edit_redo"]					= "Edit &raquo; Redo - Ctrl+Y";
@@ -107,9 +110,10 @@ menu_commands["Windows"]["edit_unlock_all"]				= "Edit &raquo; Unlock All - Ctrl
 menu_commands["Windows"]["edit_actions_correct_verts"]	= "Edit &raquo; Actions &raquo; Correct Vertices";
 menu_commands["Windows"]["edit_actions_snap_verts"]		= "Edit &raquo; Actions &raquo; Snap Vertices";
 
-menu_commands["Windows"]["view_center_on_selection"]	= "View &raquo; Camera &raquo; Center on Selection - Alt+C";
+menu_commands["Windows"]["view_center_on_selection"]	= "View &raquo; Camera &raquo; Center on Selection - Ctrl+Shift+C";
 menu_commands["Windows"]["view_camera_move_to_next_pt"]	= "View &raquo; Camera &raquo; Move Camera to Next Point - Alt+(Plus (+))";
 menu_commands["Windows"]["view_camera_move_to_prev_pt"]	= "View &raquo; Camera &raquo; Move Camera to Previous Point - Alt+(Minus (-))";
+menu_commands["Windows"]["view_snap_to_grid"]			= "View &raquo; Grid &raquo; Snap to Grid - Ctrl+Shift+G";
 
 var keys = new Object();
 

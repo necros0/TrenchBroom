@@ -95,9 +95,11 @@ namespace TrenchBroom {
             void updateNavBar();
             void disableProcessing();
 
+            void OnActivate(wxActivateEvent& event);
             void OnChangeFocus(wxCommandEvent& event);
             void OnIdle(wxIdleEvent& event);
             void OnClose(wxCloseEvent& event);
+            void OnMenuOpen(wxMenuEvent& event);
 
             DECLARE_EVENT_TABLE()
         };

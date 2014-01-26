@@ -60,7 +60,9 @@ namespace TrenchBroom {
         BEGIN_EVENT_TABLE(EditorFrame, wxFrame)
 		EVT_CLOSE(EditorFrame::OnClose)
         EVT_COMMAND(wxID_ANY, EVT_SET_FOCUS, EditorFrame::OnChangeFocus)
+        EVT_ACTIVATE(EditorFrame::OnActivate)
         EVT_IDLE(EditorFrame::OnIdle)
+        EVT_MENU_OPEN(EditorFrame::OnMenuOpen)
 		END_EVENT_TABLE()
 
         EditorFrame::MenuSelector::MenuSelector(DocumentViewHolder& documentViewHolder) :
@@ -258,6 +260,12 @@ namespace TrenchBroom {
             m_documentViewHolder.invalidate();
         }
 
+        void EditorFrame::OnActivate(wxActivateEvent& event) {
+            m_mapCanvas->setHasFocus(event.GetActive(), true);
+            m_mapCanvas->Refresh();
+            event.Skip();
+        }
+
         void EditorFrame::OnChangeFocus(wxCommandEvent& event) {
             if (m_documentViewHolder.valid()) {
                 wxWindow* focus = FindFocus();
@@ -298,6 +306,20 @@ namespace TrenchBroom {
 
             Model::MapDocument& document = m_documentViewHolder.document();
             document.GetDocumentManager()->CloseDocument(&document);
+        }
+
+        void EditorFrame::OnMenuOpen(wxMenuEvent& event) {
+            // FIXME is this still necessary?
+            // How does updating menu items work in Windows, anyway? 
+#ifdef _WIN32
+            wxMenuBar* menuBar = GetMenuBar();
+            size_t menuCount = menuBar->GetMenuCount();
+            for (size_t i = 0; i < menuCount; i++) {
+                wxMenu* menu = menuBar->GetMenu(i);
+                menu->UpdateUI(&m_documentViewHolder.view());
+            }
+#endif
+            event.Skip();
         }
     }
 }
