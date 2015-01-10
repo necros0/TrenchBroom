@@ -212,6 +212,9 @@ namespace TrenchBroom {
                 FacePointFormat facePointFormat = Unknown;
                 while ((entity = parseEntity(map.worldBounds(), facePointFormat, indicator)) != NULL)
                     map.addEntity(*entity);
+                
+                if (facePointFormat == Integer)
+                    map.setForceIntegerFacePoints(true);
             } catch (MapParserException& e) {
                 m_console.error(e.what());
             }
@@ -287,9 +290,16 @@ namespace TrenchBroom {
             expect(TokenType::OParenthesis, token = m_tokenizer.nextToken());
             p3 = parseVector().corrected();
             expect(TokenType::CParenthesis, token = m_tokenizer.nextToken());
-            
-            expect(TokenType::String, token = m_tokenizer.nextToken());
-            String textureName = token.data();
+		
+            String textureName;
+            token = m_tokenizer.nextToken();
+            if (token.type() == TokenType::OBrace) { // Alpha-mask textures start with a { character, which will be its own token
+                expect(TokenType::String, token = m_tokenizer.nextToken());
+                textureName = "{" + token.data();
+            } else {
+                expect(TokenType::String, token);
+                textureName = token.data();
+            }
             
             token = m_tokenizer.nextToken();
             if (m_format == Undefined) {
@@ -351,7 +361,7 @@ namespace TrenchBroom {
             size_t oldSize = entities.size();
             try {
                 Model::Entity* entity = NULL;
-                while ((entity = parseEntity(worldBounds, forceIntegerFacePoints ? Integer : Float, NULL)) != NULL)
+                while ((entity = parseEntity(worldBounds, forceIntegerFacePoints, NULL)) != NULL)
                     entities.push_back(entity);
                 return !entities.empty();
             } catch (MapParserException&) {

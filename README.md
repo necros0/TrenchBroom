@@ -36,6 +36,21 @@ TrenchBroom is a modern cross-platform level editor for Quake.
 - All help is appreciated!
 
 ## Changes
+### TrenchBroom 1.1.4
+- Fix crash when updating graphics resources (ericw)
+- Fix vertex drift issue leading to grid snapping problems (ericw)
+
+### TrenchBroom 1.1.3
+- Fix vertex precision problems when copy/pasting brushes (ericw)
+
+### TrenchBroom 1.1.2
+- Enable texture names starting with '{' (ericw)
+- Fix hang when adding multiple updating entity targets (ericw, necros)
+- Simplify build instructions (ericw)
+- Fix vertex drift on map load (ericw)
+- Fix crash with colors in byte format (ericw)
+- Add option to invert zoom direction when using Alt+MMB (kduske)
+
 ### TrenchBroom 1.1.1
 - More natural snapping when resizing brushes
 - Remove limit on maximum mip texture dimensions
